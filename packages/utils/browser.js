@@ -1,4 +1,4 @@
-import { debounce, throttle } from './utils'
+import { throttle } from './utils'
 
 /**
  * 浏览器加载前
