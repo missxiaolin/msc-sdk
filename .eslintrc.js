@@ -10,6 +10,7 @@ module.exports = {
   },
   extends: 'airbnb-base',
   rules: {
+    'prefer-rest-params': 'off',
     'operator-linebreak': 'off',
     'function-paren-newline': 'off',
     'comma-dangle': 'off',
