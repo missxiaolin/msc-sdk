@@ -3,7 +3,7 @@ import { getCurrentTime, getNowFormatTime } from '../utils/utils';
 import { CategoryEnum, ErrorLevelEnum } from '../base/baseConfig';
 import { isString } from '../utils/validate';
 
-class hackFetch extends BaseMonitor {
+class HackFetch extends BaseMonitor {
   constructor(options) {
     super(options);
     this.reportUrl = options.reportUrl;
@@ -66,4 +66,4 @@ class hackFetch extends BaseMonitor {
   }
 }
 
-export default hackFetch;
+export default HackFetch;

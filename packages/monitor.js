@@ -1,5 +1,5 @@
 import {
-  hackFetch,
+  HackFetch,
 } from './sdk';
 
 import TaskQueue from './api/taskQueue';
@@ -87,7 +87,7 @@ class MonitorJs {
     if (monitorSwitch) {
       // TODO: 
       if (this.watchFetch) {
-        new hackFetch($options);
+        new HackFetch($options);
       }
     }
     

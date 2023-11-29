@@ -1,5 +1,5 @@
-import hackFetch from './http/fetch.js';
+import HackFetch from './http/fetch.js';
 
 export {
-    hackFetch,
+    HackFetch,
 }
