@@ -1,7 +1,8 @@
 import {
   HackFetch,
   HackXml,
-  HackWebVitals
+  HackWebVitals,
+  HackJavascript
 } from './sdk';
 
 import TaskQueue from './api/taskQueue';
@@ -92,6 +93,11 @@ class MonitorJs {
         // new NetworkSpeed($options)
         // new FirstScreenTime($options)
       }
+      // JS 捕捉
+      if (this.watchJs) {
+        new HackJavascript($options);
+      }
+
       if (this.watchFetch) {
         new HackFetch($options);
       }
