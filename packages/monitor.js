@@ -1,6 +1,7 @@
 import {
   HackFetch,
-  HackXml
+  HackXml,
+  HackWebVitals
 } from './sdk';
 
 import TaskQueue from './api/taskQueue';
@@ -86,7 +87,11 @@ class MonitorJs {
      * @param {*} options {pageId：页面标示,url：上报地址}
      */
     if (monitorSwitch) {
-      // TODO: 
+      if (this.watchPerformance) {
+        new HackWebVitals($options);
+        // new NetworkSpeed($options)
+        // new FirstScreenTime($options)
+      }
       if (this.watchFetch) {
         new HackFetch($options);
       }
