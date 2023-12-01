@@ -4,7 +4,8 @@ import {
   HackWebVitals,
   HackJavascript,
   HackPromise,
-  HackResource
+  HackResource,
+  HackVue
 } from './sdk';
 
 import TaskQueue from './api/taskQueue';
@@ -106,6 +107,10 @@ class MonitorJs {
       // js、css、img 资源 捕捉
       if (this.watchResource) {
         new HackResource($options);
+      }
+      // vue  捕捉
+      if (this.watchVue) {
+        new HackVue($options);
       }
 
       if (this.watchFetch) {
