@@ -3,7 +3,8 @@ import {
   HackXml,
   HackWebVitals,
   HackJavascript,
-  HackPromise
+  HackPromise,
+  HackResource
 } from './sdk';
 
 import TaskQueue from './api/taskQueue';
@@ -101,6 +102,10 @@ class MonitorJs {
       // Promise  捕捉
       if (this.watchPromise) {
         new HackPromise($options);
+      }
+      // js、css、img 资源 捕捉
+      if (this.watchResource) {
+        new HackResource($options);
       }
 
       if (this.watchFetch) {
