@@ -4,7 +4,7 @@ import { CategoryEnum, ErrorLevelEnum } from '../base/baseConfig';
 /**
  * 捕获未处理的Promise异常
  */
-class hackPromise extends BaseMonitor {
+class HackPromise extends BaseMonitor {
   constructor(options) {
     super(options);
     this.handleError();
@@ -46,4 +46,4 @@ class hackPromise extends BaseMonitor {
     );
   }
 }
-export default hackPromise;
+export default HackPromise;
