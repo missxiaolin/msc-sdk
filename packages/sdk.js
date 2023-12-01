@@ -5,6 +5,8 @@ import HackJavascript from './error/javascript.js';
 import HackPromise from './error/promise.js';
 import HackResource from './error/resource.js';
 import HackVue from './error/vue.js';
+import HackClick from './behavior/click.js';
+import HackPage from './behavior/page.js'
 
 export {
     HackFetch,
@@ -13,5 +15,7 @@ export {
     HackJavascript,
     HackPromise,
     HackResource,
-    HackVue
+    HackVue,
+    HackClick,
+    HackPage
 }

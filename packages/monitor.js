@@ -5,7 +5,9 @@ import {
   HackJavascript,
   HackPromise,
   HackResource,
-  HackVue
+  HackVue,
+  HackClick,
+  HackPage
 } from './sdk';
 
 import TaskQueue from './api/taskQueue';
@@ -112,6 +114,14 @@ class MonitorJs {
       if (this.watchVue) {
         new HackVue($options);
       }
+      // 行为捕捉
+      if (this.behaviorClick) {
+        new HackClick($options);
+      }
+      // 行为捕捉
+      if (this.behaviorPageChange) {
+        new HackPage($options);
+      }
 
       if (this.watchFetch) {
         new HackFetch($options);
@@ -120,7 +130,7 @@ class MonitorJs {
         new HackXml($options);
       }
     }
-    
+
     if (trackSwitch && trackUrl.length) {
       // TODO:
     }
@@ -128,7 +138,7 @@ class MonitorJs {
     // 当页面进入后台或关闭前时，将所有的 cache 数据进行上报
     [onBeforeunload, onHidden].forEach(fn => {
       // TODO:
-    })
+    });
   }
 }
 
