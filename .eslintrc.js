@@ -10,6 +10,8 @@ module.exports = {
   },
   extends: 'airbnb-base',
   rules: {
+    'no-restricted-globals': 'off',
+    'import/no-mutable-exports': 'off',
     'no-restricted-properties': 'off',
     'wrap-iife': 'off',
     'prefer-spread': 'off',
