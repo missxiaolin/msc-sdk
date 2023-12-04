@@ -8,6 +8,8 @@ import HackVue from './error/vue.js';
 import HackClick from './behavior/click.js';
 import HackPage from './behavior/page.js'
 
+import Tracker from './tracker/trace';
+
 export {
     HackFetch,
     HackXml,
@@ -17,5 +19,6 @@ export {
     HackResource,
     HackVue,
     HackClick,
-    HackPage
+    HackPage,
+    Tracker
 }

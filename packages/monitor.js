@@ -7,7 +7,8 @@ import {
   HackResource,
   HackVue,
   HackClick,
-  HackPage
+  HackPage,
+  Tracker,
 } from './sdk';
 
 import TaskQueue from './api/taskQueue';
@@ -132,12 +133,18 @@ class MonitorJs {
     }
 
     if (trackSwitch && trackUrl.length) {
-      // TODO:
+      const tracker = new Tracker($options);
+      window.MuTracker = tracker;
     }
 
     // 当页面进入后台或关闭前时，将所有的 cache 数据进行上报
     [onBeforeunload, onHidden].forEach(fn => {
-      // TODO:
+      fn(() => {
+        // console.log('确定关闭页面么？');
+        // 关闭页面前 上报所有信息
+        monitorSwitch && TaskQueue.windowHidden();
+        trackSwitch && traceQueue.windowHidden();
+      });
     });
   }
 }
