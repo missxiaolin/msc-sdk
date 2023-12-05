@@ -36,7 +36,7 @@ class HackResource extends BaseMonitor {
           startTime: event.timeStamp,
           html: target.outerHTML,
           resourceType: target.tagName,
-          paths: event.path.map(item => item.tagName).filter(Boolean),
+          paths: event.path ? event.path.map(item => item.tagName).filter(Boolean) : '',
           happenTime: getCurrentTime(),
           happenDate: getNowFormatTime(),
         };
