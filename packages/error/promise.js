@@ -27,8 +27,6 @@ class HackPromise extends BaseMonitor {
           //     this.url = event.reason.config.url;
           // }
           // reason = reason.toString()
-          // console.log('reason----', reason)
-          // console.log('event----', event)
           const promiseError = {
             level: ErrorLevelEnum.WARN,
             category: CategoryEnum.PROMISE_ERROR,

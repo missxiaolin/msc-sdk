@@ -309,7 +309,6 @@ let DeviceInfo = (function () {
         ctx.fillText(txt, 4, 17);
         let b64 = canvas.toDataURL().replace('data:image/png;base64,', '');
         let bin = atob(b64);
-        // console.log('bin---', bin)
         let crc = bin2hex(bin.slice(-26, -12));
         fingerprint = crc;
         localStorage.setItem('webFingerprint', fingerprint);

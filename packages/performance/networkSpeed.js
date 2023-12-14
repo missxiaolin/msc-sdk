@@ -96,7 +96,6 @@ class NetworkSpeed extends BaseMonitor {
               // deviceInfo: this.getDeviceInfo()
             }),
           };
-          console.log('````````````````````` network_speed `````````````````````', speed);
           // new API(this.url).report(data);
         }
       };
@@ -114,7 +113,6 @@ class NetworkSpeed extends BaseMonitor {
     let img = new Image();
     img.onload = () => {
       this.endTime = this.now();
-      console.log('this.calcSpeed()----', this.calcSpeed());
     };
     this.startTime = this.now();
     img.src = this.filePath + '?rand=' + this.startTime;
@@ -129,7 +127,6 @@ class NetworkSpeed extends BaseMonitor {
     let speedBps = (bitsLoaded / duration).toFixed(2);
     let speedKbps = (speedBps / 1024).toFixed(2);
     let speedMbps = (speedKbps / 1024).toFixed(2);
-    console.log('speedKbps-----', speedKbps);
     return {
       speedKbps,
       speedMbps,

@@ -144,7 +144,6 @@ const TarceQueue = {
     const queuesLen = this.queues.length;
     // 页面关闭前上传所有信息
     const maxNum = queuesLen >= maxQueues ? maxQueues : queuesLen;
-    console.log('maxNum----', maxNum);
     let lists = (activelyReportData.length && activelyReportData) || this.queues.splice(0, maxNum);
     // 补充 设备、自定义、区域等 信息
     const data = {

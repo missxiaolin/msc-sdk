@@ -20,7 +20,6 @@ class HackXml extends BaseMonitor {
           // tracker会向sls发送日志的，所以不监控这个，否则会引起死循环
           this.logData = { method, url, async }; // 增强功能,把初始化数据保存为对象的属性
         }
-        // console.log('this.getAllResponseHeaders();--1--', this)
         return oldOpen.apply(this, arguments);
       };
 
@@ -60,7 +59,6 @@ class HackXml extends BaseMonitor {
                 happenTime: endTime,
                 happenDate: getNowFormatTime(),
               };
-              // console.log('metrics---', metrics)
               self.recordError(metrics);
             };
 
@@ -111,7 +109,6 @@ class HackXml extends BaseMonitor {
       //       let { status, statusText, response, timeout } = xhr;
       //       const isSuceess = (status >= 200 && status < 300);
       //       const endTime = getCurrentTime()
-      //       // console.log('xhr----', xhr)
       //       if (!isString(response)) {
       //         response = JSON.stringify(response);
       //       }
@@ -129,7 +126,6 @@ class HackXml extends BaseMonitor {
       //         happenDate: getNowFormatTime(),
       //       };
       //       // if (typeof loadHandler === 'function') loadHandler(metrics);
-      //       // console.log('metrics---ajax--', metrics)
       //       self.recordError(metrics)
       //       // xhr.status 状态码
       //     } catch (error) {

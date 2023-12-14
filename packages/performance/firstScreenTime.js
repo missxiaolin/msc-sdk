@@ -49,7 +49,6 @@ export default class firstScreenTime extends BaseMonitor {
       } else {
         this.observerData.push({ score: 0, time });
       }
-      // console.log('this.observerData----', this.observerData)
     });
 
     // 设置观察目标，接受两个参数: target：观察目标，options：通过对象成员来设置观察选项
@@ -145,7 +144,6 @@ export default class firstScreenTime extends BaseMonitor {
       this.firstScreenTime = data.time;
     }
 
-    console.log('this.firstScreenTime-----', this.firstScreenTime);
   }
 
   /**

@@ -15,7 +15,6 @@ class API {
       console.error('上报信息url地址格式不正确,reportUrl=', reportUrl);
       return;
     }
-    console.log('上报地址：' + reportUrl);
     if (typeof beforeSend === 'function') {
       data.data = beforeSend(data.data, dataType);
     }

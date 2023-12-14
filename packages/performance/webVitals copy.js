@@ -61,8 +61,6 @@ export default class WebVitals extends BaseMonitor {
         ...this.metricsStore,
       },
     ];
-    console.log('this.metricsStore---1--', performance);
-    // this.recordError(performance);
     TaskQueue.sendEscalation(performance);
   }
 

@@ -48,7 +48,6 @@ router.get('/api/success', async ctx => {
 });
 
 router.post('/monitor/upload', async ctx => {
-  console.log('\n-----上报成功 -----\n', ctx.request.body);
   ctx.body = {
     success: true,
     model: {
@@ -73,5 +72,3 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 
 app.listen(port);
-
-console.log(`Server is now listening on: http://localhost:${port}`);

@@ -33,5 +33,3 @@ const watchOptions = {
 };
 rollup.watch(watchOptions);
 module.exports = watchOptions;
-
-console.log('rollup watching...');

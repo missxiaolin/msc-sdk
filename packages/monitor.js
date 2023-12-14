@@ -140,7 +140,6 @@ class MonitorJs {
     // 当页面进入后台或关闭前时，将所有的 cache 数据进行上报
     [onBeforeunload, onHidden].forEach(fn => {
       fn(() => {
-        // console.log('确定关闭页面么？');
         // 关闭页面前 上报所有信息
         monitorSwitch && TaskQueue.windowHidden();
         trackSwitch && traceQueue.windowHidden();

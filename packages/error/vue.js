@@ -18,7 +18,6 @@ export class HackVue extends BaseMonitor {
       return;
     }
     Vue.config.errorHandler = (err, vm, info) => {
-      // console.log('err, vm, info-----', err, vm, info)
       try {
         const stackTraces = err ? parseStackFrames(err) : [];
         const errorMsg = err.message;
