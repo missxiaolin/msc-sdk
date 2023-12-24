@@ -1,5 +1,5 @@
 import BaseMonitor from '../base/baseMonitor';
-import { getCurrentTime, getNowFormatTime } from '../utils/utils';
+import { getCurrentTime, getNowFormatTime, formatUrlToStr } from '../utils/utils';
 import { CategoryEnum, ErrorLevelEnum } from '../base/baseConfig';
 import { isString } from '../utils/validate';
 
@@ -25,6 +25,7 @@ class HackFetch extends BaseMonitor {
       metrics.requestText = init?.body || '';
       metrics.requestTime = getCurrentTime();
       metrics.type = 'fetch';
+      metrics.pathName = formatUrlToStr(metrics.pathName)
 
       return oFetch.call(window, url, init).then(async response => {
         // clone 出一个新的 response,再用其做.text(),避免 body stream already read 问题
