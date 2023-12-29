@@ -138,7 +138,7 @@ export const uaParser = () => {
     deviceType: deviceType || 'PC', // 设备类型
     OS: `${osName} ${osVersion}`, // 操作系统
     browserInfo: `${browserName} ${browserVersion}`, // 浏览器信息
-    device: deviceType ? `${deviceVendor}` : browserName, // 设备类型
+    device: deviceType && deviceVendor ? `${deviceVendor}` : `${browserName}` ? `${browserName}` : '', // 设备类型
     deviceModel: deviceType ? deviceModel : engineName,
     screenHeight, // 屏幕高
     screenWidth, // 屏幕宽
