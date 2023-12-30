@@ -10,6 +10,11 @@ module.exports = {
   },
   extends: 'airbnb-base',
   rules: {
+    'no-var': 'off',
+    'no-cond-assign': 'off',
+    'no-return-assign': 'off',
+    'no-lone-blocks': 'off',
+    'lines-between-class-members': 'off',
     'no-nested-ternary': 'off',
     'no-restricted-globals': 'off',
     'import/no-mutable-exports': 'off',

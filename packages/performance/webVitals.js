@@ -1,7 +1,7 @@
 import BaseMonitor from '../base/baseMonitor';
 import { getCurrentTime, getNowFormatTime, getPageURL, formatUrlToStr } from '../utils/utils';
 import { ErrorLevelEnum, CategoryEnum } from '../base/baseConfig';
-import TaskQueue from '../api/taskQueue';
+import Queue from '../api/taskQueue';
 
 export const afterLoad = callback => {
   if (document.readyState === 'complete') {
@@ -45,7 +45,7 @@ class HackWebVitals extends BaseMonitor {
       },
     ];
     // this.recordError(performance);
-    TaskQueue.sendEscalation(performance);
+    Queue.getInstance().sendEscalation(performance);
   }
 
   initFMP() {

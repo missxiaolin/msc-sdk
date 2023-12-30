@@ -1,7 +1,6 @@
 import BaseMonitor from '../base/baseMonitor';
 import { getCurrentTime, getNowFormatTime } from '../utils/utils';
 // import { ErrorLevelEnum, CategoryEnum } from "../base/baseConfig";
-// import TaskQueue from '../api/taskQueue';
 
 export default class firstScreenTime extends BaseMonitor {
   constructor(options) {

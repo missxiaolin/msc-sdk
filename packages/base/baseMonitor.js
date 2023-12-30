@@ -1,5 +1,5 @@
 import { replaceSlash, getPageURL, formatUrlToStr } from '../utils/utils';
-import TaskQueue from '../api/taskQueue';
+import Queue from '../api/taskQueue';
 
 /**
  * 监控基类
@@ -28,8 +28,6 @@ class BaseMonitor {
    */
   recordError(recordObj = {}) {
     this.handleRecordError(recordObj);
-    // TODO : 接口上报时间
-    this.pageLoadDone && TaskQueue.isStop && TaskQueue.fire(); // 停止则fire
   }
 
   /**
@@ -56,7 +54,7 @@ class BaseMonitor {
       // console.log("\n````````````````````` " + recordObj.category + " `````````````````````\n", recordInfo)
 
       // 记录日志
-      TaskQueue.add(recordInfo);
+      Queue.getInstance().pushToQueue(recordInfo);
     } catch (error) {
       console.log(error);
     }

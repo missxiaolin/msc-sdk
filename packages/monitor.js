@@ -11,7 +11,7 @@ import {
   Tracker,
 } from './sdk';
 
-import TaskQueue from './api/taskQueue';
+import Queue from './api/taskQueue';
 import traceQueue from './api/traceQueue';
 
 import { onBeforeunload, onHidden } from './utils/browser';
@@ -77,8 +77,8 @@ class MonitorJs {
       monitorSwitch,
       trackSwitch,
     };
-    monitorSwitch && TaskQueue.init($options);
-    trackSwitch && traceQueue.init($options);
+    monitorSwitch && Queue.getInstance().init($options);
+    // trackSwitch && traceQueue.init($options);
 
     this.init($options);
   }
@@ -136,15 +136,6 @@ class MonitorJs {
       const tracker = new Tracker($options);
       window.MuTracker = tracker;
     }
-
-    // 当页面进入后台或关闭前时，将所有的 cache 数据进行上报
-    [onBeforeunload, onHidden].forEach(fn => {
-      fn(() => {
-        // 关闭页面前 上报所有信息
-        monitorSwitch && TaskQueue.windowHidden();
-        trackSwitch && traceQueue.windowHidden();
-      });
-    });
   }
 }
 
