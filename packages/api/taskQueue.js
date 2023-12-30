@@ -47,6 +47,7 @@ const Queue = {
    */
   init(options = {}) {
     this.apiOtion = { ...this.apiOtion, ...options };
+    this.synRequestNum = options.maxQueues || 10
   },
   /**
    * @description 兼容首次无法获取用户信息
