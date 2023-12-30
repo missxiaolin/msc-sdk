@@ -45,7 +45,7 @@ class HackWebVitals extends BaseMonitor {
       },
     ];
     // this.recordError(performance);
-    Queue.getInstance().sendEscalation(performance);
+    Queue.sendEscalation(performance);
   }
 
   initFMP() {

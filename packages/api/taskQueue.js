@@ -3,29 +3,16 @@ import { isFunction, isObject, isArray } from '../utils/validate.js';
 import { debounce, b64EncodeUnicode, guid, uaParser } from '../utils/utils.js';
 const Report = new API();
 
-export default class Queue {
-  constructor() {
-    this.requestQueue = []; // 队列
-    this.requestTimmer = undefined;
-    this.synRequestNum = 10;
-    this.synNum = 0;
-    this.retryNum = 1; // 重试上报机制
-    this.apiOtion = {
-      delay: 5000,
-    };
-    this.deviceInfo = uaParser();
-  }
-
-  /**
-   * 单例
-   * @return {?}
-   */
-  static getInstance() {
-    if (!Queue.instance) {
-      Queue.instance = new Queue();
-    }
-    return Queue.instance;
-  }
+const Queue = {
+  requestQueue: [],
+  requestTimmer: undefined,
+  synRequestNum: 10,
+  synNum: 0,
+  retryNum: 1,
+  apiOtion: {
+    delay: 5000,
+  },
+  deviceInfo: uaParser(),
 
   /**
    * 获取扩展信息
@@ -54,15 +41,13 @@ export default class Queue {
       console.log('call getCustomInfo error', error);
       return {};
     }
-  }
-
+  },
   /**
    * 初始化
    */
   init(options = {}) {
     this.apiOtion = { ...this.apiOtion, ...options };
-  }
-
+  },
   /**
    * @description 兼容首次无法获取用户信息
    * @param {*} uuId
@@ -75,8 +60,7 @@ export default class Queue {
     }
     // return userId || guid();
     return userId || '';
-  }
-
+  },
   /**
    * 同步队列 （传入对象必须要有logType，logError）
    * @param {*} log 队列日志
@@ -103,8 +87,7 @@ export default class Queue {
         );
       });
     }
-  }
-
+  },
   /**
    * 宏任务（检测是否有唯一对应值）
    * @param {*} fun
@@ -114,8 +97,7 @@ export default class Queue {
     if (fun) {
       fun();
     }
-  }
-
+  },
   /**
    * 执行队列
    * @param {*} fun
@@ -124,8 +106,7 @@ export default class Queue {
   delay(fun, e) {
     if (!fun) return null;
     return e === -1 ? (fun(), null) : setTimeout(fun, e || 0);
-  }
-
+  },
   /**
    * 并发限制
    * @return {?}
@@ -152,8 +133,7 @@ export default class Queue {
       (this.requestTimmer = setTimeout(() => {
         this.clear();
       }, 50));
-  }
-
+  },
   /**
    * 清空队列
    * @return {?}
@@ -162,17 +142,15 @@ export default class Queue {
     this.requestQueue = [];
     this.requestTimmer = null;
     this.synNum = 0;
-  }
-
+  },
   /**
    * 并发数减一
    * @return {?}
    */
   reduceSynNumFun() {
-    Queue.instance.synNum--;
+    Queue.synNum--;
     return this;
-  }
-
+  },
   /**
    * 上报
    * @param {*} e logType判断上传接口是哪种类型 pv：上报pv 逻辑 mv：上报mv逻辑 logError：0 代码重新上报次数0次，用int后续方便扩展
@@ -190,8 +168,7 @@ export default class Queue {
     } catch (err) {
       this.reduceSynNumFun();
     }
-  }
-
+  },
   _fetch(data = {}) {
     const { uuId, monitorAppId, encryption, reportType, reportUrl, beforeSend } = this.apiOtion;
     let deviceInfo = this.deviceInfo; // 设备信息
@@ -223,12 +200,12 @@ export default class Queue {
         data: enCodeData,
       },
     });
-  }
+  },
 
   /**
    * 数组形式的
-   * @param {*} activelyReportData 
-   * @returns 
+   * @param {*} activelyReportData
+   * @returns
    */
   sendEscalation(activelyReportData = []) {
     {
@@ -247,5 +224,7 @@ export default class Queue {
         );
       });
     }
-  }
-}
+  },
+};
+
+export default Queue;

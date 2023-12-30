@@ -77,7 +77,7 @@ class MonitorJs {
       monitorSwitch,
       trackSwitch,
     };
-    monitorSwitch && Queue.getInstance().init($options);
+    monitorSwitch && Queue.init($options);
     // trackSwitch && traceQueue.init($options);
 
     this.init($options);

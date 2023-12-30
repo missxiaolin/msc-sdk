@@ -54,7 +54,7 @@ class BaseMonitor {
       // console.log("\n````````````````````` " + recordObj.category + " `````````````````````\n", recordInfo)
 
       // 记录日志
-      Queue.getInstance().pushToQueue(recordInfo);
+      Queue.pushToQueue(recordInfo);
     } catch (error) {
       console.log(error);
     }
