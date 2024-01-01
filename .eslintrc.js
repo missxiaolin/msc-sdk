@@ -10,6 +10,8 @@ module.exports = {
   },
   extends: 'airbnb-base',
   rules: {
+    'new-cap': 'off',
+    'no-tabs': 'off',
     'no-var': 'off',
     'no-cond-assign': 'off',
     'no-return-assign': 'off',

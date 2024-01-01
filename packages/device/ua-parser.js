@@ -1467,4 +1467,4 @@ UAParser.DEVICE = enumerize([
 UAParser.ENGINE = UAParser.OS = enumerize([NAME, VERSION])
 UAParser.FINGERPRINT = enumerize([])
 
-export default new UAParser() // uap.getResult()
+export default UAParser // uap.getResult()

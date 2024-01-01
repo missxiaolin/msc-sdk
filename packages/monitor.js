@@ -11,6 +11,8 @@ import {
   Tracker,
 } from './sdk';
 
+import { isWxMiniEnv } from './utils/utils';
+
 import Queue from './api/taskQueue';
 import traceQueue from './api/traceQueue';
 
@@ -90,7 +92,7 @@ class MonitorJs {
      * @param {*} options {pageId：页面标示,url：上报地址}
      */
     if (monitorSwitch) {
-      if (this.watchPerformance) {
+      if (this.watchPerformance && !isWxMiniEnv) {
         new HackWebVitals($options);
         // new NetworkSpeed($options)
         // new FirstScreenTime($options)

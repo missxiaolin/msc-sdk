@@ -1,5 +1,6 @@
 import { isString } from './validate';
 import UAParser from '../device/ua-parser';
+import { variableTypeDetection } from './is';
 
 /**
  * @param {*} target
@@ -98,10 +99,9 @@ export const b64DecodeUnicode = str => {
 };
 
 /**
- *
+ * 生成uuid
  * @returns
  */
-
 export const guid = () => {
   let uuid = localStorage.getItem('webUuid');
   if (uuid) return uuid;
@@ -119,6 +119,9 @@ export const guid = () => {
  * @return {*}
  */
 export const uaParser = () => {
+	if (isWxMiniEnv) {
+		return false
+	}
   const {
     ua,
     fingerPrint,
@@ -126,7 +129,7 @@ export const uaParser = () => {
     engine: { name: engineName },
     device: { type: deviceType, model: deviceModel, vendor: deviceVendor },
     os: { name: osName, version: osVersion },
-  } = UAParser.getResult();
+  } = new UAParser.getResult();
   const {
     screen: { height: screenHeight = '', width: screenWidth = '' },
     navigator: {
@@ -138,7 +141,8 @@ export const uaParser = () => {
     deviceType: deviceType || 'PC', // 设备类型
     OS: `${osName} ${osVersion}`, // 操作系统
     browserInfo: `${browserName} ${browserVersion}`, // 浏览器信息
-    device: deviceType && deviceVendor ? `${deviceVendor}` : `${browserName}` ? `${browserName}` : '', // 设备类型
+    device:
+      deviceType && deviceVendor ? `${deviceVendor}` : `${browserName}` ? `${browserName}` : '', // 设备类型
     deviceModel: deviceType ? deviceModel : engineName,
     screenHeight, // 屏幕高
     screenWidth, // 屏幕宽
@@ -363,4 +367,15 @@ export function splitStringByBytes(str = '', maxBytes = '') {
     start = end;
   }
   return chunks;
+}
+
+export const isWxMiniEnv =
+  variableTypeDetection.isObject(typeof wx !== 'undefined' ? wx : 0) &&
+  variableTypeDetection.isFunction(typeof App !== 'undefined' ? App : 0);
+
+/**
+ * 获取当前url
+ */
+export function getPage() {
+  return getCurrentPages()[getCurrentPages().length - 1].__route__;
 }
