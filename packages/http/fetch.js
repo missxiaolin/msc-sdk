@@ -25,7 +25,7 @@ class HackFetch extends BaseMonitor {
       metrics.requestText = init?.body || '';
       metrics.requestTime = getCurrentTime();
       metrics.type = 'fetch';
-      metrics.pathName = formatUrlToStr(metrics.pathName)
+      metrics.pathName = formatUrlToStr(metrics.pathName);
 
       return oFetch.call(window, url, init).then(async response => {
         // clone 出一个新的 response,再用其做.text(),避免 body stream already read 问题

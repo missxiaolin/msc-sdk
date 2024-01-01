@@ -142,7 +142,6 @@ export default class firstScreenTime extends BaseMonitor {
       // 首屏时间
       this.firstScreenTime = data.time;
     }
-
   }
 
   /**
