@@ -11,7 +11,7 @@ import {
   Tracker,
 } from './sdk';
 
-import { isWxMiniEnv } from './utils/utils';
+import { isWxMiniEnv } from './utils/global';
 
 import Queue from './api/taskQueue';
 import traceQueue from './api/traceQueue';

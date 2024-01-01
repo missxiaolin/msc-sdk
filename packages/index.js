@@ -1,5 +1,6 @@
 import MonitorSdk from './monitor';
-import { isWxMiniEnv, guid, monitorCookie, uaParser, loadScript } from './utils/utils';
+import { isWxMiniEnv } from './utils/global';
+import { guid, monitorCookie, uaParser, loadScript } from './utils/utils';
 export { isWxMiniEnv, guid, monitorCookie, uaParser, loadScript };
 export default MonitorSdk;
 

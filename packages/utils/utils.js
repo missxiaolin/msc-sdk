@@ -1,6 +1,6 @@
 import { isString } from './validate';
 import UAParser from '../device/ua-parser';
-import { variableTypeDetection } from './is';
+import { isWxMiniEnv } from './global';
 
 /**
  * @param {*} target
@@ -129,7 +129,7 @@ export const uaParser = () => {
     engine: { name: engineName },
     device: { type: deviceType, model: deviceModel, vendor: deviceVendor },
     os: { name: osName, version: osVersion },
-  } = new UAParser.getResult();
+  } = new UAParser().getResult();
   const {
     screen: { height: screenHeight = '', width: screenWidth = '' },
     navigator: {
@@ -367,15 +367,4 @@ export function splitStringByBytes(str = '', maxBytes = '') {
     start = end;
   }
   return chunks;
-}
-
-export const isWxMiniEnv =
-  variableTypeDetection.isObject(typeof wx !== 'undefined' ? wx : 0) &&
-  variableTypeDetection.isFunction(typeof App !== 'undefined' ? App : 0);
-
-/**
- * 获取当前url
- */
-export function getPage() {
-  return getCurrentPages()[getCurrentPages().length - 1].__route__;
 }
