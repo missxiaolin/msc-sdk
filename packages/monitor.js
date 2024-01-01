@@ -14,8 +14,6 @@ import {
 import Queue from './api/taskQueue';
 import traceQueue from './api/traceQueue';
 
-import { onBeforeunload, onHidden } from './utils/browser';
-
 class MonitorJs {
   constructor(options = {}) {
     const {
@@ -23,8 +21,7 @@ class MonitorJs {
       vueError = true,
       promise = true,
       resource = true,
-      fetch = true,
-      xhr = true,
+      request = true,
       performance = true,
       click = true,
       pageChange = true,
@@ -34,8 +31,7 @@ class MonitorJs {
     this.watchJs = jsError;
     this.watchPromise = promise; //
     this.watchResource = resource; // 资源
-    this.watchFetch = fetch; // fetch
-    this.watchXhr = xhr; // xmlhttp
+    this.watchRequest = request; // 网络
     this.watchVue = vueError; // vue错误
     this.watchPerformance = performance; // 性能
     // 用户行为监控配置
@@ -124,10 +120,8 @@ class MonitorJs {
         new HackPage($options);
       }
 
-      if (this.watchFetch) {
+      if (this.watchRequest) {
         new HackFetch($options);
-      }
-      if (this.watchXhr) {
         new HackXml($options);
       }
     }
