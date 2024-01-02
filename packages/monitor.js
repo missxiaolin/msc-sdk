@@ -92,23 +92,23 @@ class MonitorJs {
      * @param {*} options {pageId：页面标示,url：上报地址}
      */
     if (monitorSwitch) {
-      if (this.watchPerformance && !isWxMiniEnv) {
+      if (this.watchPerformance) {
         new HackWebVitals($options);
       }
       // JS 捕捉
       if (this.watchJs) {
         new HackJavascript($options);
       }
-      // Promise  捕捉 (小程序先不做监听)
-      if (this.watchPromise && !isWxMiniEnv) {
+      // Promise  捕捉 
+      if (this.watchPromise) {
         new HackPromise($options);
       }
       // js、css、img 资源 捕捉
-      if (this.watchResource && !isWxMiniEnv) {
+      if (this.watchResource) {
         new HackResource($options);
       }
       // vue  捕捉
-      if (this.watchVue && !isWxMiniEnv) {
+      if (this.watchVue) {
         new HackVue($options);
       }
       // 行为捕捉 点击
@@ -121,10 +121,8 @@ class MonitorJs {
       }
       // 网络请求
       if (this.watchRequest) {
-        if (!isWxMiniEnv) {
-          new HackFetch($options);
-          new HackXml($options);
-        }
+        new HackFetch($options);
+				new HackXml($options);
       }
     }
 

@@ -1,13 +1,14 @@
 import BaseMonitor from '../base/baseMonitor';
 import { getCurrentTime, getNowFormatTime } from '../utils/utils';
 import { CategoryEnum, ErrorLevelEnum } from '../base/baseConfig';
+import { isWxMiniEnv } from '../utils/global';
 /**
  * 资源加载错误
  */
 class HackResource extends BaseMonitor {
   constructor(options) {
     super(options);
-    this.handleError();
+    if (!isWxMiniEnv) this.handleError();
   }
 
   /**

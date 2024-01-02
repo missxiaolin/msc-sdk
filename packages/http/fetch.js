@@ -7,7 +7,8 @@ import { isWxMiniEnv } from '../utils/global';
 class HackFetch extends BaseMonitor {
   constructor(options) {
     super(options);
-    this.reportUrl = options.reportUrl;
+		this.reportUrl = options.reportUrl;
+		if (!isWxMiniEnv) this.init()
   }
 
   init() {

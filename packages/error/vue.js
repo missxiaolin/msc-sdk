@@ -2,10 +2,12 @@ import BaseMonitor from '../base/baseMonitor';
 import { getCurrentTime, getNowFormatTime } from '../utils/utils';
 import { CategoryEnum, ErrorLevelEnum } from '../base/baseConfig';
 import { parseStackFrames } from '../utils/spaStackFrames';
+import { isWxMiniEnv } from '../utils/global';
+
 export class HackVue extends BaseMonitor {
   constructor(options) {
-    super(options);
-    this.handleError();
+		super(options);
+		if (!isWxMiniEnv) this.handleError();
   }
 
   handleError(Vue = window?.Vue) {

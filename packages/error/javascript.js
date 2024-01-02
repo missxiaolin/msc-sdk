@@ -23,56 +23,55 @@ class hackJavascript extends BaseMonitor {
   constructor(options) {
     super(options);
     if (isWxMiniEnv) {
-      this.wxHandleError();
+      this.wxHandleError()
     } else {
       this.handleError();
     }
-  }
+	}
 
-  /**
-   * 微信js错误
-   */
-  wxHandleError() {
-    const originApp = App;
-    let self = this;
-    App = function (appOptions) {
-      replaceOld(
-        appOptions,
-        'onError',
-        function (originMethod) {
-          return function (...args) {
-            try {
-              const error = args[0];
-              const parsedError = parseErrorString(error);
-              const stackTraces = parsedError.stack ? parsedError.stack : [];
-              const jsError = {
-                level: ErrorLevelEnum.WARN,
-                category: CategoryEnum.JS_ERROR,
-                errorMsg: parsedError.message,
-                type: parsedError.name || 'UnKnowun',
-                // pageUrl: url,
-                line: 0,
-                col: 0,
-                stackTraces,
-                subType: 'jsError',
-                happenTime: getCurrentTime(),
-                happenDate: getNowFormatTime(),
-              };
-              self.recordError(jsError);
-            } catch (e) {
-              // console.log(e)
-            }
-
-            if (originMethod) {
-              originMethod.apply(this, args);
-            }
-          };
-        },
-        true
-      );
-      return originApp(appOptions);
-    };
-  }
+	// 微信小程序报错
+	wxHandleError() {
+		const originApp = App
+		let self = this
+		App = function (appOptions) {
+			replaceOld(
+				appOptions,
+				'onError',
+				function (originMethod) {
+						return function (...args) {
+							try {
+								const error = args[0]
+								const parsedError = parseErrorString(error)
+								const stackTraces = parsedError.stack ? parsedError.stack : [];
+								const jsError = {
+									level: ErrorLevelEnum.WARN,
+									category: CategoryEnum.JS_ERROR,
+									errorMsg: parsedError.message,
+									type: parsedError.name || 'UnKnowun',
+									// pageUrl: url,
+									line: 0,
+									col: 0,
+									stackTraces,
+									subType: 'jsError',
+									happenTime: getCurrentTime(),
+									happenDate: getNowFormatTime(),
+								};
+								self.recordError(jsError);
+							} catch(e) {
+								// console.log(e)
+							}
+							
+								if (originMethod) {
+										originMethod.apply(this, args)
+								}
+								
+						}
+				},
+				true
+		)
+			return originApp(appOptions)
+		}
+	}
 
   /**
    * 注册onerror事件

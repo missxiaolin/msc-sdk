@@ -1,6 +1,7 @@
 import BaseMonitor from '../base/baseMonitor';
 import { getCurrentTime, getNowFormatTime, getPageURL, formatUrlToStr } from '../utils/utils';
 import { ErrorLevelEnum, CategoryEnum } from '../base/baseConfig';
+import { isWxMiniEnv } from '../utils/global';
 import Queue from '../api/taskQueue';
 
 export const afterLoad = callback => {
@@ -19,13 +20,16 @@ class HackWebVitals extends BaseMonitor {
   constructor(options) {
     super(options);
     const { domain = [] } = options;
-    this.$domain = domain;
-    this.metricsStore = {};
+		this.$domain = domain;
+		if (!isWxMiniEnv) {
+			this.metricsStore = {};
 
-    // 这里的 FP/FCP/FID需要在页面成功加载了再进行获取
-    afterLoad(() => {
-      this.initPerformanceEntries();
-    });
+			// 这里的 FP/FCP/FID需要在页面成功加载了再进行获取
+			afterLoad(() => {
+				this.initPerformanceEntries();
+			});
+		}
+    
   }
 
   // 性能数据的上报策略

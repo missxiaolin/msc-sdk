@@ -1,12 +1,13 @@
 import BaseMonitor from '../base/baseMonitor';
 import { getCurrentTime, getNowFormatTime } from '../utils/utils';
 import { CategoryEnum, ErrorLevelEnum } from '../base/baseConfig';
+import { isWxMiniEnv } from '../utils/global';
 
 class HackXml extends BaseMonitor {
   constructor(options) {
     super(options);
     this.reportUrl = options.reportUrl;
-    this.init();
+    if (!isWxMiniEnv) this.init()
   }
 
   init() {
