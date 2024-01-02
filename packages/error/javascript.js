@@ -3,6 +3,7 @@ import { CategoryEnum, ErrorLevelEnum } from '../base/baseConfig';
 import { getCurrentTime, getNowFormatTime } from '../utils/utils';
 import { parseStackFrames } from '../utils/spaStackFrames';
 import { isWxMiniEnv } from '../utils/global';
+import { replaceOld, parseErrorString } from '../utils/help';
 
 /**
  * 捕获JS错误
@@ -22,10 +23,55 @@ class hackJavascript extends BaseMonitor {
   constructor(options) {
     super(options);
     if (isWxMiniEnv) {
-      // TODO:
+      this.wxHandleError();
     } else {
       this.handleError();
     }
+  }
+
+  /**
+   * 微信js错误
+   */
+  wxHandleError() {
+    const originApp = App;
+    let self = this;
+    App = function (appOptions) {
+      replaceOld(
+        appOptions,
+        'onError',
+        function (originMethod) {
+          return function (...args) {
+            try {
+              const error = args[0];
+              const parsedError = parseErrorString(error);
+              const stackTraces = parsedError.stack ? parsedError.stack : [];
+              const jsError = {
+                level: ErrorLevelEnum.WARN,
+                category: CategoryEnum.JS_ERROR,
+                errorMsg: parsedError.message,
+                type: parsedError.name || 'UnKnowun',
+                // pageUrl: url,
+                line: 0,
+                col: 0,
+                stackTraces,
+                subType: 'jsError',
+                happenTime: getCurrentTime(),
+                happenDate: getNowFormatTime(),
+              };
+              self.recordError(jsError);
+            } catch (e) {
+              // console.log(e)
+            }
+
+            if (originMethod) {
+              originMethod.apply(this, args);
+            }
+          };
+        },
+        true
+      );
+      return originApp(appOptions);
+    };
   }
 
   /**
