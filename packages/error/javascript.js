@@ -2,6 +2,7 @@ import BaseMonitor from '../base/baseMonitor';
 import { CategoryEnum, ErrorLevelEnum } from '../base/baseConfig';
 import { getCurrentTime, getNowFormatTime } from '../utils/utils';
 import { parseStackFrames } from '../utils/spaStackFrames';
+import { isWxMiniEnv } from '../utils/global';
 
 /**
  * 捕获JS错误
@@ -20,7 +21,11 @@ import { parseStackFrames } from '../utils/spaStackFrames';
 class hackJavascript extends BaseMonitor {
   constructor(options) {
     super(options);
-    this.handleError();
+    if (isWxMiniEnv) {
+      // TODO:
+    } else {
+      this.handleError();
+    }
   }
 
   /**

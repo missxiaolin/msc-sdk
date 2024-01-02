@@ -94,15 +94,13 @@ class MonitorJs {
     if (monitorSwitch) {
       if (this.watchPerformance && !isWxMiniEnv) {
         new HackWebVitals($options);
-        // new NetworkSpeed($options)
-        // new FirstScreenTime($options)
       }
       // JS 捕捉
       if (this.watchJs) {
         new HackJavascript($options);
       }
-      // Promise  捕捉
-      if (this.watchPromise) {
+      // Promise  捕捉 (小程序先不做监听)
+      if (this.watchPromise && !isWxMiniEnv) {
         new HackPromise($options);
       }
       // js、css、img 资源 捕捉
@@ -110,27 +108,32 @@ class MonitorJs {
         new HackResource($options);
       }
       // vue  捕捉
-      if (this.watchVue) {
+      if (this.watchVue && !isWxMiniEnv) {
         new HackVue($options);
       }
-      // 行为捕捉
+      // 行为捕捉 点击
       if (this.behaviorClick) {
         new HackClick($options);
       }
-      // 行为捕捉
+      // 行为捕捉 页面
       if (this.behaviorPageChange) {
         new HackPage($options);
       }
-
+      // 网络请求
       if (this.watchRequest) {
         new HackFetch($options);
         new HackXml($options);
       }
     }
 
+    // 自定义点位上报
     if (trackSwitch && trackUrl.length) {
       const tracker = new Tracker($options);
-      window.MuTracker = tracker;
+      if (isWxMiniEnv) {
+        wx.MuTracker = tracker;
+      } else {
+        window.MuTracker = tracker;
+      }
     }
   }
 }

@@ -1,17 +1,26 @@
 import BaseMonitor from '../base/baseMonitor';
 import { CategoryEnum, ErrorLevelEnum } from '../base/baseConfig';
 import { getCurrentTime, getNowFormatTime, getPageURL } from '../utils/utils';
+import { isWxMiniEnv } from '../utils/global';
 
 class HackPage extends BaseMonitor {
   constructor(options) {
     super(options);
     // 页面第一次加载 执行一次 记录
     this.formatData();
-
-    this.init();
+    if (isWxMiniEnv) {
+      // TODO:
+    } else {
+      this.webInit();
+    }
   }
 
-  init() {
+  wxInit() {
+
+  }
+
+  // 浏览器
+  webInit() {
     let _wr = function (type) {
       let orig = history[type];
       return function () {
