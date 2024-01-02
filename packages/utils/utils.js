@@ -1,6 +1,7 @@
 import { isString } from './validate';
 import UAParser from '../device/ua-parser';
 import { isWxMiniEnv } from './global';
+import { getSystemInfoSync, getPhoneInfo } from './wx';
 
 /**
  * @param {*} target
@@ -119,9 +120,6 @@ export const guid = () => {
  * @return {*}
  */
 export const uaParser = () => {
-	if (isWxMiniEnv) {
-		return false
-	}
   const {
     ua,
     fingerPrint,
@@ -129,14 +127,14 @@ export const uaParser = () => {
     engine: { name: engineName },
     device: { type: deviceType, model: deviceModel, vendor: deviceVendor },
     os: { name: osName, version: osVersion },
-  } = new UAParser().getResult();
+  } = isWxMiniEnv ? getSystemInfoSync() : new UAParser().getResult();
   const {
     screen: { height: screenHeight = '', width: screenWidth = '' },
     navigator: {
       language = [],
       connection: { effectiveType = '' },
     },
-  } = window;
+  } = isWxMiniEnv ? getPhoneInfo() : window;
   let uas = {
     deviceType: deviceType || 'PC', // 设备类型
     OS: `${osName} ${osVersion}`, // 操作系统
