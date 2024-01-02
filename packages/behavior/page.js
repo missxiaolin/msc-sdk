@@ -2,21 +2,76 @@ import BaseMonitor from '../base/baseMonitor';
 import { CategoryEnum, ErrorLevelEnum } from '../base/baseConfig';
 import { getCurrentTime, getNowFormatTime, getPageURL } from '../utils/utils';
 import { isWxMiniEnv } from '../utils/global';
+import { replaceOld } from '../utils/help';
 
 class HackPage extends BaseMonitor {
   constructor(options) {
     super(options);
-    // 页面第一次加载 执行一次 记录
-    this.formatData();
+
     if (isWxMiniEnv) {
-      // TODO:
+      this.referrerPage = 'App';
+      this.subType = '';
+      this.WxRouteEvents = [
+        'switchTab',
+        'reLaunch',
+        'redirectTo',
+        'navigateTo',
+        'navigateBack',
+        'routeFail',
+      ];
+
+      this.wxInit();
     } else {
+      // 页面第一次加载 执行一次 记录
+      this.formatData();
       this.webInit();
     }
   }
 
+  // 微信
   wxInit() {
-
+    const originPage = Page;
+    let popstateStartTime = Date.now();
+    let self = this;
+    // 页面
+    Page = function (pageOptions) {
+      replaceOld(
+        pageOptions,
+        'onLoad',
+        function (originMethod) {
+          return function (...args) {
+            if (originMethod) {
+              originMethod.apply(this, args);
+            }
+            self.formatData({
+              to: getPageURL(),
+              from: self.referrerPage,
+              duration: Date.now() - popstateStartTime,
+              subType: self.subType,
+            });
+          };
+        },
+        true
+      );
+      return originPage.call(this, pageOptions);
+    };
+    // 路由跳转重写，记录上个url
+    let WxRouteEvents = this.WxRouteEvents;
+    WxRouteEvents.forEach(method => {
+      let originMethod = wx[method];
+      Object.defineProperty(wx, method, {
+        writable: true,
+        enumerable: true,
+        configurable: true,
+        value: function (options) {
+          try {
+            self.referrerPage = getPageURL();
+            self.subType = method;
+          } catch (e) {}
+          return originMethod.call(this, options);
+        },
+      });
+    });
   }
 
   // 浏览器
@@ -90,6 +145,10 @@ class HackPage extends BaseMonitor {
     );
   }
 
+  /**
+   * 发送
+   * @param {*} data
+   */
   formatData(data = {}) {
     const { to = getPageURL(), from = '', subType = 'popstate', duration = 0 } = data;
 
@@ -97,8 +156,8 @@ class HackPage extends BaseMonitor {
     this.recordError({
       level: ErrorLevelEnum.INFO,
       category: CategoryEnum.PAGE_CHANGE,
-      referrer: document.referrer,
-      type: window.performance?.navigation?.type || '',
+      referrer: isWxMiniEnv ? getPageURL() : document.referrer,
+      type: isWxMiniEnv ? '' : window.performance?.navigation?.type || '',
       to,
       from,
       subType,

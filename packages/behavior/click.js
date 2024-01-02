@@ -1,11 +1,15 @@
 import BaseMonitor from '../base/baseMonitor';
 import { CategoryEnum, ErrorLevelEnum } from '../base/baseConfig';
 import { getCurrentTime, getNowFormatTime } from '../utils/utils';
+import { isWxMiniEnv } from '../utils/global';
 
 class HackClick extends BaseMonitor {
   constructor(options) {
     super(options);
-    this.init();
+    if (isWxMiniEnv) {
+    } else {
+      this.init();
+    }
   }
 
   init() {

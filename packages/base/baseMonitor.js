@@ -14,13 +14,6 @@ class BaseMonitor {
     // 轮询 获取window vue 最大次数
     this.maxPolling = 0;
     this.pageLoadDone = false;
-    window.addEventListener(
-      'pageshow',
-      () => {
-        this.pageLoadDone = true;
-      },
-      { once: true, capture: true }
-    );
   }
 
   /**

@@ -1,6 +1,6 @@
 import API from './api.js';
 import { isFunction, isObject, isArray } from '../utils/validate.js';
-import { debounce, b64EncodeUnicode, guid, uaParser } from '../utils/utils.js';
+import { b64EncodeUnicode, uaParser } from '../utils/utils.js';
 const Report = new API();
 
 const Queue = {
@@ -27,7 +27,10 @@ const Queue = {
       }
       // 判断动态方法返回的参数是否是对象
       if (isObject(dynamicParams)) {
-        customInfo = { ...customInfo, ...dynamicParams };
+        customInfo = {
+          ...customInfo,
+          ...dynamicParams,
+        };
       }
       // 遍历扩展信息，排除动态方法
       for (let key in customInfo) {
@@ -46,8 +49,11 @@ const Queue = {
    * 初始化
    */
   init(options = {}) {
-    this.apiOtion = { ...this.apiOtion, ...options };
-    this.synRequestNum = options.maxQueues || 10
+    this.apiOtion = {
+      ...this.apiOtion,
+      ...options,
+    };
+    this.synRequestNum = options.maxQueues || 10;
   },
   /**
    * @description 兼容首次无法获取用户信息
@@ -69,11 +75,12 @@ const Queue = {
   pushToQueue(log) {
     {
       // 简单先同步放入数组中
-      this.requestQueue.push(log);
       if (isArray(log)) {
         log.forEach(v => {
           this.requestQueue.push(v);
         });
+      } else {
+        this.requestQueue.push(log);
       }
       return this.onReady(() => {
         this.requestTimmer = this.delay(
@@ -171,36 +178,40 @@ const Queue = {
     }
   },
   _fetch(data = {}) {
-    const { uuId, monitorAppId, encryption, reportType, reportUrl, beforeSend } = this.apiOtion;
-    let deviceInfo = this.deviceInfo; // 设备信息
-    // 执行自定义字段获取，不做持久存储，防里面有 回调函数
-    let customInfo = this.getCustomInfo();
-    // 补充 设备、自定义、区域等 信息
-    const param = {
-      lists: isArray(data.viewData) ? [data.viewData[0]] : [data.viewData],
-      // 设备信息
-      deviceInfo,
-      // 自定义属性
-      customInfo,
-      // 设置监控项目 和 uuid
-      appUid: {
-        uuId: this.getUserId(uuId),
-        monitorAppId,
-      },
-    };
-    // 上报文是否加密
-    // reportType == 2 图片上报 默认加密
-    const enCodeData = encryption || reportType == 2 ? b64EncodeUnicode(param) : param;
-    Report.report({
-      dataType: 1, // 监控数据
-      reportUrl,
-      beforeSend,
-      reportType,
-      // 上报数据
-      data: {
-        data: enCodeData,
-      },
-    });
+    try {
+      const { uuId, monitorAppId, encryption, reportType, reportUrl, beforeSend } = this.apiOtion;
+      let deviceInfo = this.deviceInfo; // 设备信息
+      // 执行自定义字段获取，不做持久存储，防里面有 回调函数
+      let customInfo = this.getCustomInfo();
+      // 补充 设备、自定义、区域等 信息
+      const param = {
+        lists: isArray(data.viewData) ? [data.viewData[0]] : [data.viewData],
+        // 设备信息
+        deviceInfo,
+        // 自定义属性
+        customInfo,
+        // 设置监控项目 和 uuid
+        appUid: {
+          uuId: this.getUserId(uuId),
+          monitorAppId,
+        },
+      };
+      // 上报文是否加密
+      // reportType == 2 图片上报 默认加密
+      const enCodeData = encryption || reportType == 2 ? b64EncodeUnicode(param) : param;
+      Report.report({
+        dataType: 1, // 监控数据
+        reportUrl,
+        beforeSend,
+        reportType,
+        // 上报数据
+        data: {
+          data: enCodeData,
+        },
+      });
+    } catch (e) {
+      console.log('上报出错', e);
+    }
   },
 
   /**

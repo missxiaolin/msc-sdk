@@ -2,12 +2,12 @@ import BaseMonitor from '../base/baseMonitor';
 import { getCurrentTime, getNowFormatTime, formatUrlToStr } from '../utils/utils';
 import { CategoryEnum, ErrorLevelEnum } from '../base/baseConfig';
 import { isString } from '../utils/validate';
+import { isWxMiniEnv } from '../utils/global';
 
 class HackFetch extends BaseMonitor {
   constructor(options) {
     super(options);
     this.reportUrl = options.reportUrl;
-    this.init();
   }
 
   init() {

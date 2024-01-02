@@ -1,4 +1,5 @@
 import { getCurrentTime } from '../utils/utils';
+import { isWxMiniEnv } from '../utils/global';
 
 class API {
   constructor() {
@@ -69,23 +70,39 @@ class API {
    */
   reportByFetch(data, retryCount = 0) {
     if (retryCount >= 2) return;
+    let self = this;
     const datas = data.data;
-    let dataStr = JSON.stringify(datas);
 
-    fetch(data.reportUrl, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'post',
-      body: dataStr,
-      // mode: 'same-origin', // 告诉浏览器是同源，同源后浏览器不会进行预检请求
-      // keepalive: true
-    })
-      .then(() => {})
-      .catch(error => {
-        console.log('Request failed', error);
-        reportByFetch(data, retryCount++);
+    if (isWxMiniEnv) {
+      wx.request({
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'post',
+        url: data.reportUrl,
+        data: datas,
+        fail: error => {
+          console.log('Request failed', error);
+          self.reportByFetch(data, retryCount++);
+        },
       });
+    } else {
+      let dataStr = JSON.stringify(datas);
+      fetch(data.reportUrl, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'post',
+        body: dataStr,
+        // mode: 'same-origin', // 告诉浏览器是同源，同源后浏览器不会进行预检请求
+        // keepalive: true
+      })
+        .then(() => {})
+        .catch(error => {
+          console.log('Request failed', error);
+          self.reportByFetch(data, retryCount++);
+        });
+    }
   }
 
   /**

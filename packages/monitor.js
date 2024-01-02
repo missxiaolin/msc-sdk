@@ -104,7 +104,7 @@ class MonitorJs {
         new HackPromise($options);
       }
       // js、css、img 资源 捕捉
-      if (this.watchResource) {
+      if (this.watchResource && !isWxMiniEnv) {
         new HackResource($options);
       }
       // vue  捕捉
@@ -121,8 +121,10 @@ class MonitorJs {
       }
       // 网络请求
       if (this.watchRequest) {
-        new HackFetch($options);
-        new HackXml($options);
+        if (!isWxMiniEnv) {
+          new HackFetch($options);
+          new HackXml($options);
+        }
       }
     }
 

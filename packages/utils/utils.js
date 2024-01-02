@@ -1,7 +1,7 @@
 import { isString } from './validate';
 import UAParser from '../device/ua-parser';
 import { isWxMiniEnv } from './global';
-import { getSystemInfoSync, getPhoneInfo } from './wx';
+import { getSystemInfoSync, getPhoneInfo, getPage } from './wx';
 
 /**
  * @param {*} target
@@ -188,7 +188,7 @@ export const formatUrlToStr = (path = '', query = {}) => {
  * 获取当前页面链接
  * @returns
  */
-export const getPageURL = () => window.location.href;
+export const getPageURL = () => (isWxMiniEnv ? getPage() : window.location.href);
 
 /**
  *
@@ -284,6 +284,9 @@ export const loadScript = (url, id = getCurrentTime(), callback) => {
  * @description : 原生获取 cookie
  */
 export const monitorCookie = name => {
+  if (isWxMiniEnv) {
+    return wx.getStorageSync(name);
+  }
   let resultVal = '';
   if (!name) return resultVal;
   const splitName = name.split('.');
