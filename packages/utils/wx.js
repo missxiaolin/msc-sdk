@@ -1,4 +1,4 @@
-import { variableTypeDetection } from './help';
+import { variableTypeDetection } from './is';
 
 /**
  * 获取当前url
