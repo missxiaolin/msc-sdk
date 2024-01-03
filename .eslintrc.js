@@ -10,6 +10,8 @@ module.exports = {
   },
   extends: 'airbnb-base',
   rules: {
+    'no-mixed-spaces-and-tabs': 'off',
+    'object-shorthand': 'off',
     'prefer-arrow-callback': 'off',
     'no-duplicate-case': 'off',
     'camelcase': 'off',

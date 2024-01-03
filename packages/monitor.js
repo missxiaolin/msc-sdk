@@ -1,6 +1,7 @@
 import {
   HackFetch,
   HackXml,
+  WxFetch,
   HackWebVitals,
   HackJavascript,
   HackPromise,
@@ -99,7 +100,7 @@ class MonitorJs {
       if (this.watchJs) {
         new HackJavascript($options);
       }
-      // Promise  捕捉 
+      // Promise  捕捉
       if (this.watchPromise) {
         new HackPromise($options);
       }
@@ -122,7 +123,8 @@ class MonitorJs {
       // 网络请求
       if (this.watchRequest) {
         new HackFetch($options);
-				new HackXml($options);
+        new HackXml($options);
+        new WxFetch($options);
       }
     }
 
