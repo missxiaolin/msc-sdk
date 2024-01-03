@@ -100,8 +100,8 @@ class WxFetch extends BaseMonitor {
               self.recordError(metrics);
             }
           } catch (e) {
-			// TODO:
-		  }
+            // TODO:
+          }
           if (typeof options$1.fail === 'function') {
             return options$1.fail(err);
           }
