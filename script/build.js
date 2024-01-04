@@ -10,7 +10,6 @@ let rollupWatch = false
 run()
 async function run() {
   const argv = getArgv()
-  console.log(argv)
   // accept npm run build web browser...
   const paramTarget = argv._
   LOCALDIR = argv.local
@@ -68,7 +67,6 @@ async function rollupBuild(target) {
       .filter(Boolean)
       .join(',')
   ]
-  return
   rollupWatch && args.push('--watch')
   const result = await binRun('rollup', args)
 
