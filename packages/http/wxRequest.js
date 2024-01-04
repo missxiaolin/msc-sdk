@@ -1,12 +1,13 @@
 import BaseMonitor from '../base/baseMonitor';
 import { getCurrentTime, getNowFormatTime, formatUrlToStr, __assign } from '../utils/utils';
 import { CategoryEnum, ErrorLevelEnum } from '../base/baseConfig';
+import { isWxMiniEnv } from '../utils/global';
 
 class WxFetch extends BaseMonitor {
   constructor(options) {
     super(options);
     this.reportUrl = options.reportUrl;
-    this.init();
+    if (isWxMiniEnv) this.init();
   }
 
   init() {

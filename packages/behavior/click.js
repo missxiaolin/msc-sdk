@@ -25,7 +25,6 @@ class HackClick extends BaseMonitor {
        */
       function gestureTrigger(e) {
         e.mitoProcessed = true; // 给事件对象增加特殊的标记，避免被无限透传
-        console.log(e);
         const { target = {}, detail, timeStamp = '', type = '' } = e
         try {
           self.recordError({

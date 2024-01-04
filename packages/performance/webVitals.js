@@ -3,6 +3,7 @@ import { getCurrentTime, getNowFormatTime, getPageURL, formatUrlToStr } from '..
 import { ErrorLevelEnum, CategoryEnum } from '../base/baseConfig';
 import { isWxMiniEnv } from '../utils/global';
 import Queue from '../api/taskQueue';
+import { getWxPerformance } from '../utils/wx'
 
 export const afterLoad = callback => {
   if (document.readyState === 'complete') {
@@ -20,16 +21,30 @@ class HackWebVitals extends BaseMonitor {
   constructor(options) {
     super(options);
     const { domain = [] } = options;
-		this.$domain = domain;
-		if (!isWxMiniEnv) {
-			this.metricsStore = {};
+    this.$domain = domain;
+    if (!isWxMiniEnv) {
+      this.metricsStore = {};
 
-			// 这里的 FP/FCP/FID需要在页面成功加载了再进行获取
-			afterLoad(() => {
-				this.initPerformanceEntries();
-			});
-		}
-    
+      // 这里的 FP/FCP/FID需要在页面成功加载了再进行获取
+      afterLoad(() => {
+        this.initPerformanceEntries();
+      });
+    }
+    // 微信监听性能单独做
+    if (isWxMiniEnv) {
+      this.wxPerformance();
+    }
+  }
+
+  // 微信性能监听
+  wxPerformance() {
+    const performance = wx.getPerformance();
+    const observer = performance.createObserver(entryList => {
+      let data = getWxPerformance(entryList.getEntries())
+      this.metricsStore = data
+      this.perfSendHandler()
+    });
+    observer.observe({ entryTypes: ['render', 'script', 'navigation', 'loadPackage', 'resource'] });
   }
 
   // 性能数据的上报策略
