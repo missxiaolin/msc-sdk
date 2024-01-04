@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "node script/build.js",
-    "watch": "node script/build.js --watch=true"
+    "watch": "node script/build.js --watch=true",
+    "version": "node script/version.js",
+    "release": "node script/release.js"
   },
   "repository": {
     "type": "git",
