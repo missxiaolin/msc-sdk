@@ -1,0 +1,20 @@
+{
+    "name": "@xiaolin/monitor-utils",
+    "version": "1.0.0",
+    "description": "@xiaolin/monitor-utils",
+    "author": "xiaolin",
+    "license": "MIT",
+    "main": "dist/utils.js",
+    "module": "dist/utils.esm.js",
+    "types": "dist/utils.d.ts",
+    "files": [
+      "dist"
+    ],
+    "dependencies": {
+      "@xiaolin/monitor-core": "1.0.0",
+      "@xiaolin/monitor-browser": "1.0.0",
+      "@xiaolin/monitor-shared": "1.0.0",
+      "@xiaolin/monitor-types": "1.0.0"
+    }
+  }
+  

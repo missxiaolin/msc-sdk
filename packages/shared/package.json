@@ -1,0 +1,20 @@
+{
+    "name": "@xiaolin/monitor-shared",
+    "version": "1.0.0",
+    "description": "@xiaolin/monitor-shared",
+    "author": "xiaolin",
+    "license": "MIT",
+    "main": "dist/shared.js",
+    "module": "dist/shared.esm.js",
+    "types": "dist/shared.d.ts",
+    "files": [
+      "dist"
+    ],
+    "dependencies": {
+      "@xiaolin/monitor-core": "1.0.0",
+      "@xiaolin/monitor-browser": "1.0.0",
+      "@xiaolin/monitor-shared": "1.0.0",
+      "@xiaolin/monitor-types": "1.0.0"
+    }
+  }
+  

@@ -1,0 +1,22 @@
+{
+    "name": "@xiaolin/monitor-browser",
+    "version": "2.1.54",
+    "description": "A SDK For Monitoring Browser Errors",
+    "author": "cjinhuo",
+    "license": "MIT",
+    "main": "dist/browser.js",
+    "module": "dist/browser.esm.js",
+    "types": "dist/browser.d.ts",
+    "files": [
+      "dist"
+    ],
+    "dependencies": {
+    },
+    "buildOptions": {
+      "formats": [
+        "esm-bundler",
+        "cjs"
+      ]
+    }
+  }
+  

@@ -16,7 +16,7 @@ export default {
         // alias src/(.*) not work
         // 从上到下优先匹配
         '@/test/(.*)': '<rootDir>/test/$1',
-        '@zyf2e/monitor-(.*)': '<rootDir>/packages/$1/src/index'
+        '@xiaolin/monitor-(.*)': '<rootDir>/packages/$1/src/index'
     },
     globals: {
         'ts-jest': {
