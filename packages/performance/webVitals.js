@@ -41,6 +41,10 @@ class HackWebVitals extends BaseMonitor {
     const performance = wx.getPerformance();
     const observer = performance.createObserver(entryList => {
       let data = getWxPerformance(entryList.getEntries())
+      let NT = data.NT
+      if (NT.appLaunch == 0 && NT.route == 0 && NT.firstRender == 0 && NT.script == 0 && NT.loadPackage == 0) {
+        return
+      }
       this.metricsStore = data
       this.perfSendHandler()
     });

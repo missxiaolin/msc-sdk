@@ -143,9 +143,6 @@ export function getWxPerformance(data) {
 		loadPackage: 0, // 代码包下载耗时。(entryType: loadPackage)
 		loadPackageStartTime: '',
 	};
-	data.forEach(item => {
-
-	})
   data.forEach(item => {
     if (item.entryType == 'resource') {
       RF.push({
