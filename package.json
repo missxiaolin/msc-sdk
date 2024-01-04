@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "前端监控 sdk",
   "author": "xiaolin",
-  "main": "dist/monitor.js",
-  "module": "dist/monitor.js",
+  "main": "dist/monitorSdk.js",
+  "module": "dist/monitorSdk.js",
   "repository": {
     "type": "git",
     "url": ""
