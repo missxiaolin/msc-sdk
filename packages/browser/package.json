@@ -11,10 +11,6 @@
       "dist"
     ],
     "dependencies": {
-      "@xiaolin/monitor-core": "1.0.0",
-      "@xiaolin/monitor-browser": "1.0.0",
-      "@xiaolin/monitor-shared": "1.0.0",
-      "@xiaolin/monitor-types": "1.0.0"
     },
     "buildOptions": {
       "formats": [

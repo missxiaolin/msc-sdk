@@ -1,4 +1,4 @@
-import { ReplaceHandler } from '@xiaolin/monitor-core'
+import { ReplaceHandler } from '../../core/src/index'
 
 
 export function addReplaceHandler(handler: ReplaceHandler) {

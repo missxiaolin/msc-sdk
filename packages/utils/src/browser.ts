@@ -1,6 +1,6 @@
 
-import { EVENTTYPES, WxAppEvents, WxPageEvents } from '@xiaolin/monitor-shared'
-import { InitOptions } from '@xiaolin/monitor-types'
+import { EVENTTYPES, WxAppEvents, WxPageEvents } from '../../shared/src/index'
+import { InitOptions } from '../../types/src/index'
 import { setFlag } from './index'
 
 export function setSilentFlag(paramOptions: InitOptions = {}): void {

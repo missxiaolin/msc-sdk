@@ -1,4 +1,4 @@
-import { _support } from '@xiaolin/monitor-utils'
+import { _support } from '../../utils/src/index'
 
 export class Breadcrumb {
 

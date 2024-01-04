@@ -1,5 +1,5 @@
-import { InitOptions } from '@xiaolin/monitor-types'
-import { setSilentFlag } from '@xiaolin/monitor-utils'
+import { InitOptions } from '../../types/src/index'
+import { setSilentFlag } from '../../utils/src/index'
 // import { breadcrumb } from './breadcrumb'
 
 /**

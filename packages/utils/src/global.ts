@@ -1,6 +1,6 @@
-import { EVENTTYPES, WxEvents } from '@xiaolin/monitor-shared'
-import { Breadcrumb } from '@xiaolin/monitor-core'
-import { DeviceInfo } from '@xiaolin/monitor-types'
+import { EVENTTYPES, WxEvents } from '../../shared/src/index'
+import { Breadcrumb } from '../../core/src/index'
+import { DeviceInfo } from '../../types/src/index'
 import { variableTypeDetection } from './is'
 
 // MITO的全局变量
