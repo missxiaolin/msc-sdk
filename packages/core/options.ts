@@ -1,5 +1,5 @@
-import { InitOptions } from '../../types/src/index'
-import { setSilentFlag } from '../../utils/src/index'
+import { InitOptions } from '../types/index'
+import { setSilentFlag } from '../utils/index'
 // import { breadcrumb } from './breadcrumb'
 
 /**

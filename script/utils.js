@@ -8,6 +8,9 @@ const targets = (exports.targets = fs.readdirSync('packages').filter((f) => {
     return false
   }
   if (f === 'company') return false
+  if (!fs.existsSync(path.join(__dirname, `../packages/${f}/package.json`))) {
+    return
+  }
   const pkg = require(`../packages/${f}/package.json`)
   if (pkg.private && !pkg.buildOptions) {
     return false

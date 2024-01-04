@@ -1,4 +1,4 @@
-import { _support } from '../../utils/src/index'
+import { _support } from '../utils/index'
 
 export class Breadcrumb {
 

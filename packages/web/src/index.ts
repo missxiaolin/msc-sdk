@@ -1,4 +1,4 @@
-import { init, SDK_VERSION, SDK_NAME, log } from '../../../packages/browser/src/index'
+import { init, SDK_VERSION, SDK_NAME, log } from '../../browser/index'
 
 
 export { init, SDK_VERSION, SDK_NAME, log }

@@ -1,4 +1,4 @@
-import { ReplaceHandler } from '../../core/src/index'
+import { ReplaceHandler } from '../core/index'
 
 
 export function addReplaceHandler(handler: ReplaceHandler) {

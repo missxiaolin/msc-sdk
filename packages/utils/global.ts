@@ -1,6 +1,6 @@
-import { EVENTTYPES, WxEvents } from '../../shared/src/index'
-import { Breadcrumb } from '../../core/src/index'
-import { DeviceInfo } from '../../types/src/index'
+import { EVENTTYPES, WxEvents } from '../shared/index'
+import { Breadcrumb } from '../core/index'
+import { DeviceInfo } from '../types/index'
 import { variableTypeDetection } from './is'
 
 // MITO的全局变量

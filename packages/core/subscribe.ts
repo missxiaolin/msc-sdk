@@ -1,4 +1,4 @@
-import { EVENTTYPES, WxEvents } from '../../shared/src/index'
+import { EVENTTYPES, WxEvents } from '../shared/index'
 
 type ReplaceCallback = (data: any) => void
 

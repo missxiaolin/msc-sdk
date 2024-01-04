@@ -1,4 +1,4 @@
-import { _global, _support } from '../../utils/src/index'
+import { _global, _support } from '../utils/index'
 export function setupReplace(): void {
     console.log(_global, _support)
 }
