@@ -1,0 +1,16 @@
+{
+    "name": "@xiaolin/monitor-web",
+    "version": "1.0.0",
+    "description": "A SDK For Monitoring Web(React、Vue) Errors",
+    "author": "xiaolin",
+    "license": "MIT",
+    "main": "dist/web.js",
+    "module": "dist/web.esm.js",
+    "types": "dist/web.d.ts",
+    "files": [
+      "dist"
+    ],
+    "dependencies": {
+    }
+  }
+  

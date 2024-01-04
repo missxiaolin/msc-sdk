@@ -1,0 +1,17 @@
+{
+    "name": "@xiaolin/monitor-wx-mini",
+    "version": "1.0.0",
+    "description": "A SDK For Monitoring wx-mini Errors",
+    "author": "xiaolin",
+    "license": "MIT",
+    "main": "dist/wx-mini.js",
+    "module": "dist/wx-mini.js",
+    "types": "dist/wx-mini.d.ts",
+    "files": [
+      "dist"
+    ],
+    "dependencies": {
+      "@types/wechat-miniprogram": "^3.1.0"
+    }
+  }
+  
