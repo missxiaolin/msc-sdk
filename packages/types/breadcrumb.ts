@@ -1,7 +1,7 @@
-import { ERRORTYPES, Severity } from '../shared/index'
+import { ERRORTYPES_CATEGORY, Severity } from '../shared/index'
 
 export interface BreadcrumbPushData {
   [key: string]: any
-  category: ERRORTYPES
+  category: ERRORTYPES_CATEGORY
   level: Severity
 }

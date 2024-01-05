@@ -4,8 +4,11 @@
 
 ```ts
 
-import { InitOptions } from '../types/index';
+import { BreadcrumbPushData } from '../types/breadcrumb';
+import { BreadcrumbPushData as BreadcrumbPushData_2 } from './breadcrumb';
 
+// Warning: (ae-forgotten-export) The symbol "InitOptions" needs to be exported by the entry point index.d.ts
+//
 // @public (undocumented)
 export function init(options?: InitOptions): void;
 

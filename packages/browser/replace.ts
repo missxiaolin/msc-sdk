@@ -1,7 +1,7 @@
 import { ReplaceHandler, subscribeEvent, triggerHandlers, transportData, options } from '../core/index'
 import { EVENTTYPES, voidFun, HTTPTYPE } from '../shared/index'
 import { _global, replaceOld, getTimestamp, on } from '../utils/index'
-import { MITOXMLHttpRequest, EMethods } from '../types/index'
+import { MITOXMLHttpRequest, EMethods, MITOHttp } from '../types/index'
 
 function isFilterHttpUrl(url: string) {
   return options.filterXhrUrlRegExp && options.filterXhrUrlRegExp.test(url)
@@ -13,8 +13,10 @@ function replace(type: EVENTTYPES) {
       xhrReplace()
       break
     case EVENTTYPES.FETCH:
+      fetchReplace()
       break
     case EVENTTYPES.ERROR:
+      listenError()
       break
     case EVENTTYPES.CONSOLE:
       break
@@ -74,7 +76,6 @@ function xhrReplace(): void {
   replaceOld(originalXhrProto, 'send', (originalSend: voidFun): voidFun => {
     return function (this: MITOXMLHttpRequest, ...args: any[]): void {
       const { method, url } = this.logData
-      //   options.beforeAppAjaxSend && options.beforeAppAjaxSend({ method, url }, this)
       on(this, 'loadend', function (this: MITOXMLHttpRequest) {
         if ((method === EMethods.Post && transportData.isSdkTransportUrl(url)) || isFilterHttpUrl(url)) return
         const { responseType, response, status, timeout, statusText } = this
@@ -95,4 +96,82 @@ function xhrReplace(): void {
       originalSend.apply(this, args)
     }
   })
+}
+
+// fetch
+function fetchReplace(): void {
+  if (!('fetch' in _global)) {
+    return
+  }
+  replaceOld(_global, EVENTTYPES.FETCH, (originalFetch: voidFun) => {
+    return function (url: string, config: Partial<Request> = {}): void {
+      const sTime = getTimestamp()
+      const method = (config && config.method) || 'GET'
+      let handlerData: MITOHttp = {
+        type: HTTPTYPE.FETCH,
+        method,
+        reqData: config && config.body,
+        url
+      }
+      const headers = new Headers(config.headers || {})
+      config = {
+        ...config,
+        headers
+      }
+
+      return originalFetch.apply(_global, [url, config]).then(
+        (res: Response) => {
+          const tempRes = res.clone()
+          const eTime = getTimestamp()
+          handlerData = {
+            ...handlerData,
+            elapsedTime: eTime - sTime,
+            status: tempRes.status,
+            statusText: tempRes.statusText,
+            time: sTime,
+            timeout: 0,
+            eTime,
+            eventType: 'load'
+          }
+          tempRes.text().then((data) => {
+            if (method === EMethods.Post && transportData.isSdkTransportUrl(url)) return
+            if (isFilterHttpUrl(url)) return
+            handlerData.responseText = data
+            triggerHandlers(EVENTTYPES.FETCH, handlerData)
+          })
+          return res
+        },
+        (err: Error) => {
+          const eTime = getTimestamp()
+          if (method === EMethods.Post && transportData.isSdkTransportUrl(url)) return
+          if (isFilterHttpUrl(url)) return
+          handlerData = {
+            ...handlerData,
+            elapsedTime: eTime - sTime,
+            status: 0,
+            statusText: err.name + err.message,
+            time: sTime,
+            timeout: 0,
+            eTime,
+            eventType: 'error',
+            responseText: ''
+          }
+          triggerHandlers(EVENTTYPES.FETCH, handlerData)
+          throw err
+        }
+      )
+    }
+  })
+}
+
+// js 错误
+function listenError(): void {
+  on(
+    _global,
+    'error',
+    function (e: ErrorEvent) {
+      triggerHandlers(EVENTTYPES.ERROR, e)
+    },
+    true
+  )
 }

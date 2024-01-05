@@ -14,6 +14,7 @@ export function setSilentFlag(paramOptions: InitOptions = {}): void {
   setFlag(EVENTTYPES.HISTORY, !!paramOptions.watch.pageChange)
   setFlag(EVENTTYPES.ERROR, !!paramOptions.watch.jsError)
   setFlag(EVENTTYPES.HASHCHANGE, !!paramOptions.watch.pageChange)
+  setFlag(EVENTTYPES.RESOURCE, !!paramOptions.watch.resource)
   setFlag(EVENTTYPES.UNHANDLEDREJECTION, !!paramOptions.watch.promise)
   setFlag(EVENTTYPES.VUE, !!paramOptions.watch.vueError)
   // wx App

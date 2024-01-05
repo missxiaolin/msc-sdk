@@ -184,7 +184,7 @@
             {
               "kind": "Reference",
               "text": "InitOptions",
-              "canonicalReference": "!unknown"
+              "canonicalReference": "@xiaolin/monitor-web!~InitOptions:interface"
             },
             {
               "kind": "Content",

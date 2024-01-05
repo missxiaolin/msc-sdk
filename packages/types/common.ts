@@ -31,3 +31,9 @@ export interface IAnyObject {
 }
 
 export type TNumStrObj = number | string | object
+
+export interface ResourceErrorTarget {
+  src?: string
+  href?: string
+  localName?: string
+}

@@ -12,3 +12,13 @@ export interface TransportDataType {
 export interface FinalReportType {
   [key: string]: any
 }
+
+export interface ReportDataType {
+  [key: string]: any
+  errorMsg?: string,
+  url?: string,
+  startTime?: string,
+  html?: string,
+  resourceType?: string,
+  paths?: string
+}

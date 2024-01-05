@@ -8,9 +8,9 @@ export enum Severity {
 }
 
 /**
- * 上报错误类型
+ * 上报错误类型category
  */
-export enum ERRORTYPES {
+export enum ERRORTYPES_CATEGORY {
   JS_ERROR = 'JS_ERROR',
   RESOURCE_ERROR = 'RESOURCE_ERROR',
   PROMISE_ERROR = 'PROMISE_ERROR',
@@ -70,6 +70,7 @@ export enum EVENTTYPES {
   ERROR = 'error',
   HASHCHANGE = 'hashchange',
   UNHANDLEDREJECTION = 'unhandledrejection',
+  RESOURCE = 'resource',
   VUE = 'Vue',
   // for miniprogram
   MINI_ROUTE = 'miniRoute',
@@ -95,6 +96,8 @@ export enum HTTPTYPE {
   XHR = 'xhr',
   FETCH = 'fetch'
 }
+
+export const ERROR_TYPE_RE = /^(?:[Uu]ncaught (?:exception: )?)?(?:((?:Eval|Internal|Range|Reference|Syntax|Type|URI|)Error): )?(.*)$/
 
 const globalVar = {
   isLogAddBreadcrumb: true,

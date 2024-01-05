@@ -1,10 +1,11 @@
-import { BREADCRUMBTYPES, Severity, ERRORTYPES } from '../shared/index'
-import { MITOHttp } from '../types/index'
-import { getNowFormatTime } from '../utils/index'
+import { BREADCRUMBTYPES, Severity, ERRORTYPES_CATEGORY, EVENTTYPES, ERROR_TYPE_RE } from '../shared/index'
+import { MITOHttp, ResourceErrorTarget, ReportDataType } from '../types/index'
+import { extractErrorStack, getFlag, getNowFormatTime, getPageURL, getTimestamp, isError } from '../utils/index'
 import { breadcrumb } from '../core'
+import { resourceTransform } from '../core/transformData'
 
 const HandleEvents = {
-  // xhr 请求重写
+  // xhr/fetch 请求重写
   handleHttp(data: MITOHttp, type: BREADCRUMBTYPES): void {
     const status = data.status // 200 or 500
     const isSuceess = status >= 200 && status < 300
@@ -12,7 +13,7 @@ const HandleEvents = {
       type,
       method: data.method,
       level: isSuceess ? Severity.INFO : Severity.ERROR,
-      category: ERRORTYPES.HTTP_LOG,
+      category: ERRORTYPES_CATEGORY.HTTP_LOG,
       status,
       eventType: data.eventType, // load error abort
       pathName: data.url, // 请求路径
@@ -25,6 +26,76 @@ const HandleEvents = {
       happenDate: getNowFormatTime()
     }
     breadcrumb.push(metrics)
+  },
+  /**
+   * 处理window的error的监听回到
+   */
+  handleError(errorEvent: ErrorEvent) {
+    const target = errorEvent.target as ResourceErrorTarget
+    // 资源错误
+    if (target.localName && getFlag(EVENTTYPES.RESOURCE)) {
+      // 资源加载错误 提取有用数据
+      const data = resourceTransform(errorEvent)
+      breadcrumb.push({
+        ...data,
+        category: ERRORTYPES_CATEGORY.RESOURCE_ERROR,
+        level: target.localName.toUpperCase() === 'IMG' ? Severity.WARN : Severity.ERROR,
+        happenTime: getTimestamp(),
+        happenDate: getNowFormatTime()
+      })
+    }
+    // code error
+    const { message, filename, lineno, colno, error } = errorEvent
+    let result: ReportDataType
+    if (error && isError(error)) {
+      result = extractErrorStack(error, Severity.ERROR)
+    }
+    // 处理SyntaxError，stack没有lineno、colno
+    result || (result = HandleEvents.handleNotErrorInstance(message, filename, lineno, colno))
+    breadcrumb.push({
+      errorMsg: result.message,
+      category: ERRORTYPES_CATEGORY.JS_ERROR,
+      type: result.name || 'UnKnowun',
+      line: 0,
+      col: 0,
+      stackTraces: result.stack,
+      subType: 'jsError',
+      level: Severity.ERROR,
+      happenTime: getTimestamp(),
+      happenDate: getNowFormatTime()
+    })
+  },
+  /**
+   * @param message 
+   * @param filename 
+   * @param lineno 
+   * @param colno 
+   * @returns 
+   */
+  handleNotErrorInstance(message: string, filename: string, lineno: number, colno: number) {
+    let name: string | any = 'UNKNOWN'
+    const url = filename || getPageURL()
+    let msg = message
+    const matches = message.match(ERROR_TYPE_RE)
+    if (matches[1]) {
+      name = matches[1]
+      msg = matches[2]
+    }
+    const element = {
+      url,
+      func: 'UNKNOWN_FUNCTION',
+      args: 'UNKNOWN',
+      line: lineno,
+      col: colno
+    }
+    return {
+      url,
+      name,
+      message: msg,
+      level: Severity.ERROR,
+      time: getTimestamp(),
+      stack: [element]
+    }
   }
 }
 
