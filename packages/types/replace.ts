@@ -5,7 +5,9 @@ export namespace Replace {
     level: string
   }
   export interface IRouter {
-    pageUrl: string
-    simpleUrl: string
+    to: string
+    from: string
+    duration?: number
+    subType?: string
   }
 }

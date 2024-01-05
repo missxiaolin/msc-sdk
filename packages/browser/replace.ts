@@ -1,6 +1,6 @@
 import { ReplaceHandler, subscribeEvent, triggerHandlers, transportData, options } from '../core/index'
 import { EVENTTYPES, voidFun, HTTPTYPE } from '../shared/index'
-import { _global, replaceOld, getTimestamp, on } from '../utils/index'
+import { _global, replaceOld, getTimestamp, on, getPageURL, isExistProperty, supportsHistory } from '../utils/index'
 import { MITOXMLHttpRequest, EMethods, MITOHttp } from '../types/index'
 
 function isFilterHttpUrl(url: string) {
@@ -21,18 +21,24 @@ function replace(type: EVENTTYPES) {
     case EVENTTYPES.CONSOLE:
       break
     case EVENTTYPES.HISTORY:
+      historyReplace()
       break
     case EVENTTYPES.UNHANDLEDREJECTION:
       break
     case EVENTTYPES.DOM:
       break
     case EVENTTYPES.HASHCHANGE:
+      listenHashchange()
       break
     default:
       break
   }
 }
 
+/**
+ * @param handler
+ * @returns
+ */
 export function addReplaceHandler(handler: ReplaceHandler) {
   if (!subscribeEvent(handler)) return
   replace(handler.type as EVENTTYPES)
@@ -174,4 +180,72 @@ function listenError(): void {
     },
     true
   )
+}
+
+// last time route
+let lastHref: string
+lastHref = getPageURL()
+/**
+ * history
+ * @returns
+ */
+function historyReplace(): void {
+  if (!supportsHistory()) return
+  let popstateStartTime = getTimestamp()
+  const oldOnpopstate = _global.onpopstate
+  _global.onpopstate = function (this: WindowEventHandlers, ...args: any[]): any {
+    const to = getPageURL()
+    const from = lastHref
+    lastHref = to
+    triggerHandlers(EVENTTYPES.HISTORY, {
+      from,
+      to,
+      duration: getTimestamp() - popstateStartTime,
+      subType: 'pushState'
+    })
+    popstateStartTime = getTimestamp()
+    oldOnpopstate && oldOnpopstate.apply(this, args)
+  }
+  function historyReplaceFn(originalHistoryFn: voidFun): voidFun {
+    return function (this: History, ...args: any[]): void {
+      const url = args.length > 2 ? args[2] : undefined
+      if (url) {
+        const from = lastHref
+        const to = String(url)
+        lastHref = to
+        triggerHandlers(EVENTTYPES.HISTORY, {
+          from,
+          to,
+          duration: getTimestamp() - popstateStartTime,
+          subType: args[0] && args[0].replaced == false ? 'pushState' : 'replaceState'
+        })
+        popstateStartTime = getTimestamp()
+      }
+      return originalHistoryFn.apply(this, args)
+    }
+  }
+  replaceOld(_global.history, 'pushState', historyReplaceFn)
+  replaceOld(_global.history, 'replaceState', historyReplaceFn)
+}
+
+/**
+ * hashchange
+ */
+function listenHashchange(): void {
+  let oldURL = '',
+    hashchangeStartTime = getTimestamp()
+  if (!isExistProperty(_global, 'onpopstate')) {
+    on(_global, EVENTTYPES.HASHCHANGE, function (e: HashChangeEvent) {
+      const newURL = e.newURL
+      const duration = Date.now() - hashchangeStartTime
+      triggerHandlers(EVENTTYPES.HASHCHANGE, {
+        from: oldURL,
+        to: newURL,
+        duration,
+        subType: 'hashchange'
+      })
+      oldURL = newURL
+      hashchangeStartTime = Date.now()
+    })
+  }
 }

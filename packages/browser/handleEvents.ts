@@ -1,5 +1,5 @@
 import { BREADCRUMBTYPES, Severity, ERRORTYPES_CATEGORY, EVENTTYPES, ERROR_TYPE_RE } from '../shared/index'
-import { MITOHttp, ResourceErrorTarget, ReportDataType } from '../types/index'
+import { MITOHttp, ResourceErrorTarget, ReportDataType, Replace } from '../types/index'
 import { extractErrorStack, getFlag, getNowFormatTime, getPageURL, getTimestamp, isError } from '../utils/index'
 import { breadcrumb } from '../core'
 import { resourceTransform } from '../core/transformData'
@@ -46,6 +46,9 @@ const HandleEvents = {
     }
     // code error
     const { message, filename, lineno, colno, error } = errorEvent
+    if (!message) {
+      return
+    }
     let result: ReportDataType
     if (error && isError(error)) {
       result = extractErrorStack(error, Severity.ERROR)
@@ -76,6 +79,7 @@ const HandleEvents = {
     let name: string | any = 'UNKNOWN'
     const url = filename || getPageURL()
     let msg = message
+    console.log(message)
     const matches = message.match(ERROR_TYPE_RE)
     if (matches[1]) {
       name = matches[1]
@@ -96,6 +100,48 @@ const HandleEvents = {
       time: getTimestamp(),
       stack: [element]
     }
+  },
+
+  /**
+   * history
+   * @param data 
+   */
+  handleHistory(data: Replace.IRouter): void {
+    const { to = getPageURL(), from = '', subType = 'popstate', duration = 0 } = data;
+    breadcrumb.push({
+      level: Severity.INFO,
+      category: ERRORTYPES_CATEGORY.PAGE_CHANGE,
+      referrer: getPageURL(),
+      type: window.performance?.navigation?.type,
+      to,
+      from,
+      subType,
+      duration,
+      startTime: performance.now(),
+      happenTime: getTimestamp(),
+      happenDate: getNowFormatTime()
+    })
+  },
+
+  /**
+   * hash
+   * @param data 
+   */
+  handleHashchange(data: Replace.IRouter): void {
+    const { to = getPageURL(), from = '', subType = 'popstate', duration = 0 } = data;
+    breadcrumb.push({
+      level: Severity.INFO,
+      category: ERRORTYPES_CATEGORY.PAGE_CHANGE,
+      referrer: getPageURL(),
+      type: window.performance?.navigation?.type,
+      to,
+      from,
+      subType,
+      duration,
+      startTime: performance.now(),
+      happenTime: getTimestamp(),
+      happenDate: getNowFormatTime()
+    })
   }
 }
 

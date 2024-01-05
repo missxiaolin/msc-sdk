@@ -1,7 +1,7 @@
 import { IAnyObject, ReportDataType } from '../types/index'
 import { Severity, globalVar } from '../shared/index'
 import { nativeToString } from './is'
-import { isWxMiniEnv } from './global';
+import { _global, isWxMiniEnv } from './global';
 export const defaultFunctionName = '<anonymous>'
 
 /**
@@ -16,6 +16,14 @@ export function getPage() {
 }
 
 export const getPageURL = () => (isWxMiniEnv ? getPage() : window.location.href);
+
+/**
+ * 
+ */
+export function getLocationHref(): string {
+  if (typeof document === 'undefined' || document.location == null) return ''
+  return document.location.href
+}
 
 /**
  * @param {*} path
@@ -264,4 +272,19 @@ export function extractErrorStack(ex: any, level: Severity): ReportDataType {
     ...normal,
     stack: stack
   }
+}
+
+/**
+ * @returns 
+ */
+export function supportsHistory(): boolean {
+  // NOTE: in Chrome App environment, touching history.pushState, *even inside
+  //       a try/catch block*, will cause Chrome to output an error to console.error
+  // borrowed from: https://github.com/angular/angular.js/pull/13945/files
+  const chrome = (_global as any).chrome
+  // tslint:disable-next-line:no-unsafe-any
+  const isChromePackagedApp = chrome && chrome.app && chrome.app.runtime
+  const hasHistoryApi = 'history' in _global && !!_global.history.pushState && !!_global.history.replaceState
+
+  return !isChromePackagedApp && hasHistoryApi
 }
