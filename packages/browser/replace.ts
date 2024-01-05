@@ -1,6 +1,6 @@
 import { ReplaceHandler, subscribeEvent, triggerHandlers, transportData, options } from '../core/index'
 import { EVENTTYPES, voidFun, HTTPTYPE } from '../shared/index'
-import { _global, replaceOld, getTimestamp, on, getPageURL, isExistProperty, supportsHistory } from '../utils/index'
+import { _global, replaceOld, getTimestamp, on, getPageURL, isExistProperty, supportsHistory, clickThrottle, throttle } from '../utils/index'
 import { MITOXMLHttpRequest, EMethods, MITOHttp } from '../types/index'
 
 function isFilterHttpUrl(url: string) {
@@ -24,8 +24,10 @@ function replace(type: EVENTTYPES) {
       historyReplace()
       break
     case EVENTTYPES.UNHANDLEDREJECTION:
+      unhandledrejectionReplace()
       break
     case EVENTTYPES.DOM:
+      domReplace()
       break
     case EVENTTYPES.HASHCHANGE:
       listenHashchange()
@@ -235,17 +237,68 @@ function listenHashchange(): void {
   let oldURL = '',
     hashchangeStartTime = getTimestamp()
   if (!isExistProperty(_global, 'onpopstate')) {
-    on(_global, EVENTTYPES.HASHCHANGE, function (e: HashChangeEvent) {
-      const newURL = e.newURL
-      const duration = Date.now() - hashchangeStartTime
-      triggerHandlers(EVENTTYPES.HASHCHANGE, {
-        from: oldURL,
-        to: newURL,
-        duration,
-        subType: 'hashchange'
-      })
-      oldURL = newURL
-      hashchangeStartTime = Date.now()
-    })
+    on(
+      _global,
+      EVENTTYPES.HASHCHANGE,
+      function (e: HashChangeEvent) {
+        const newURL = e.newURL
+        const duration = Date.now() - hashchangeStartTime
+        triggerHandlers(EVENTTYPES.HASHCHANGE, {
+          from: oldURL,
+          to: newURL,
+          duration,
+          subType: 'hashchange'
+        })
+        oldURL = newURL
+        hashchangeStartTime = Date.now()
+      },
+      true
+    )
   }
+}
+
+function unhandledrejectionReplace(): void {
+  on(_global, EVENTTYPES.UNHANDLEDREJECTION, function (ev: PromiseRejectionEvent) {
+    // ev.preventDefault() 阻止默认行为后，控制台就不会再报红色错误
+    triggerHandlers(EVENTTYPES.UNHANDLEDREJECTION, ev)
+  })
+}
+
+function domReplace(): void {
+  if (!('document' in _global)) return
+  const clickThrottle = throttle(triggerHandlers, options.throttleDelayTime)
+  on(
+    _global.document,
+    'mousedown',
+    function (e: MouseEvent) {
+      clickThrottle(EVENTTYPES.DOM, {
+        category: 'mousedown',
+        data: e
+      })
+    },
+    true
+  )
+  on(
+    _global.document,
+    'touchstart',
+    function () {
+      clickThrottle(EVENTTYPES.DOM, {
+        category: 'touchstart',
+        data: this
+      })
+    },
+    true
+  )
+  // 暂时不需要keypress的重写
+  // on(
+  //   _global.document,
+  //   'keypress',
+  //   function (e: MITOElement) {
+  //     keypressThrottle('dom', {
+  //       category: 'keypress',
+  //       data: this
+  //     })
+  //   },
+  //   true
+  // )
 }

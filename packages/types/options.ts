@@ -109,6 +109,11 @@ export interface InitOptions extends HooksTypes {
    * 默认为空，所有ajax都会被监听，不为空时，filterXhrUrlRegExp.test(xhr.url)为true时过滤
    */
   filterXhrUrlRegExp?: RegExp
+
+  /**
+   * 按钮点击和微信触摸事件节流时间，默认是0
+   */
+  throttleDelayTime?: number
 }
 
 export interface HooksTypes {

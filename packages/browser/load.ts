@@ -28,9 +28,22 @@ export function setupReplace(): void {
     type: EVENTTYPES.HISTORY
   })
   addReplaceHandler({
-    callback: (e: HashChangeEvent) => {
+    callback: (e) => {
       HandleEvents.handleHashchange(e)
     },
     type: EVENTTYPES.HASHCHANGE
+  })
+  addReplaceHandler({
+    callback: (data) => {
+      HandleEvents.handleUnhandleRejection(data)
+    },
+    type: EVENTTYPES.UNHANDLEDREJECTION
+  })
+
+  addReplaceHandler({
+    callback: (data) => {
+      HandleEvents.handleDom(data)
+    },
+    type: EVENTTYPES.DOM
   })
 }

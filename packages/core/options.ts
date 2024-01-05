@@ -9,6 +9,8 @@ export class Options {
   enableTraceId: Boolean
   filterXhrUrlRegExp: RegExp
 
+  throttleDelayTime = 0
+
   constructor() {
     this.enableTraceId = false
   }
@@ -18,9 +20,11 @@ export class Options {
    * @param options 
    */
   bindOptions(options: InitOptions = {}): void {
-    const { beforeAppAjaxSend, filterXhrUrlRegExp } = options
+    const { beforeAppAjaxSend, filterXhrUrlRegExp, throttleDelayTime } = options
     validateOption(beforeAppAjaxSend, 'beforeAppAjaxSend', 'function') && (this.beforeAppAjaxSend = beforeAppAjaxSend)
     toStringValidateOption(filterXhrUrlRegExp, 'filterXhrUrlRegExp', '[object RegExp]') && (this.filterXhrUrlRegExp = filterXhrUrlRegExp)
+
+    validateOption(throttleDelayTime, 'throttleDelayTime', 'number') && (this.throttleDelayTime = throttleDelayTime)
   }
 }
 

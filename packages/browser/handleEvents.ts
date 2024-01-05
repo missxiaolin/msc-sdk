@@ -69,11 +69,11 @@ const HandleEvents = {
     })
   },
   /**
-   * @param message 
-   * @param filename 
-   * @param lineno 
-   * @param colno 
-   * @returns 
+   * @param message
+   * @param filename
+   * @param lineno
+   * @param colno
+   * @returns
    */
   handleNotErrorInstance(message: string, filename: string, lineno: number, colno: number) {
     let name: string | any = 'UNKNOWN'
@@ -104,10 +104,10 @@ const HandleEvents = {
 
   /**
    * history
-   * @param data 
+   * @param data
    */
   handleHistory(data: Replace.IRouter): void {
-    const { to = getPageURL(), from = '', subType = 'popstate', duration = 0 } = data;
+    const { to = getPageURL(), from = '', subType = 'popstate', duration = 0 } = data
     breadcrumb.push({
       level: Severity.INFO,
       category: ERRORTYPES_CATEGORY.PAGE_CHANGE,
@@ -125,10 +125,10 @@ const HandleEvents = {
 
   /**
    * hash
-   * @param data 
+   * @param data
    */
   handleHashchange(data: Replace.IRouter): void {
-    const { to = getPageURL(), from = '', subType = 'popstate', duration = 0 } = data;
+    const { to = getPageURL(), from = '', subType = 'popstate', duration = 0 } = data
     breadcrumb.push({
       level: Severity.INFO,
       category: ERRORTYPES_CATEGORY.PAGE_CHANGE,
@@ -141,6 +141,73 @@ const HandleEvents = {
       startTime: performance.now(),
       happenTime: getTimestamp(),
       happenDate: getNowFormatTime()
+    })
+  },
+  /**
+   * @param ev
+   */
+  handleUnhandleRejection(event: PromiseRejectionEvent): void {
+    try {
+      const { reason = '', timeStamp } = event
+      if (!reason) {
+        return
+      }
+      // 判断当前被捕获的异常url，是否是异常处理url，防止死循环
+      // if (event.reason.config && event.reason.config.url) {
+      //     this.url = event.reason.config.url;
+      // }
+      // reason = reason.toString()
+      const promiseError = {
+        level: Severity.WARN,
+        category: ERRORTYPES_CATEGORY.PROMISE_ERROR,
+        errorMsg: reason,
+        startTime: timeStamp,
+        happenTime: getTimestamp(),
+        happenDate: getNowFormatTime()
+      }
+      breadcrumb.push(promiseError)
+    } catch (error) {
+      console.error(error)
+    }
+  },
+
+  handleDom(data) {
+    const event = data.data
+    const target = event.target
+    const { offsetWidth, offsetHeight, tagName, outerHTML, innerHTML } = target
+    const { top, left } = target.getBoundingClientRect()
+    const paths = event.path
+      ?.map((item) => {
+        const { tagName, id, className } = item
+        return tagName && `${tagName}${id ? '#' + id : ''}${className ? '.' + className.replace(/''/g, '.') : ''}`
+      })
+      .filter(Boolean)
+    // if (paths && paths.length > 5) {
+    //     paths = paths.slice(0, 5)
+    // }
+    breadcrumb.push({
+      level: Severity.INFO,
+      category: ERRORTYPES_CATEGORY.USER_CLICK,
+      top,
+      left,
+      pageHeight: document.documentElement.scrollHeight || document.body.scrollHeight,
+      scrollTop: document.documentElement.scrollTop || document.body.scrollTop,
+      subType: data.category,
+      tagName,
+      targetInfo: {
+        offsetWidth,
+        offsetHeight
+      },
+      paths: paths || "",
+      startTime: event.timeStamp,
+      outerHTML,
+      innerHTML,
+      happenTime: getTimestamp(),
+      happenDate: getNowFormatTime(),
+      viewport: {
+        width: window.innerWidth,
+        height: window.innerHeight
+      }
     })
   }
 }
