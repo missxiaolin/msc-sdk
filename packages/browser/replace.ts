@@ -18,7 +18,8 @@ function replace(type: EVENTTYPES) {
     case EVENTTYPES.ERROR:
       listenError()
       break
-    case EVENTTYPES.CONSOLE:
+    case EVENTTYPES.PERFORMANCE:
+      listenPerformance()
       break
     case EVENTTYPES.HISTORY:
       historyReplace()
@@ -301,4 +302,20 @@ function domReplace(): void {
   //   },
   //   true
   // )
+}
+
+export const afterLoad = callback => {
+  if (document.readyState === 'complete') {
+    setTimeout(callback);
+  } else {
+    window.addEventListener('pageshow', callback, { once: true, capture: true });
+  }
+};
+
+function listenPerformance(): void {
+  if (!('document' in _global) && !('performance' in _global)) return
+  afterLoad(() => {
+    const entryList = _global.performance.getEntries() || [];
+    triggerHandlers(EVENTTYPES.PERFORMANCE, entryList)
+  })
 }

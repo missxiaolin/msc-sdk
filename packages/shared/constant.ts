@@ -71,6 +71,7 @@ export enum EVENTTYPES {
   HASHCHANGE = 'hashchange',
   UNHANDLEDREJECTION = 'unhandledrejection',
   RESOURCE = 'resource',
+  PERFORMANCE = 'performance',
   VUE = 'Vue',
   // for miniprogram
   MINI_ROUTE = 'miniRoute',

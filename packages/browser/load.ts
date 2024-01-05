@@ -46,4 +46,10 @@ export function setupReplace(): void {
     },
     type: EVENTTYPES.DOM
   })
+  addReplaceHandler({
+    callback: (data) => {
+      HandleEvents.handlePerformance(data)
+    },
+    type: EVENTTYPES.PERFORMANCE
+  })
 }
