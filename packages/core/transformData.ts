@@ -10,7 +10,6 @@ export function resourceTransform(errorEvent: ErrorEvent): ReportDataType {
   return {
     errorMsg: `加载 ${target.localName} 资源错误`,
     url: target.src || target.href,
-    // @ts-ignore
     startTime: errorEvent.timeStamp,
     // @ts-ignore
     html: target.outerHTML || '',

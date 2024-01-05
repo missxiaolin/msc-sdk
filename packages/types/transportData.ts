@@ -17,7 +17,7 @@ export interface ReportDataType {
   [key: string]: any
   errorMsg?: string,
   url?: string,
-  startTime?: string,
+  startTime?: number,
   html?: string,
   resourceType?: string,
   paths?: string
