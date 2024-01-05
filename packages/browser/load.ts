@@ -1,4 +1,12 @@
-import { _global, _support } from '../utils/index'
+import { HandleEvents } from './handleEvents'
+import { EVENTTYPES, BREADCRUMBTYPES } from '../shared/index'
+import { addReplaceHandler } from './replace'
+
 export function setupReplace(): void {
-    console.log(_global, _support)
+  addReplaceHandler({
+    callback: (data) => {
+      HandleEvents.handleHttp(data, BREADCRUMBTYPES.XHR)
+    },
+    type: EVENTTYPES.XHR
+  })
 }

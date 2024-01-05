@@ -1,14 +1,16 @@
 import { EVENTTYPES, WxEvents } from '../shared/index'
-import { Breadcrumb } from '../core/index'
+import { Breadcrumb, Options, TransportData } from '../core/index'
 import { DeviceInfo } from '../types/index'
 import { variableTypeDetection } from './is'
 
 // MITO的全局变量
 export interface MitoSupport {
   breadcrumb: Breadcrumb
+  transportData: TransportData
   replaceFlag: { [key in EVENTTYPES]?: boolean }
   record?: any[]
   deviceInfo?: DeviceInfo
+  options?: Options
 }
 
 interface MITOGlobal {
@@ -54,4 +56,8 @@ export function setFlag(replaceType: EVENTTYPES | WxEvents, isSet: boolean): voi
 export function getGlobalMitoSupport(): MitoSupport {
   _global.__MITO__ = _global.__MITO__ || ({} as MitoSupport)
   return _global.__MITO__
+}
+
+export function getFlag(replaceType: EVENTTYPES | WxEvents): boolean {
+  return replaceFlag[replaceType] ? true : false
 }
