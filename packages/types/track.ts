@@ -1,22 +1,13 @@
 export interface DeviceInfo {
-  ua?: string
-  browser: {
-    name?: string
-    version?: string
-  }
-  cpu: {}
-  device: {
-    type: string
-    model: string
-    vendor: string
-  }
-  engine: {
-    name: string
-    version: string
-  }
-  os: {
-    name: string
-    version: string
-  }
-  fingerPrint: string
+  deviceType: string // 设备类型
+  OS: string // 操作系统
+  browserInfo: string // 浏览器信息
+  device: string // 设备类型
+  deviceModel: number | string
+  screenHeight: number | string // 屏幕高
+  screenWidth: number | string // 屏幕宽
+  language // 当前使用的语言-国家
+  netWork: string // 联网类型
+  fingerPrint: string // 浏览器指纹
+  userAgent: string
 }

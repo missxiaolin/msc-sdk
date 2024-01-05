@@ -1,5 +1,5 @@
 import { EVENTTYPES, WxEvents } from '../shared/index'
-import { getFlag, setFlag, nativeTryCatch } from '../utils/index'
+import { getFlag, setFlag, nativeTryCatch, getFunctionName } from '../utils/index'
 type ReplaceCallback = (data: any) => void
 
 export interface ReplaceHandler {

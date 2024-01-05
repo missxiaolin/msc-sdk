@@ -1,4 +1,4 @@
-import { Breadcrumb } from "../core/index"
+import { Breadcrumb } from '../core/index'
 import { BreadcrumbPushData } from './breadcrumb'
 
 type CANCEL = null | undefined | boolean
@@ -40,6 +40,10 @@ export interface InitOptions extends HooksTypes {
      * 错误监控的dsn服务器地址
      */
     url?: string
+    /**
+     * 自定义上报地址
+     */
+    trackUrl?: string
     /**
      * 1:fetch 2:img
      */
@@ -97,20 +101,17 @@ export interface InitOptions extends HooksTypes {
   }
 
   customInfo?: {
-    // 获取动态传参  1.4.5版本及以后支持该方式
+    // 获取动态传参  (1.4.5版本及以后支持该方式)
     getDynamic: void
   }
+
+  /**
+   * 默认为空，所有ajax都会被监听，不为空时，filterXhrUrlRegExp.test(xhr.url)为true时过滤
+   */
+  filterXhrUrlRegExp?: RegExp
 }
 
 export interface HooksTypes {
-  /**
-   * 忽视某些错误不上传
-   */
-  // ignoreErrors?: Array<string | RegExp>
-  /**
-   * 默认20，最大100，超过100还是设置成100
-   */
-  maxBreadcrumbs?: number
   /**
    * 钩子函数，在每次添加用户行为事件前都会调用
    *
@@ -118,5 +119,16 @@ export interface HooksTypes {
    * ../param hint 当次的生成的breadcrumb数据
    * ../returns 如果返回 null | undefined | boolean 时，将忽略本次的push
    */
-  beforePushBreadcrumb?(breadcrumb: Breadcrumb, hint: BreadcrumbPushData): BreadcrumbPushData | CANCEL
+  beforePushBreadcrumb?(breadcrumb: Breadcrumb, hint: BreadcrumbPushData): CANCEL
+  /**
+   * 在状态小于400并且不等于0的时候回调用当前hook
+   * ../param data 请求状态为200时返回的响应体
+   * ../returns 如果返回 null | undefined | boolean 时，将忽略本次的上传
+   */
+  // afterSuccessHttp?<T>(data: T): string | CANCEL
+  /**
+   * 钩子函数，拦截用户页面的ajax请求，并在ajax请求发送前执行该hook，可以对用户发送的ajax请求做xhr.setRequestHeader
+   * ../param config 当前请求的
+   */
+  beforeAppAjaxSend?(config: IRequestHeaderConfig, setRequestHeader: IBeforeAppAjaxSendConfig): void
 }

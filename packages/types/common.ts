@@ -1,20 +1,24 @@
 import { HTTPTYPE } from '../shared/index'
 
 export interface MITOHttp {
+  eventType?: string
+  isError?: boolean
   type: HTTPTYPE
   traceId?: string
   method?: string
   url?: string
   status?: number
   reqData?: any
-  // statusText?: string
+  statusText?: string
   sTime?: number
+  eTime?: number
   elapsedTime?: number
   responseText?: any
   time?: number
   isSdkUrl?: boolean
   // for wx
   errMsg?: string
+  timeout?: number
 }
 
 export interface MITOXMLHttpRequest extends XMLHttpRequest {

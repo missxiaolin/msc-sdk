@@ -1,18 +1,7 @@
-import { BREADCRUMBTYPES } from '../shared/index'
-import { ReportDataType } from './transportData'
-import { Replace } from './replace'
-import { TNumStrObj } from './common'
+import { ERRORTYPES, Severity } from '../shared/index'
 
 export interface BreadcrumbPushData {
-  /**
-   * 事件类型
-   */
-  type: BREADCRUMBTYPES
-  // string for click dom
-  data: ReportDataType | Replace.IRouter | Replace.TriggerConsole | TNumStrObj
-  /**
-   * 分为user action、debug、http、
-   */
-  category?: string
-  time?: number
+  [key: string]: any
+  category: ERRORTYPES
+  level: Severity
 }

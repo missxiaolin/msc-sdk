@@ -1,5 +1,12 @@
 export type voidFun = () => void
 
+/** 等级程度枚举 */
+export enum Severity {
+  ERROR = 'ERROR',
+  WARN = 'WARN',
+  INFO = 'INFO'
+}
+
 /**
  * 上报错误类型
  */
@@ -17,9 +24,7 @@ export enum ERRORTYPES {
   NETWORK_SPEED = 'NETWORK_SPEED',
   PAGE_CHANGE = 'PAGE_CHANGE',
   USER_CLICK = 'USER_CLICK',
-  ERROR = 'ERROR',
-  WARN = 'WARN',
-  INFO = 'INFO'
+  
 }
 
 export enum WxAppEvents {
@@ -65,7 +70,6 @@ export enum EVENTTYPES {
   ERROR = 'error',
   HASHCHANGE = 'hashchange',
   UNHANDLEDREJECTION = 'unhandledrejection',
-  MITO = 'mito',
   VUE = 'Vue',
   // for miniprogram
   MINI_ROUTE = 'miniRoute',
@@ -79,35 +83,21 @@ export enum EVENTTYPES {
  * 用户行为栈事件类型
  */
 export enum BREADCRUMBTYPES {
-  ROUTE = 'Route',
-  CLICK = 'UI.Click',
-  CONSOLE = 'Console',
   XHR = 'Xhr',
   FETCH = 'Fetch',
   UNHANDLEDREJECTION = 'Unhandledrejection',
   VUE = 'Vue',
   REACT = 'React',
   RESOURCE = 'Resource',
-  CODE_ERROR = 'Code Error',
-
-  CUSTOMER = 'Customer',
-  // wx life cycle
-  APP_ON_SHOW = 'App On Show',
-  APP_ON_LAUNCH = 'App On Launch',
-  APP_ON_HIDE = 'App On Hide',
-  PAGE_ON_SHOW = 'Page On Show',
-  PAGE_ON_HIDE = 'Page On Hide',
-  PAGE_ON_UNLOAD = 'Page On Unload',
-  PAGE_ON_SHARE_APP_MESSAGE = 'Page On Share App Message',
-  PAGE_ON_SHARE_TIMELINE = 'Page On Share Timeline',
-  PAGE_ON_TAB_ITEM_TAP = 'Page On Tab Item Tap',
-
-  // wx BaseEvent
-  TAP = 'UI.Tap',
-  TOUCHMOVE = 'UI.Touchmove'
 }
 
 export enum HTTPTYPE {
   XHR = 'xhr',
   FETCH = 'fetch'
 }
+
+const globalVar = {
+  isLogAddBreadcrumb: true,
+  crossOriginThreshold: 1000
+}
+export { globalVar }

@@ -65,7 +65,7 @@ function xhrReplace(): void {
       //   this.logData.status = this.status
       //   this.logData.elapsedTime = eTime - this.logData.sTime
       //   triggerHandlers(EVENTTYPES.XHR, this.logData)
-      //   logger.error(`接口错误,接口信息:${JSON.stringify(this.logData)}`)
+      //   console.error(`接口错误,接口信息:${JSON.stringify(this.logData)}`)
       // })
       originalOpen.apply(this, args)
     }
@@ -77,15 +77,19 @@ function xhrReplace(): void {
       //   options.beforeAppAjaxSend && options.beforeAppAjaxSend({ method, url }, this)
       on(this, 'loadend', function (this: MITOXMLHttpRequest) {
         if ((method === EMethods.Post && transportData.isSdkTransportUrl(url)) || isFilterHttpUrl(url)) return
-        const { responseType, response, status } = this
+        const { responseType, response, status, timeout, statusText } = this
         this.logData.reqData = args[0]
         const eTime = getTimestamp()
         this.logData.time = this.logData.sTime
         this.logData.status = status
+        this.logData.timeout = timeout
+        this.logData.statusText = statusText
         if (['', 'json', 'text'].indexOf(responseType) !== -1) {
           this.logData.responseText = typeof response === 'object' ? JSON.stringify(response) : response
         }
         this.logData.elapsedTime = eTime - this.logData.sTime
+        this.logData.eTime = eTime
+        this.logData.eventType = 'load'
         triggerHandlers(EVENTTYPES.XHR, this.logData)
       })
       originalSend.apply(this, args)
