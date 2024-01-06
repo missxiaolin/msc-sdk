@@ -1,8 +1,8 @@
-import { Severity, ERRORTYPES_CATEGORY } from '../shared'
+import { Severity, ERRORTYPES_CATEGORY } from '../shared/index'
 import { VueInstance, ViewModel } from './types'
 import { ReportDataType } from '../types'
-import { getTimestamp, variableTypeDetection, getBigVersion, getNowFormatTime } from '../utils'
-import { breadcrumb } from '../core'
+import { getTimestamp, variableTypeDetection, getBigVersion, getNowFormatTime } from '../utils/index'
+import { breadcrumb } from '../core/index'
 
 export function handleVueError(err: Error, vm: ViewModel, info: string, level: Severity, Vue: VueInstance): void {
   const version = Vue?.version

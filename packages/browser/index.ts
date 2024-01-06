@@ -6,7 +6,7 @@ import { initOptions, log } from '../core/index'
 import { _global } from '../utils/index'
 import { SDK_VERSION, SDK_NAME } from '../shared/index'
 import { InitOptions } from '../types/index'
-import { _support } from '../utils'
+import { _support } from '../utils/index'
 import { uaParser } from './utils'
 function webInit(options: InitOptions = {}): void {
   if (!('XMLHttpRequest' in _global) || options.monitorSwitch) return

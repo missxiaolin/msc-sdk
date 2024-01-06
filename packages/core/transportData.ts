@@ -1,5 +1,5 @@
 import { BreadcrumbPushData } from '../types/breadcrumb'
-import { InitOptions, FinalReportType, TransportDataType, DeviceInfo, EMethods } from '../types'
+import { InitOptions, FinalReportType, TransportDataType, DeviceInfo, EMethods } from '../types/index'
 import { _support, formatUrlToStr, getPageURL, isBrowserEnv, isWxMiniEnv, validateOption } from '../utils/index'
 import Queue from '../utils/queue'
 

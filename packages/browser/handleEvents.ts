@@ -1,7 +1,7 @@
 import { BREADCRUMBTYPES, Severity, ERRORTYPES_CATEGORY, EVENTTYPES, ERROR_TYPE_RE } from '../shared/index'
 import { MITOHttp, ResourceErrorTarget, ReportDataType, Replace } from '../types/index'
 import { extractErrorStack, formatUrlToStr, getFlag, getNowFormatTime, getPageURL, getTimestamp, isError } from '../utils/index'
-import { breadcrumb } from '../core'
+import { breadcrumb } from '../core/index'
 import { resourceTransform } from '../core/transformData'
 import { resolveNavigationTiming, isIgnoreResource, resolveResourceTiming } from './utils'
 

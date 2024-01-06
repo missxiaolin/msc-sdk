@@ -1,4 +1,4 @@
-import { ReportDataType, ResourceErrorTarget } from '../types'
+import { ReportDataType, ResourceErrorTarget } from '../types/index'
 
 /**
  * 资源错误

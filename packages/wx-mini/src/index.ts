@@ -1,8 +1,9 @@
-import { initOptions, log } from '../../core'
-import { isWxMiniEnv } from '../../utils'
-import { InitOptions } from '../../types'
+import { initOptions } from '../../core/options'
+import { log } from '../../core/external'
+import { isWxMiniEnv } from '../../utils/global'
+import { InitOptions } from '../../types/options'
 import { setupReplace } from './load'
-import { SDK_NAME, SDK_VERSION } from '../../shared'
+import { SDK_NAME, SDK_VERSION } from '../../shared/index'
 
 export function init(options: InitOptions = {}) {
   if (!isWxMiniEnv) return
