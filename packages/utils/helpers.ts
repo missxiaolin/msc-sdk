@@ -307,3 +307,11 @@ export const throttle = (fn: Function, delay: number): Function => {
     }, delay)
   }
 }
+
+/**
+ * @param version 
+ * @returns 
+ */
+export function getBigVersion(version: string) {
+  return Number(version.split('.')[0])
+}
