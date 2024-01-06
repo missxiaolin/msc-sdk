@@ -248,6 +248,38 @@
         },
         {
           "kind": "Variable",
+          "canonicalReference": "@xiaolin/monitor-web!MitoVue:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "MitoVue: "
+            },
+            {
+              "kind": "Content",
+              "text": "{\n    install(Vue: "
+            },
+            {
+              "kind": "Reference",
+              "text": "VueInstance",
+              "canonicalReference": "!unknown"
+            },
+            {
+              "kind": "Content",
+              "text": "): void;\n}"
+            }
+          ],
+          "fileUrlPath": "packages/vue/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "MitoVue",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 4
+          }
+        },
+        {
+          "kind": "Variable",
           "canonicalReference": "@xiaolin/monitor-web!SDK_NAME:var",
           "docComment": "",
           "excerptTokens": [

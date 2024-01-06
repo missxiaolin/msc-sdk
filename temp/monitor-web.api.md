@@ -6,6 +6,7 @@
 
 import { BreadcrumbPushData } from '../types/breadcrumb';
 import { BreadcrumbPushData as BreadcrumbPushData_2 } from './breadcrumb';
+import { VueInstance } from './types';
 
 // Warning: (ae-forgotten-export) The symbol "InitOptions" needs to be exported by the entry point index.d.ts
 //
@@ -14,6 +15,11 @@ export function init(options?: InitOptions): void;
 
 // @public (undocumented)
 export function log(): void;
+
+// @public (undocumented)
+export const MitoVue: {
+    install(Vue: VueInstance): void;
+};
 
 // @public (undocumented)
 export const SDK_NAME = "@xiaolin/monitor";

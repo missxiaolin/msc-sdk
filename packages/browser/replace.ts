@@ -1,6 +1,6 @@
 import { ReplaceHandler, subscribeEvent, triggerHandlers, transportData, options } from '../core/index'
 import { EVENTTYPES, voidFun, HTTPTYPE } from '../shared/index'
-import { _global, replaceOld, getTimestamp, on, getPageURL, isExistProperty, supportsHistory, clickThrottle, throttle } from '../utils/index'
+import { _global, replaceOld, getTimestamp, on, getPageURL, isExistProperty, supportsHistory, throttle } from '../utils/index'
 import { MITOXMLHttpRequest, EMethods, MITOHttp } from '../types/index'
 
 function isFilterHttpUrl(url: string) {
