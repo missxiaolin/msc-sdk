@@ -6,8 +6,8 @@ export interface DeviceInfo {
   deviceModel: number | string
   screenHeight: number | string // 屏幕高
   screenWidth: number | string // 屏幕宽
-  language // 当前使用的语言-国家
-  netWork: string // 联网类型
+  language: string // 当前使用的语言-国家
+  netWork: string | number | any // 联网类型
   fingerPrint: string // 浏览器指纹
   userAgent: string
 }
