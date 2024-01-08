@@ -1,24 +1,24 @@
 import { IAnyObject, ReportDataType } from '../types/index'
 import { Severity, globalVar } from '../shared/index'
 import { nativeToString } from './is'
-import { _global, isWxMiniEnv } from './global';
+import { _global, isWxMiniEnv } from './global'
 export const defaultFunctionName = '<anonymous>'
 
 /**
  * 获取当前url
  */
 export function getPage() {
-  let path = '';
+  let path = ''
   if (getCurrentPages().length) {
-    path = getCurrentPages()[getCurrentPages().length - 1].__route__;
+    path = getCurrentPages()[getCurrentPages().length - 1].__route__
   }
-  return path;
+  return path
 }
 
-export const getPageURL = () => (isWxMiniEnv ? getPage() : window.location.href);
+export const getPageURL = () => (isWxMiniEnv ? getPage() : window.location.href)
 
 /**
- * 
+ *
  */
 export function getLocationHref(): string {
   if (typeof document === 'undefined' || document.location == null) return ''
@@ -31,40 +31,40 @@ export function getLocationHref(): string {
  * @returns
  */
 export const formatUrlToStr = (path = '', query = {}) => {
-  let permPath = path || '';
-  const params = Object.keys(query) || [];
+  let permPath = path || ''
+  const params = Object.keys(query) || []
   if (params.length > 0) {
-    permPath += '?';
+    permPath += '?'
     params.forEach((item, idx) => {
-      permPath += item + '=*';
+      permPath += item + '=*'
       if (idx < params.length - 1) {
-        permPath += '&';
+        permPath += '&'
       }
-    });
+    })
   } else if (path.indexOf('=') > -1) {
-    const urlObj: any = path.split('=');
-    permPath = '';
+    const urlObj: any = path.split('=')
+    permPath = ''
     urlObj.forEach((item, index) => {
       if (item.indexOf('&') > -1) {
-        const reset = urlObj.length - Number(index) == 1 ? '' : '&' + item.split('&')[1] + '=*';
-        permPath += reset;
+        const reset = urlObj.length - Number(index) == 1 ? '' : '&' + item.split('&')[1] + '=*'
+        permPath += reset
       } else if (index == 0) {
-        permPath += item + '=*';
+        permPath += item + '=*'
       }
-    });
+    })
   }
-  return permPath || path;
-};
+  return permPath || path
+}
 
 export function toStringAny(target: any, type: string): boolean {
   return nativeToString.call(target) === type
 }
 
 /**
- * @param target 
- * @param targetName 
- * @param expectType 
- * @returns 
+ * @param target
+ * @param targetName
+ * @param expectType
+ * @returns
  */
 export function toStringValidateOption(target: any, targetName: string, expectType: string): boolean {
   if (toStringAny(target, expectType)) return true
@@ -137,32 +137,31 @@ export function getTimestamp(): number {
  * 获取当前时间
  */
 export const getNowFormatTime = (seperator = '-') => {
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
-  const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
-  const hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
-  const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
-  const seconds = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
-  const currentdate =
-    year + seperator + month + seperator + day + ' ' + hour + ':' + minutes + ':' + seconds;
-  return currentdate;
-};
+  const date = new Date()
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
+  const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
+  const hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+  const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+  const seconds = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+  const currentdate = year + seperator + month + seperator + day + ' ' + hour + ':' + minutes + ':' + seconds
+  return currentdate
+}
 
 /**
- * @param target 
- * @param type 
- * @returns 
+ * @param target
+ * @param type
+ * @returns
  */
 export function typeofAny(target: any, type: string): boolean {
   return typeof target === type
 }
 
 /**
- * @param target 
- * @param targetName 
- * @param expectType 
- * @returns 
+ * @param target
+ * @param targetName
+ * @param expectType
+ * @returns
  */
 export function validateOption(target: any, targetName: string, expectType: string): boolean {
   if (typeofAny(target, expectType)) return true
@@ -175,7 +174,6 @@ export function slientConsoleScope(callback: Function) {
   callback()
   globalVar.isLogAddBreadcrumb = true
 }
-
 
 /**
  * 解析error的stack，并返回args、column、line、func、url:
@@ -275,7 +273,50 @@ export function extractErrorStack(ex: any, level: Severity): ReportDataType {
 }
 
 /**
- * @returns 
+ * 解析字符串错误信息，返回message、name、stack
+ * @param str error string
+ */
+export function parseErrorString(str: string) {
+  const splitLine: string[] = str.split('\n')
+  if (splitLine.length < 2) return null
+  if (splitLine[0].indexOf('MiniProgramError') !== -1) {
+    splitLine.splice(0, 1)
+  }
+  const message = splitLine.splice(0, 1)[0]
+  const name = splitLine.splice(0, 1)[0].split(':')[0]
+  const stack = []
+  splitLine.forEach((errorLine: string) => {
+    const regexpGetFun = /at\s+([\S]+)\s+\(/ // 获取 [ 函数名 ]
+    const regexGetFile = /\(([^)]+)\)/ // 获取 [ 有括号的文件 , 没括号的文件 ]
+    const regexGetFileNoParenthese = /\s+at\s+(\S+)/ // 获取 [ 有括号的文件 , 没括号的文件 ]
+
+    const funcExec = regexpGetFun.exec(errorLine)
+    let fileURLExec = regexGetFile.exec(errorLine)
+    if (!fileURLExec) {
+      // 假如为空尝试解析无括号的URL
+      fileURLExec = regexGetFileNoParenthese.exec(errorLine)
+    }
+
+    const funcNameMatch = Array.isArray(funcExec) && funcExec.length > 0 ? funcExec[1].trim() : ''
+    const fileURLMatch = Array.isArray(fileURLExec) && fileURLExec.length > 0 ? fileURLExec[1] : ''
+    const lineInfo = fileURLMatch.split(':')
+    stack.push({
+      args: [], // 请求参数
+      func: funcNameMatch || 'UNKNOWN_FUNCTION', // 前端分解后的报错
+      colno: Number(lineInfo.pop()), // 前端分解后的列
+      lineno: Number(lineInfo.pop()), // 前端分解后的行
+      url: lineInfo.join(':') // 前端分解后的URL
+    })
+  })
+  return {
+    message,
+    name,
+    stack
+  }
+}
+
+/**
+ * @returns
  */
 export function supportsHistory(): boolean {
   // NOTE: in Chrome App environment, touching history.pushState, *even inside
@@ -309,8 +350,8 @@ export const throttle = (fn: Function, delay: number): Function => {
 }
 
 /**
- * @param version 
- * @returns 
+ * @param version
+ * @returns
  */
 export function getBigVersion(version: string) {
   return Number(version.split('.')[0])
