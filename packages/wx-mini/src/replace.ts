@@ -17,7 +17,7 @@ import { HandleWxAppEvents, HandleWxPageEvents } from './handleWxEvents'
 import { options as sdkOptions } from '../../core/options'
 import { transportData } from '../../core/transportData'
 import { MITOHttp } from '../../types/common'
-import { variableTypeDetection } from '../../utils/is'
+import { variableTypeDetection, isEmptyObject } from '../../utils/is'
 import { getWxPerformance, getCurrentRoute, getNavigateBackTargetUrl } from './utils'
 import { MiniRoute } from './types'
 
@@ -352,4 +352,44 @@ function replaceRoute() {
       }
     })
   })
+}
+
+// 重写Component
+export function replaceComponent() {
+  if (!Component) {
+    return
+  }
+  const originComponent = Component
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  Component = function (componentOptions): WechatMiniprogram.Component.Constructor {
+    if (!isEmptyObject(componentOptions.methods)) {
+      /*
+       * 兼容用Component构造页面的上报
+       * 当用Component构造页面时，页面的生命周期函数应写在methods定义段中，所以重写componentOptions.methods中的对应周期函数
+       */
+      replacePageLifeMethods(componentOptions.methods, [WxPageEvents.PageOnLoad])
+      replaceAction(componentOptions.methods)
+    }
+    return originComponent.call(this, componentOptions)
+  }
+}
+
+// 重写Behavior
+export function replaceBehavior() {
+  if (!Behavior) {
+    return
+  }
+  const originBehavior = Behavior
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  Behavior = function (behaviorOptions): WechatMiniprogram.Behavior.Constructor {
+    if (!isEmptyObject(behaviorOptions.methods)) {
+      /*
+       * 当使用Compnent直接构造页面时，用到的behavior中如果有onShow等页面生命周期函数是不会被触发的，所以只用监听手势行为
+       */
+      replaceAction(behaviorOptions.methods)
+    }
+    return originBehavior.call(this, behaviorOptions)
+  }
 }
