@@ -1,14 +1,25 @@
 import { ReplaceHandler, subscribeEvent } from '../../core/subscribe'
 import { getFlag } from '../../utils/global'
 import { replaceOld, throttle, getTimestamp } from '../../utils/helpers'
-import { voidFun, WxAppEvents, WxEvents, EVENTTYPES, WxPageEvents, ELinstenerTypes, EMethods, HTTPTYPE } from '../../shared/index'
+import {
+  voidFun,
+  WxAppEvents,
+  WxEvents,
+  EVENTTYPES,
+  WxPageEvents,
+  ELinstenerTypes,
+  EMethods,
+  HTTPTYPE,
+  WxRouteEvents
+} from '../../shared/index'
 import { triggerHandlers } from '../../core/subscribe'
 import { HandleWxAppEvents, HandleWxPageEvents } from './handleWxEvents'
 import { options as sdkOptions } from '../../core/options'
 import { transportData } from '../../core/transportData'
 import { MITOHttp } from '../../types/common'
 import { variableTypeDetection } from '../../utils/is'
-import { getWxPerformance } from './utils'
+import { getWxPerformance, getCurrentRoute, getNavigateBackTargetUrl } from './utils'
+import { MiniRoute } from './types'
 
 /**
  * @param type
@@ -22,7 +33,7 @@ function replace(type: WxEvents | EVENTTYPES) {
       replacePerformance()
       break
     case EVENTTYPES.MINI_ROUTE:
-    // replaceRoute()
+      replaceRoute()
     default:
       break
   }
@@ -136,12 +147,13 @@ function replaceAction(
   }
 }
 
+// 页面uv pv
 export function replacePage() {
   if (!Page) {
     return
   }
   const originPage = Page
-  let methods = [WxPageEvents.PageOnLoad]
+  const methods = [WxPageEvents.PageOnLoad]
   methods.forEach((method) => {
     if (!getFlag(method)) return
     addReplaceHandler({
@@ -156,6 +168,7 @@ export function replacePage() {
   })
 }
 
+// 网络请求
 function replaceNetwork() {
   // const hookMethods = ['request', 'downloadFile', 'uploadFile']
   const hookMethods = ['request']
@@ -256,6 +269,7 @@ function replaceNetwork() {
   })
 }
 
+// 性能
 function replacePerformance() {
   if (!getFlag(EVENTTYPES.PERFORMANCE)) {
     return
@@ -270,4 +284,72 @@ function replacePerformance() {
     triggerHandlers(EVENTTYPES.PERFORMANCE, data)
   })
   observer.observe({ entryTypes: ['render', 'script', 'navigation', 'loadPackage', 'resource'] })
+}
+
+// 路由
+function replaceRoute() {
+  const methods = [
+    WxRouteEvents.SwitchTab,
+    WxRouteEvents.ReLaunch,
+    WxRouteEvents.RedirectTo,
+    WxRouteEvents.NavigateTo,
+    WxRouteEvents.NavigateBack,
+    WxRouteEvents.NavigateToMiniProgram
+  ]
+  methods.forEach((method) => {
+    const originMethod = wx[method] as Function
+    Object.defineProperty(wx, method, {
+      writable: true,
+      enumerable: true,
+      configurable: true,
+      value: function (
+        options:
+          | WechatMiniprogram.SwitchTabOption
+          | WechatMiniprogram.ReLaunchOption
+          | WechatMiniprogram.RedirectToOption
+          | WechatMiniprogram.NavigateToOption
+          | WechatMiniprogram.NavigateBackOption
+          | WechatMiniprogram.NavigateToMiniProgramOption
+      ) {
+        let toUrl
+        if (method === WxRouteEvents.NavigateBack) {
+          toUrl = getNavigateBackTargetUrl((options as WechatMiniprogram.NavigateBackOption)?.delta)
+        } else {
+          toUrl = (options as WechatMiniprogram.SwitchTabOption).url
+        }
+        const data = {
+          from: getCurrentRoute(),
+          to: toUrl
+        }
+        triggerHandlers(EVENTTYPES.MINI_ROUTE, data)
+        // 如果complete||success||fail一个都没有，则原方法返回promise，此时sdk也不需要处理
+        if (
+          variableTypeDetection.isFunction(options.complete) ||
+          variableTypeDetection.isFunction(options.success) ||
+          variableTypeDetection.isFunction(options.fail)
+        ) {
+          const _fail = options.fail
+          const failHandler:
+            | WechatMiniprogram.SwitchTabFailCallback
+            | WechatMiniprogram.ReLaunchFailCallback
+            | WechatMiniprogram.RedirectToFailCallback
+            | WechatMiniprogram.NavigateToFailCallback
+            | WechatMiniprogram.NavigateBackFailCallback = function (res) {
+            const failData: MiniRoute = {
+              ...data,
+              isFail: true,
+              message: res.errMsg,
+              subType: method
+            }
+            triggerHandlers(EVENTTYPES.MINI_ROUTE, failData)
+            if (variableTypeDetection.isFunction(_fail)) {
+              return _fail(res)
+            }
+          }
+          options.fail = failHandler
+        }
+        return originMethod.call(this, options)
+      }
+    })
+  })
 }

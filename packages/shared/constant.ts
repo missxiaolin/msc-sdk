@@ -87,13 +87,13 @@ export enum EVENTTYPES {
   RESOURCE = 'resource',
   PERFORMANCE = 'performance',
   VUE = 'Vue',
+  MEMORY_WARNING = 'miniMemoryWarning',
+  NETWORK_STATUS_CHANGE = 'miniNetworkStatusChange',
+  BATTERY_INFO = 'miniBatteryInfo',
   // for miniprogram
+  AppOnShow = 'AppOnShow', // app onshow
   PageOnLoad = 'PageOnLoad',
   MINI_ROUTE = 'miniRoute',
-  MINI_PERFORMANCE = 'miniPerformance',
-  MINI_MEMORY_WARNING = 'miniMemoryWarning',
-  MINI_NETWORK_STATUS_CHANGE = 'miniNetworkStatusChange',
-  MINI_BATTERY_INFO = 'miniBatteryInfo'
 }
 
 /**

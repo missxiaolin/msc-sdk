@@ -4,6 +4,7 @@ import { Severity, ERRORTYPES_CATEGORY, EVENTTYPES } from '../../shared/index'
 import { parseErrorString, getNowFormatTime, getTimestamp, unknownToString, getPageURL, formatUrlToStr } from '../../utils/helpers'
 import { breadcrumb } from '../../core/breadcrumb'
 import { MITOHttp } from '../../types/common'
+import { MiniRoute } from './types'
 
 
 const HandleWxAppEvents = {
@@ -58,8 +59,11 @@ const HandleWxAppEvents = {
   }
 }
 
+
+
 let popstateStartTime = getTimestamp(),
-  referrerPage = ''
+  referrerPage = '',
+  subType = '';
 
 const HandleWxPageEvents = {
   onLoad() {
@@ -73,13 +77,12 @@ const HandleWxPageEvents = {
       type: '',
       to: getPageURL(),
       from: referrerPage || getPageURL(),
-      subType: '',
+      subType,
       duration: Date.now() - popstateStartTime,
       startTime: getTimestamp(),
       happenTime: getTimestamp(),
       happenDate: getNowFormatTime()
     })
-    referrerPage = getPageURL()
     popstateStartTime = getTimestamp()
   },
   onAction(e: WechatMiniprogram.BaseEvent) {
@@ -117,6 +120,13 @@ const HandleWxPageEvents = {
     } catch (e) {
       // Ignore
     }
+  }
+}
+
+const HandleWxEvents = {
+  handleRoute(data: MiniRoute) {
+    referrerPage = data.from
+    subType = data.subType || ''
   }
 }
 
@@ -162,4 +172,4 @@ const HandlePerformanceEvents = {
   }
 }
 
-export { HandleWxAppEvents, HandleWxPageEvents, HandleNetworkEvents, HandlePerformanceEvents }
+export { HandleWxAppEvents, HandleWxPageEvents, HandleNetworkEvents, HandlePerformanceEvents, HandleWxEvents }
