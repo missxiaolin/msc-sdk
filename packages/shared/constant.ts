@@ -1,5 +1,12 @@
 export type voidFun = () => void
 
+export enum EMethods {
+  Get = 'GET',
+  Post = 'POST',
+  Put = 'PUT',
+  Delete = 'DELETE'
+}
+
 /** 等级程度枚举 */
 export enum Severity {
   ERROR = 'ERROR',
