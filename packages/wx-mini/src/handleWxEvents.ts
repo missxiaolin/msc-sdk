@@ -1,9 +1,10 @@
 import { getWxMiniDeviceInfo, targetAsString } from './utils'
-import { _support } from '../../utils/global'
-import { Severity, ERRORTYPES_CATEGORY } from '../../shared/index'
+import { _support, getFlag } from '../../utils/global'
+import { Severity, ERRORTYPES_CATEGORY, EVENTTYPES } from '../../shared/index'
 import { parseErrorString, getNowFormatTime, getTimestamp, unknownToString, getPageURL, formatUrlToStr } from '../../utils/helpers'
 import { breadcrumb } from '../../core/breadcrumb'
 import { MITOHttp } from '../../types/common'
+
 
 const HandleWxAppEvents = {
   /**
@@ -19,6 +20,9 @@ const HandleWxAppEvents = {
    * @param error
    */
   onError(error: string) {
+    if (!getFlag(EVENTTYPES.ERROR)) {
+      return
+    }
     const parsedError = parseErrorString(error)
 
     breadcrumb.push({
@@ -39,6 +43,9 @@ const HandleWxAppEvents = {
    * @param ev
    */
   onUnhandledRejection(ev: WechatMiniprogram.OnUnhandledRejectionCallbackResult) {
+    if (!getFlag(EVENTTYPES.UNHANDLEDREJECTION)) {
+      return
+    }
     const promiseError = {
       level: Severity.WARN,
       category: ERRORTYPES_CATEGORY.PROMISE_ERROR,
@@ -50,11 +57,15 @@ const HandleWxAppEvents = {
     breadcrumb.push(promiseError)
   }
 }
+
 let popstateStartTime = getTimestamp(),
   referrerPage = ''
 
 const HandleWxPageEvents = {
   onLoad() {
+    if (!getFlag(EVENTTYPES.PageOnLoad)) {
+      return
+    }
     breadcrumb.push({
       level: Severity.INFO,
       category: ERRORTYPES_CATEGORY.PAGE_CHANGE,
@@ -68,15 +79,22 @@ const HandleWxPageEvents = {
       happenTime: getTimestamp(),
       happenDate: getNowFormatTime()
     })
+    referrerPage = getPageURL()
     popstateStartTime = getTimestamp()
   },
   onAction(e: WechatMiniprogram.BaseEvent) {
+    if (!getFlag(EVENTTYPES.DOM)) {
+      return
+    }
+    // @ts-ignore
     const { target = {}, detail = {}, timeStamp = '', type = '', currentTarget } = e
     try {
       breadcrumb.push({
         level: Severity.INFO,
         category: ERRORTYPES_CATEGORY.USER_CLICK,
+        // @ts-ignore
         top: target.offsetTop || currentTarget.offsetTop,
+        // @ts-ignore
         left: target.offsetLeft || currentTarget.offsetLeft,
         pageHeight: 0,
         scrollTop: 0,
@@ -104,6 +122,9 @@ const HandleWxPageEvents = {
 
 const HandleNetworkEvents = {
   handleRequest(data: MITOHttp) {
+    if (!getFlag(EVENTTYPES.XHR)) {
+      return
+    }
     const isSuceess = data.status == 200
     breadcrumb.push({
       method: data.method,

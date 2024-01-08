@@ -53,7 +53,7 @@ export function setSilentFlag(paramOptions: InitOptions = {}): void {
   setFlag(WxAppEvents.AppOnUnhandledRejection, !!paramOptions.watch.promise)
   // setFlag(WxAppEvents.AppOnPageNotFound, !!paramOptions.watch)
   // wx Page
-  setFlag(WxPageEvents.PageOnLoad, !!paramOptions.watch.pageChange)
+  setFlag(EVENTTYPES.PageOnLoad, !!paramOptions.watch.pageChange)
   // mini Route
   // setFlag(EVENTTYPES.MINI_ROUTE, !!paramOptions.watch.pageChange)
 }

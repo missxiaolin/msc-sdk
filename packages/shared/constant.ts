@@ -88,6 +88,7 @@ export enum EVENTTYPES {
   PERFORMANCE = 'performance',
   VUE = 'Vue',
   // for miniprogram
+  PageOnLoad = 'PageOnLoad',
   MINI_ROUTE = 'miniRoute',
   MINI_PERFORMANCE = 'miniPerformance',
   MINI_MEMORY_WARNING = 'miniMemoryWarning',
