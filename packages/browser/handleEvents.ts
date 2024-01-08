@@ -179,6 +179,7 @@ const HandleEvents = {
   handleDom(data) {
     const event = data.data
     const target = event.target
+    if (!target) return
     const { offsetWidth, offsetHeight, tagName, outerHTML, innerHTML } = target
     const { top, left } = target.getBoundingClientRect()
     const paths = event.path
