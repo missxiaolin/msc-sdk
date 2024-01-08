@@ -1,7 +1,7 @@
 import { getWxMiniDeviceInfo } from './utils'
 import { _support } from '../../utils/global'
 import { Severity, ERRORTYPES_CATEGORY } from '../../shared/index'
-import { parseErrorString, getNowFormatTime, getTimestamp } from '../../utils/helpers'
+import { parseErrorString, getNowFormatTime, getTimestamp, unknownToString } from '../../utils/helpers'
 import { breadcrumb } from '../../core/breadcrumb'
 
 const HandleWxAppEvents = {
@@ -18,7 +18,7 @@ const HandleWxAppEvents = {
    * @param error
    */
   onError(error: string) {
-    const parsedError = parseErrorString(error)
+		const parsedError = parseErrorString(error)
 
     breadcrumb.push({
       errorMsg: parsedError.message,
@@ -38,8 +38,16 @@ const HandleWxAppEvents = {
    * @param ev
    */
   onUnhandledRejection(ev: WechatMiniprogram.OnUnhandledRejectionCallbackResult) {
-    console.log(ev)
-  }
+		const promiseError = {
+			level: Severity.WARN,
+			category: ERRORTYPES_CATEGORY.PROMISE_ERROR,
+			errorMsg: unknownToString(ev.reason),
+			startTime: getTimestamp(),
+			happenTime: getTimestamp(),
+			happenDate: getNowFormatTime()
+		}
+		breadcrumb.push(promiseError)
+	}
 }
 
 export { HandleWxAppEvents }

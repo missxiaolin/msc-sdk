@@ -1,24 +1,24 @@
 import { IAnyObject, ReportDataType } from '../types/index'
 import { Severity, globalVar } from '../shared/index'
-import { nativeToString } from './is'
-import { _global, isWxMiniEnv } from './global'
+import { nativeToString, variableTypeDetection } from './is'
+import { _global, isWxMiniEnv } from './global';
 export const defaultFunctionName = '<anonymous>'
 
 /**
  * 获取当前url
  */
 export function getPage() {
-  let path = ''
+  let path = '';
   if (getCurrentPages().length) {
-    path = getCurrentPages()[getCurrentPages().length - 1].__route__
+    path = getCurrentPages()[getCurrentPages().length - 1].__route__;
   }
-  return path
+  return path;
 }
 
-export const getPageURL = () => (isWxMiniEnv ? getPage() : window.location.href)
+export const getPageURL = () => (isWxMiniEnv ? getPage() : window.location.href);
 
 /**
- *
+ * 
  */
 export function getLocationHref(): string {
   if (typeof document === 'undefined' || document.location == null) return ''
@@ -31,40 +31,40 @@ export function getLocationHref(): string {
  * @returns
  */
 export const formatUrlToStr = (path = '', query = {}) => {
-  let permPath = path || ''
-  const params = Object.keys(query) || []
+  let permPath = path || '';
+  const params = Object.keys(query) || [];
   if (params.length > 0) {
-    permPath += '?'
+    permPath += '?';
     params.forEach((item, idx) => {
-      permPath += item + '=*'
+      permPath += item + '=*';
       if (idx < params.length - 1) {
-        permPath += '&'
+        permPath += '&';
       }
-    })
+    });
   } else if (path.indexOf('=') > -1) {
-    const urlObj: any = path.split('=')
-    permPath = ''
+    const urlObj: any = path.split('=');
+    permPath = '';
     urlObj.forEach((item, index) => {
       if (item.indexOf('&') > -1) {
-        const reset = urlObj.length - Number(index) == 1 ? '' : '&' + item.split('&')[1] + '=*'
-        permPath += reset
+        const reset = urlObj.length - Number(index) == 1 ? '' : '&' + item.split('&')[1] + '=*';
+        permPath += reset;
       } else if (index == 0) {
-        permPath += item + '=*'
+        permPath += item + '=*';
       }
-    })
+    });
   }
-  return permPath || path
-}
+  return permPath || path;
+};
 
 export function toStringAny(target: any, type: string): boolean {
   return nativeToString.call(target) === type
 }
 
 /**
- * @param target
- * @param targetName
- * @param expectType
- * @returns
+ * @param target 
+ * @param targetName 
+ * @param expectType 
+ * @returns 
  */
 export function toStringValidateOption(target: any, targetName: string, expectType: string): boolean {
   if (toStringAny(target, expectType)) return true
@@ -137,31 +137,32 @@ export function getTimestamp(): number {
  * 获取当前时间
  */
 export const getNowFormatTime = (seperator = '-') => {
-  const date = new Date()
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
-  const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
-  const hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
-  const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
-  const seconds = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
-  const currentdate = year + seperator + month + seperator + day + ' ' + hour + ':' + minutes + ':' + seconds
-  return currentdate
-}
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+  const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+  const hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+  const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+  const seconds = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+  const currentdate =
+    year + seperator + month + seperator + day + ' ' + hour + ':' + minutes + ':' + seconds;
+  return currentdate;
+};
 
 /**
- * @param target
- * @param type
- * @returns
+ * @param target 
+ * @param type 
+ * @returns 
  */
 export function typeofAny(target: any, type: string): boolean {
   return typeof target === type
 }
 
 /**
- * @param target
- * @param targetName
- * @param expectType
- * @returns
+ * @param target 
+ * @param targetName 
+ * @param expectType 
+ * @returns 
  */
 export function validateOption(target: any, targetName: string, expectType: string): boolean {
   if (typeofAny(target, expectType)) return true
@@ -174,6 +175,7 @@ export function slientConsoleScope(callback: Function) {
   callback()
   globalVar.isLogAddBreadcrumb = true
 }
+
 
 /**
  * 解析error的stack，并返回args、column、line、func、url:
@@ -316,7 +318,20 @@ export function parseErrorString(str: string) {
 }
 
 /**
- * @returns
+ * @param target 
+ */
+export function unknownToString(target: unknown): string {
+  if (variableTypeDetection.isString(target)) {
+    return target as string
+  }
+  if (variableTypeDetection.isUndefined(target)) {
+    return 'undefined'
+  }
+  return JSON.stringify(target)
+}
+
+/**
+ * @returns 
  */
 export function supportsHistory(): boolean {
   // NOTE: in Chrome App environment, touching history.pushState, *even inside
@@ -350,8 +365,8 @@ export const throttle = (fn: Function, delay: number): Function => {
 }
 
 /**
- * @param version
- * @returns
+ * @param version 
+ * @returns 
  */
 export function getBigVersion(version: string) {
   return Number(version.split('.')[0])

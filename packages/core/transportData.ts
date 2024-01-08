@@ -21,11 +21,11 @@ export class TransportData {
   constructor() {
     this.queue = new Queue()
   }
-
+  
   /**
    * 校验是不是服务端上报地址
-   * @param targetUrl
-   * @returns
+   * @param targetUrl 
+   * @returns 
    */
   isSdkTransportUrl(targetUrl: string): boolean {
     let isSdkDsn = false
@@ -40,10 +40,14 @@ export class TransportData {
 
   /**
    * 初始化参数
-   * @param options
+   * @param options 
    */
   bindOptions(options: InitOptions = {}): void {
-    const { monitorAppId, uuId, report } = options
+    const {
+      monitorAppId,
+      uuId,
+      report,
+    } = options
     const { url, trackUrl, reportType, maxQueues } = report
     validateOption(monitorAppId, 'monitorAppId', 'string') && (this.monitorAppId = monitorAppId)
     validateOption(url, 'url', 'string') && (this.url = url)
@@ -51,12 +55,12 @@ export class TransportData {
     validateOption(reportType, 'reportType', 'number') && (this.reportType = reportType)
     validateOption(uuId, 'uuId', 'function') && (this.uuId = uuId)
     // 设置请求最大值
-    validateOption(maxQueues, 'maxQueues', 'number') && this.queue.setMaxQueues(maxQueues)
+    validateOption(maxQueues, 'maxQueues', 'number') && (this.queue.setMaxQueues(maxQueues))
   }
 
   /**
-   * @param data
-   * @returns
+   * @param data 
+   * @returns 
    */
   async beforePost(data: FinalReportType) {
     const transportData = this.getTransportData(data)
@@ -65,7 +69,7 @@ export class TransportData {
 
   /**
    * 拿到全局设备参数
-   * @returns
+   * @returns 
    */
   getDeviceInfo(): DeviceInfo | any {
     return _support.deviceInfo || {}
@@ -73,31 +77,29 @@ export class TransportData {
 
   /**
    * 组装参数
-   * @param data
-   * @returns
+   * @param data 
+   * @returns 
    */
   getTransportData(data: FinalReportType): TransportDataType {
-    const pageUrl = getPageURL()
+    const pageUrl = getPageURL();
     return {
       appUid: {
         monitorAppId: this.monitorAppId,
         uuId: this.uuId ? this.uuId() : ''
       },
       deviceInfo: this.getDeviceInfo(),
-      lists: [
-        {
-          ...data,
-          pageUrl: pageUrl,
-          simpleUrl: formatUrlToStr(pageUrl)
-        }
-      ]
+      lists: [{
+        ...data,
+        pageUrl: pageUrl,
+        simpleUrl: formatUrlToStr(pageUrl)
+      }]
     }
   }
 
   /**
    * 发送请求
-   * @param data
-   * @returns
+   * @param data 
+   * @returns 
    */
   async send(data: BreadcrumbPushData) {
     const result = await this.beforePost(data)
@@ -108,31 +110,31 @@ export class TransportData {
     if (isWxMiniEnv) {
       return this.wxPost(result, this.url)
     }
-  }
+	}
 
-  /**
-   * 微信请求发送
-   * @param data
-   * @param url
-   */
-  async wxPost(data: any, url: string) {
+	/**
+	 * 微信请求发送
+	 * @param data 
+	 * @param url 
+	 */
+	async wxPost(data: any, url: string) {
     const requestFun = (): void => {
       let requestOptions = { method: 'POST' } as WechatMiniprogram.RequestOption
       requestOptions = {
         ...requestOptions,
         data: JSON.stringify({
-          data: data
-        }),
+					data: data
+				}),
         url
       }
       wx.request(requestOptions)
     }
-    this.queue.pushToQueue(requestFun)
+		this.queue.pushToQueue(requestFun)
   }
 
   /**
-   * @param data
-   * @param url
+   * @param data 
+   * @param url 
    */
   async xhrPost(data: any, url: string) {
     const requestFun = (): void => {
@@ -140,11 +142,9 @@ export class TransportData {
       xhr.open(EMethods.Post, url)
       xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
       xhr.withCredentials = true
-      xhr.send(
-        JSON.stringify({
-          data: data
-        })
-      )
+      xhr.send(JSON.stringify({
+        data: data
+      }))
     }
     this.queue.pushToQueue(requestFun)
   }
