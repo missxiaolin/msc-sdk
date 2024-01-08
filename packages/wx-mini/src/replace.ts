@@ -95,11 +95,11 @@ function replaceAction(
     | WechatMiniprogram.Component.MethodOption
 ) {
   function gestureTrigger(e) {
-    e.mitoWorked = true // 给事件对象增加特殊的标记，避免被无限透传
+		e.mitoWorked = true // 给事件对象增加特殊的标记，避免被无限透传
     triggerHandlers(EVENTTYPES.DOM, e)
   }
   const throttleGesturetrigger = throttle(gestureTrigger, sdkOptions.throttleDelayTime)
-  const linstenerTypes = [ELinstenerTypes.Touchmove, ELinstenerTypes.Tap]
+	const linstenerTypes = [ELinstenerTypes.Touchmove, ELinstenerTypes.Tap]
   if (options) {
     Object.keys(options).forEach((m) => {
       if ('function' !== typeof options[m]) {

@@ -3,6 +3,7 @@ import { _support } from '../../utils/global'
 import { Severity, ERRORTYPES_CATEGORY } from '../../shared/index'
 import { parseErrorString, getNowFormatTime, getTimestamp, unknownToString, getPageURL } from '../../utils/helpers'
 import { breadcrumb } from '../../core/breadcrumb'
+import { targetAsString } from './utils'
 
 const HandleWxAppEvents = {
   /**
@@ -71,6 +72,34 @@ const HandleWxPageEvents = {
 	},
 	onAction(e: WechatMiniprogram.BaseEvent) {
 		console.log(e)
+		const { target = {}, detail = {}, timeStamp = '', type = '', currentTarget } = e
+		try {
+			breadcrumb.push({
+				level: Severity.INFO,
+				category: ERRORTYPES_CATEGORY.USER_CLICK,
+				top: target.offsetTop || currentTarget.offsetTop,
+				left: target.offsetLeft || currentTarget.offsetLeft,
+				pageHeight: 0,
+				scrollTop: 0,
+				subType: type,
+				tagName: "view",
+				targetInfo: {
+					offsetWidth: 0,
+					offsetHeight: 0,
+				},
+				paths: "",
+				startTime: timeStamp,
+				innerHTML: targetAsString(e),
+				happenTime: getTimestamp(),
+				happenDate: getNowFormatTime(),
+				viewport: {
+					width: detail.x || 0,
+					height: detail.y || 0,
+				},
+			})
+		} catch (e) {
+			// Ignore
+		}
 	}
 }
 

@@ -96,3 +96,15 @@ export async function getWxMiniDeviceInfo(): Promise<any> {
 
   return uas;
 }
+
+/**
+ * 返回包含id、data字符串的标签
+ * @param e wx BaseEvent
+ */
+export function targetAsString(e: WechatMiniprogram.BaseEvent): string {
+  const id = e.currentTarget?.id ? ` id="${e.currentTarget?.id}"` : ''
+  const dataSets = Object.keys(e.currentTarget.dataset).map((key) => {
+    return `data-${key}=${e.currentTarget.dataset[key]}`
+  })
+  return `<element ${id} ${dataSets.join(' ')}/>`
+}
