@@ -36,6 +36,13 @@ export enum WxAppEvents {
   AppOnUnhandledRejection = 'AppOnUnhandledRejection' // 监听未处理的 Promise 拒绝事件。
 }
 
+export enum ELinstenerTypes {
+  Touchmove = 'touchmove',
+  Tap = 'tap',
+  Longtap = 'longtap',
+  Longpress = 'longpress'
+}
+
 export enum WxPageEvents {
   PageOnLoad = 'PageOnLoad',
   PageOnShow = 'PageOnShow',

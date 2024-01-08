@@ -1,7 +1,7 @@
 import { getWxMiniDeviceInfo } from './utils'
 import { _support } from '../../utils/global'
 import { Severity, ERRORTYPES_CATEGORY } from '../../shared/index'
-import { parseErrorString, getNowFormatTime, getTimestamp, unknownToString } from '../../utils/helpers'
+import { parseErrorString, getNowFormatTime, getTimestamp, unknownToString, getPageURL } from '../../utils/helpers'
 import { breadcrumb } from '../../core/breadcrumb'
 
 const HandleWxAppEvents = {
@@ -49,5 +49,29 @@ const HandleWxAppEvents = {
 		breadcrumb.push(promiseError)
 	}
 }
+let popstateStartTime = getTimestamp(),
+referrerPage = ''
 
-export { HandleWxAppEvents }
+const HandleWxPageEvents = {
+	onLoad() {
+		breadcrumb.push({
+			level: Severity.INFO,
+      category: ERRORTYPES_CATEGORY.PAGE_CHANGE,
+      referrer:  getPageURL(),
+      type: '',
+      to: getPageURL(),
+      from: referrerPage || getPageURL(),
+      subType: '',
+      duration: Date.now() - popstateStartTime,
+      startTime: getTimestamp(),
+      happenTime: getTimestamp(),
+      happenDate: getNowFormatTime(),
+		})
+		popstateStartTime = getTimestamp()
+	},
+	onAction(e: WechatMiniprogram.BaseEvent) {
+		console.log(e)
+	}
+}
+
+export { HandleWxAppEvents, HandleWxPageEvents }

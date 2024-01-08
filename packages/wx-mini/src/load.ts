@@ -1,5 +1,6 @@
-import { replaceApp } from './replace'
+import { replaceApp, replacePage } from './replace'
 
 export function setupReplace() {
-    replaceApp()
+		replaceApp()
+		replacePage()
 }
