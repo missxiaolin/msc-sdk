@@ -11,7 +11,7 @@ export enum metricsName {
   FPS = 'fps',
   ACT = 'api-complete-time',
   /* information */
-  DI = 'device-information',
+  // DI = 'device-information',
   NI = 'network-information',
-  PI = 'page-information'
+  // PI = 'page-information'
 }

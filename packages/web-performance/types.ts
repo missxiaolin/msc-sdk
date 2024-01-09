@@ -76,8 +76,35 @@ export interface OnPageChangeCallback {
   (event?: Event): void
 }
 
+export interface IEffectiveType {
+
+  type: '4g' | '3g' | '2g' | 'slow-2g'
+}
+
 export interface INetworkInformation {
   downlink?: number
   effectiveType?: IEffectiveType
   rtt?: number
+}
+
+export interface IPageInformation {
+  host: string
+  hostname: string
+  href: string
+  protocol: string
+  origin: string
+  port: string
+  pathname: string
+  search: string
+  hash: string
+  userAgent?: string
+  screenResolution: string
+}
+
+export interface IDeviceInformation {
+  deviceMemory?: number | any
+  hardwareConcurrency?: number
+  jsHeapSizeLimit?: number
+  totalJSHeapSize?: number
+  usedJSHeapSize?: number
 }
