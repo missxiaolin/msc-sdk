@@ -3,7 +3,7 @@ import { MITOHttp, ResourceErrorTarget, ReportDataType, Replace } from '../types
 import { extractErrorStack, formatUrlToStr, getFlag, getNowFormatTime, getPageURL, getTimestamp, isError } from '../utils/index'
 import { breadcrumb } from '../core/index'
 import { resourceTransform } from '../core/transformData'
-// import { resolveNavigationTiming, isIgnoreResource, resolveResourceTiming } from './utils'
+import generateUniqueID from '../utils/generateUniqueID'
 
 const HandleEvents = {
   // xhr/fetch 请求重写
@@ -228,7 +228,10 @@ const HandleEvents = {
       happenDate: getNowFormatTime(),
       pageUrl,
       simpleUrl: formatUrlToStr(pageUrl),
-      metrics: objs
+      metrics: {
+        sessionId: generateUniqueID(),
+        objs
+      }
     })
   }
 }

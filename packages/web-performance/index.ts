@@ -9,6 +9,8 @@ import { initLCP } from './metrics/getLCP'
 import { initCCP } from './metrics/getCCP'
 import { initNavigationTiming } from './metrics/getNavigationTiming'
 import { initNetworkInfo } from './metrics/getNetworkInfo'
+import { initDeviceInfo } from './metrics/getDeviceInfo'
+import { initPageInfo } from './metrics/getPageInfo'
 import { setMark, clearMark, getMark, hasMark } from './lib/markHandler'
 import { measure } from './lib/measureCustomMetrics'
 import { afterLoad, beforeUnload, unload } from './utils'
@@ -31,6 +33,8 @@ class WebVitals implements IWebVitals {
     metricsStore = new MetricsStore()
 
     initNetworkInfo(metricsStore)
+    initDeviceInfo(metricsStore)
+    initPageInfo(metricsStore)
     initCLS(metricsStore, scoreConfig)
     initLCP(metricsStore, scoreConfig)
     initCCP(metricsStore, isCustomEvent, apiConfig, hashHistory, excludeRemotePath, maxWaitCCPDuration, scoreConfig)
@@ -61,7 +65,7 @@ class WebVitals implements IWebVitals {
 
   getCurrentMetrics(): IMetricsObj {
     const metrics = metricsStore.getValues()
-    metricsStore.clear()
+    // metricsStore.clear()
     return metrics
   }
 

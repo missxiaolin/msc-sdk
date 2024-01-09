@@ -53,7 +53,7 @@ export class TransportData {
     validateOption(url, 'url', 'string') && (this.url = url)
     validateOption(trackUrl, 'trackUrl', 'string') && (this.trackUrl = trackUrl)
     validateOption(reportType, 'reportType', 'number') && (this.reportType = reportType)
-    validateOption(uuId, 'uuId', 'function') && (this.uuId = uuId)
+    this.uuId = uuId || ""
     // 设置请求最大值
     validateOption(maxQueues, 'maxQueues', 'number') && (this.queue.setMaxQueues(maxQueues))
   }
@@ -85,7 +85,7 @@ export class TransportData {
     return {
       appUid: {
         monitorAppId: this.monitorAppId,
-        uuId: this.uuId ? this.uuId() : ''
+        uuId: this.uuId ? this.uuId : ''
       },
       deviceInfo: this.getDeviceInfo(),
       lists: [{

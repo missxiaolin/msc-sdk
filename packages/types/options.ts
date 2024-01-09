@@ -34,7 +34,7 @@ export interface InitOptions extends HooksTypes {
   /**
    * 获取用户
    */
-  uuId?: void
+  uuId?: any
   report?: {
     /**
      * 错误监控的dsn服务器地址
@@ -62,6 +62,7 @@ export interface InitOptions extends HooksTypes {
     delay: number
   }
   watch?: {
+    whiteScreen: boolean
     /**
      * 页面
      */
