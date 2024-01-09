@@ -51,7 +51,7 @@ export const initFP = (store: metricsStore, scoreConfig): void => {
         value: roundByFour(entry.startTime, 2),
         score: calcScore(metricsName.FP, entry.startTime, scoreConfig)
       } as IMetrics
-      console.log(metrics)
+      store.set(metricsName.FP, metrics)
     })
     .catch((error) => {
       console.error(error)

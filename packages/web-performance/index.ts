@@ -52,7 +52,6 @@ class WebVitals implements IWebVitals {
     ;[beforeUnload, unload, onHidden].forEach((fn) => {
       fn(() => {
         const metrics = this.getCurrentMetrics()
-        console.log(metrics)
         if (Object.keys(metrics).length > 0) {
           reportCallback(metrics)
         }
