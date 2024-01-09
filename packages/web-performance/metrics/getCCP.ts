@@ -145,7 +145,7 @@ export const initCCP = (
   hashHistory: boolean,
   excludeRemotePath: Array<string>,
   maxWaitCCPDuration: number,
-  scoreConfig: IScoreConfig
+  scoreConfig
 ) => {
   const event = isCustomEvent ? 'custom-contentful-paint' : 'pageshow'
   addEventListener(

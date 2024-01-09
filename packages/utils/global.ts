@@ -9,7 +9,7 @@ export interface MitoSupport {
   transportData: TransportData
   replaceFlag: { [key in EVENTTYPES]?: boolean }
   record?: any[]
-  deviceInfo?: DeviceInfo
+  deviceInfo?: DeviceInfo | any
   options?: Options
 }
 

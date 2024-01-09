@@ -108,3 +108,12 @@ export interface IDeviceInformation {
   totalJSHeapSize?: number
   usedJSHeapSize?: number
 }
+
+declare global {
+  interface Window {
+    // Build flags:
+    __monitor_xhr__: boolean
+    __monitor_fetch__: boolean
+    __monitor_sessionId__: string
+  }
+}
