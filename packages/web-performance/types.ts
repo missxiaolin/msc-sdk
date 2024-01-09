@@ -5,7 +5,8 @@ export interface IConfig {
     apiConfig?: object,
     hashHistory?: boolean
     excludeRemotePath?: Array<string>
-    maxWaitCCPDuration: number
+    maxWaitCCPDuration?: number
+    reportCallback: Function
   }
 
 export interface IMetrics {
@@ -73,4 +74,10 @@ export interface LayoutShift extends PerformanceEntry {
 
 export interface OnPageChangeCallback {
   (event?: Event): void
+}
+
+export interface INetworkInformation {
+  downlink?: number
+  effectiveType?: IEffectiveType
+  rtt?: number
 }

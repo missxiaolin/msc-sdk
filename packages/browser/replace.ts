@@ -304,18 +304,22 @@ function domReplace(): void {
   // )
 }
 
-export const afterLoad = callback => {
-  if (document.readyState === 'complete') {
-    setTimeout(callback);
-  } else {
-    window.addEventListener('pageshow', callback, { once: true, capture: true });
-  }
-};
+// export const afterLoad = callback => {
+//   if (document.readyState === 'complete') {
+//     setTimeout(callback);
+//   } else {
+//     window.addEventListener('pageshow', callback, { once: true, capture: true });
+//   }
+// };
 import { WebVitals } from '../web-performance/index'
 
 function listenPerformance(): void {
   if (!('document' in _global) && !('performance' in _global)) return
-  new WebVitals({})
+  new WebVitals({
+    reportCallback: (data) => {
+      triggerHandlers(EVENTTYPES.PERFORMANCE, data)
+    }
+  })
   // afterLoad(() => {
   //   const entryList = _global.performance.getEntries() || [];
   //   triggerHandlers(EVENTTYPES.PERFORMANCE, entryList)

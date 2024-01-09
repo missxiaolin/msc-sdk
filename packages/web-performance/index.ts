@@ -8,6 +8,9 @@ import { initCLS } from './metrics/getCLS'
 import { initLCP } from './metrics/getLCP'
 import { initCCP } from './metrics/getCCP'
 import { initNavigationTiming } from './metrics/getNavigationTiming'
+import { initNetworkInfo } from './metrics/getNetworkInfo'
+import { setMark, clearMark, getMark, hasMark } from './lib/markHandler'
+import { measure } from './lib/measureCustomMetrics'
 import { afterLoad, beforeUnload, unload } from './utils'
 import { onHidden } from './lib/onHidden'
 
@@ -16,6 +19,7 @@ let metricsStore: MetricsStore
 class WebVitals implements IWebVitals {
   constructor(config: IConfig) {
     const {
+      reportCallback,
       isCustomEvent = false,
       scoreConfig = {},
       logFpsCount = 5,
@@ -26,6 +30,7 @@ class WebVitals implements IWebVitals {
     } = config
     metricsStore = new MetricsStore()
 
+    initNetworkInfo(metricsStore)
     initCLS(metricsStore, scoreConfig)
     initLCP(metricsStore, scoreConfig)
     initCCP(metricsStore, isCustomEvent, apiConfig, hashHistory, excludeRemotePath, maxWaitCCPDuration, scoreConfig)
@@ -49,7 +54,7 @@ class WebVitals implements IWebVitals {
         const metrics = this.getCurrentMetrics()
         console.log(metrics)
         if (Object.keys(metrics).length > 0) {
-          //   reporter(metrics)
+          reportCallback(metrics)
         }
       })
     })
@@ -57,6 +62,48 @@ class WebVitals implements IWebVitals {
 
   getCurrentMetrics(): IMetricsObj {
     return metricsStore.getValues()
+  }
+
+  private static dispatchCustomEvent(): void {
+    const event = document.createEvent('Events')
+    event.initEvent('custom-contentful-paint', false, true)
+    document.dispatchEvent(event)
+  }
+
+  customContentfulPaint() {
+    setTimeout(() => {
+      WebVitals.dispatchCustomEvent()
+    })
+  }
+
+  setStartMark(markName: string) {
+    setMark(`${markName}_start`)
+  }
+
+  setEndMark(markName: string) {
+    setMark(`${markName}_end`)
+
+    if (hasMark(`${markName}_start`)) {
+      const value = measure(`${markName}Metrics`, markName)
+      this.clearMark(markName)
+
+      const metrics = { name: `${markName}Metrics`, value }
+
+      metricsStore.set(`${markName}Metrics`, metrics)
+      
+    } else {
+      const value = getMark(`${markName}_end`)?.startTime
+      this.clearMark(markName)
+
+      const metrics = { name: `${markName}Metrics`, value }
+
+      metricsStore.set(`${markName}Metrics`, metrics)
+    }
+  }
+
+  clearMark(markName: string) {
+    clearMark(`${markName}_start`)
+    clearMark(`${markName}_end`)
   }
 }
 
