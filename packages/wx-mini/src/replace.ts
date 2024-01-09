@@ -271,19 +271,19 @@ function replaceNetwork() {
 
 // 性能
 function replacePerformance() {
-  if (!getFlag(EVENTTYPES.PERFORMANCE)) {
-    return
-  }
-  const performance = wx.getPerformance()
-  const observer = performance.createObserver((entryList) => {
-    const data = getWxPerformance(entryList.getEntries())
-    const NT = data.NT
-    if (NT.appLaunch == 0 && NT.route == 0 && NT.firstRender == 0 && NT.script == 0 && NT.loadPackage == 0) {
-      return
-    }
-    triggerHandlers(EVENTTYPES.PERFORMANCE, data)
-  })
-  observer.observe({ entryTypes: ['render', 'script', 'navigation', 'loadPackage', 'resource'] })
+  // if (!getFlag(EVENTTYPES.PERFORMANCE)) {
+  //   return
+  // }
+  // const performance = wx.getPerformance()
+  // const observer = performance.createObserver((entryList) => {
+  //   const data = getWxPerformance(entryList.getEntries())
+  //   const NT = data.NT
+  //   if (NT.appLaunch == 0 && NT.route == 0 && NT.firstRender == 0 && NT.script == 0 && NT.loadPackage == 0) {
+  //     return
+  //   }
+  //   triggerHandlers(EVENTTYPES.PERFORMANCE, data)
+  // })
+  // observer.observe({ entryTypes: ['render', 'script', 'navigation', 'loadPackage', 'resource'] })
 }
 
 // 路由
