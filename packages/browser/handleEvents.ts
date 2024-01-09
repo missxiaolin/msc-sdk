@@ -80,7 +80,6 @@ const HandleEvents = {
     let name: string | any = 'UNKNOWN'
     const url = filename || getPageURL()
     let msg = message
-    console.log(message)
     const matches = message.match(ERROR_TYPE_RE)
     if (matches[1]) {
       name = matches[1]

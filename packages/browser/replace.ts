@@ -311,11 +311,13 @@ export const afterLoad = callback => {
     window.addEventListener('pageshow', callback, { once: true, capture: true });
   }
 };
+import { WebVitals } from '../web-performance/index'
 
 function listenPerformance(): void {
   if (!('document' in _global) && !('performance' in _global)) return
-  afterLoad(() => {
-    const entryList = _global.performance.getEntries() || [];
-    triggerHandlers(EVENTTYPES.PERFORMANCE, entryList)
-  })
+  new WebVitals({})
+  // afterLoad(() => {
+  //   const entryList = _global.performance.getEntries() || [];
+  //   triggerHandlers(EVENTTYPES.PERFORMANCE, entryList)
+  // })
 }
