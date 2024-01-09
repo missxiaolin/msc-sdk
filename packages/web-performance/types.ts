@@ -1,23 +1,23 @@
 export interface IConfig {
-    isCustomEvent?: boolean
-    scoreConfig?: object
-    logFpsCount?: number
-    apiConfig?: object,
-    hashHistory?: boolean
-    excludeRemotePath?: Array<string>
-    maxWaitCCPDuration?: number
-    reportCallback: Function
-  }
+  isCustomEvent?: boolean
+  scoreConfig?: object
+  logFpsCount?: number
+  apiConfig?: object
+  hashHistory?: boolean
+  excludeRemotePath?: Array<string>
+  maxWaitCCPDuration?: number
+  reportCallback: Function
+}
 
 export interface IMetrics {
-    name: string
-    value: any
-    score?: number
-  }
+  name: string
+  value: any
+  score?: number
+}
 
 export interface IMetricsObj {
-    [prop: string]: IMetrics
-  }
+  [prop: string]: IMetrics
+}
 
 export interface IWebVitals {
   getCurrentMetrics(): IMetricsObj
@@ -77,7 +77,6 @@ export interface OnPageChangeCallback {
 }
 
 export interface IEffectiveType {
-
   type: '4g' | '3g' | '2g' | 'slow-2g'
 }
 
@@ -99,6 +98,7 @@ export interface IPageInformation {
   hash: string
   userAgent?: string
   screenResolution: string
+  simpleUrl?: string
 }
 
 export interface IDeviceInformation {
