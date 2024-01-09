@@ -7,7 +7,7 @@ import { _global } from '../utils/index'
 import { SDK_VERSION, SDK_NAME } from '../shared/index'
 import { InitOptions } from '../types/index'
 import { _support } from '../utils/index'
-import { uaParser } from './utils'
+import { uaParser, getCookie } from './utils'
 function webInit(options: InitOptions = {}): void {
   if (!('XMLHttpRequest' in _global) || options.monitorSwitch) return
   _support.deviceInfo = uaParser()
@@ -19,4 +19,4 @@ function init(options: InitOptions = {}): void {
   webInit(options)
 }
 
-export { SDK_VERSION, SDK_NAME, init, log }
+export { SDK_VERSION, SDK_NAME, init, log, getCookie }

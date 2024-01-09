@@ -173,6 +173,29 @@
       "preserveMemberOrder": false,
       "members": [
         {
+          "kind": "Variable",
+          "canonicalReference": "@xiaolin/monitor-web!getCookie:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "getCookie: "
+            },
+            {
+              "kind": "Content",
+              "text": "(name: string) => string"
+            }
+          ],
+          "fileUrlPath": "packages/browser/utils.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "getCookie",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        },
+        {
           "kind": "Function",
           "canonicalReference": "@xiaolin/monitor-web!init:function(1)",
           "docComment": "",

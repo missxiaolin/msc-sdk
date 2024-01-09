@@ -128,6 +128,40 @@ export function resolveNavigationTiming(entry) {
 }
 
 /**
+ * @description : 原生获取 cookie
+ */
+export const getCookie = (name: string) => {
+  let resultVal = ''
+  if (!name) return resultVal
+  const splitName: any[] = name.split('.')
+  const cookieKey = splitName.splice(0, 1)[0]
+  // RegExp 和 match
+  let arr: any = [];
+  const reg = new RegExp('(^| )' + cookieKey + '=([^;]*)(;|$)')
+  arr = document.cookie.match(reg)
+  if (arr) {
+    // 编码转换
+    const cKey = decodeURIComponent(arr[2])
+    if (splitName.length) {
+      const ObjcKey = JSON.parse(cKey)
+      let forVal = ''
+      for (let i = 0, len = splitName.length; i < len; i++) {
+        if (!i) {
+          forVal = ObjcKey[splitName[i]]
+        } else {
+          forVal = forVal[splitName[i]]
+        }
+      }
+      return (resultVal = forVal)
+    }
+    resultVal = cKey
+  } else {
+    return resultVal
+  }
+  return resultVal
+}
+
+/**
  *  排除不统计资源
  * @param {*} resource
  * @returns

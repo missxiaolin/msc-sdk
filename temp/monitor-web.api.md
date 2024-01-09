@@ -8,6 +8,9 @@ import { BreadcrumbPushData } from '../types/breadcrumb';
 import { BreadcrumbPushData as BreadcrumbPushData_2 } from './breadcrumb';
 import { VueInstance } from './types';
 
+// @public (undocumented)
+export const getCookie: (name: string) => string;
+
 // Warning: (ae-forgotten-export) The symbol "InitOptions" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
