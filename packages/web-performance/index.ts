@@ -60,7 +60,9 @@ class WebVitals implements IWebVitals {
   }
 
   getCurrentMetrics(): IMetricsObj {
-    return metricsStore.getValues()
+    const metrics = metricsStore.getValues()
+    metricsStore.clear()
+    return metrics
   }
 
   private static dispatchCustomEvent(): void {
