@@ -13,12 +13,12 @@ resource download|number|资源加载耗时|	loadEventStart - domContentLoadedEv
 dom Ready|number|DOM完成加载|domContentLoadedEventEnd - fetchStart
 page load|number|页面完全加载|loadEventStart - fetchStart
 
-### FP
+### 白屏时间(FP)
 字段|字段类型|描述|备注
 |---|---|----|---|
 value|number|从导航到浏览器向屏幕呈现第一个像素之间的时间|
 
-### FCP
+### 首屏时间(FCP)
 字段|字段类型|描述|备注
 |---|----|----|---|
 value|number|浏览器呈现来自DOM的第一部分内容|
