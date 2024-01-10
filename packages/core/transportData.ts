@@ -1,6 +1,6 @@
 import { BreadcrumbPushData } from '../types/breadcrumb'
 import { InitOptions, FinalReportType, TransportDataType, DeviceInfo, EMethods } from '../types/index'
-import { _support, formatUrlToStr, getPageURL, isBrowserEnv, isWxMiniEnv, validateOption } from '../utils/index'
+import { _support, formatUrlToStr, getPageURL, isBrowserEnv, isWxMiniEnv, validateOption, variableTypeDetection } from '../utils/index'
 import Queue from '../utils/queue'
 
 /**
@@ -38,6 +38,14 @@ export class TransportData {
     return isSdkDsn
   }
 
+  setUserId(uuId: any) {
+    if (variableTypeDetection.isFunction(uuId)) {
+      this.uuId = uuId()
+      return
+    }
+    this.uuId = uuId || ""
+  }
+
   /**
    * 初始化参数
    * @param options 
@@ -53,7 +61,7 @@ export class TransportData {
     validateOption(url, 'url', 'string') && (this.url = url)
     validateOption(trackUrl, 'trackUrl', 'string') && (this.trackUrl = trackUrl)
     validateOption(reportType, 'reportType', 'number') && (this.reportType = reportType)
-    this.uuId = uuId || ""
+    this.setUserId(uuId)
     // 设置请求最大值
     validateOption(maxQueues, 'maxQueues', 'number') && (this.queue.setMaxQueues(maxQueues))
   }

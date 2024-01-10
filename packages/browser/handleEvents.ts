@@ -181,29 +181,18 @@ const HandleEvents = {
     if (!target) return
     const { offsetWidth, offsetHeight, tagName, outerHTML, innerHTML } = target
     const { top, left } = target.getBoundingClientRect()
-    const paths = event.path
-      ?.map((item) => {
-        const { tagName, id, className } = item
-        return tagName && `${tagName}${id ? '#' + id : ''}${className ? '.' + className.replace(/''/g, '.') : ''}`
-      })
-      .filter(Boolean)
-    // if (paths && paths.length > 5) {
-    //     paths = paths.slice(0, 5)
-    // }
     breadcrumb.push({
       level: Severity.INFO,
       category: ERRORTYPES_CATEGORY.USER_CLICK,
       top,
       left,
       pageHeight: document.documentElement.scrollHeight || document.body.scrollHeight,
-      scrollTop: document.documentElement.scrollTop || document.body.scrollTop,
       subType: data.category,
       tagName,
       targetInfo: {
         offsetWidth,
         offsetHeight
       },
-      paths: paths || '',
       startTime: event.timeStamp,
       outerHTML,
       innerHTML,
