@@ -1,6 +1,6 @@
 import { BREADCRUMBTYPES, Severity, ERRORTYPES_CATEGORY, EVENTTYPES, ERROR_TYPE_RE } from '../shared/index'
 import { MITOHttp, ResourceErrorTarget, ReportDataType, Replace } from '../types/index'
-import { extractErrorStack, formatUrlToStr, getFlag, getNowFormatTime, getPageURL, getTimestamp, isError } from '../utils/index'
+import { extractErrorStack, formatUrlToStr, getFlag, getNowFormatTime, getPageURL, getTimestamp, isError, variableTypeDetection } from '../utils/index'
 import { breadcrumb } from '../core/index'
 import { resourceTransform } from '../core/transformData'
 import generateUniqueID from '../utils/generateUniqueID'
@@ -160,7 +160,7 @@ const HandleEvents = {
       const promiseError = {
         level: Severity.WARN,
         category: ERRORTYPES_CATEGORY.PROMISE_ERROR,
-        errorMsg: reason,
+        errorMsg: variableTypeDetection.isObject(reason) && reason.message ? reason.message : variableTypeDetection.isString(reason) ? reason : '',
         startTime: timeStamp,
         happenTime: getTimestamp(),
         happenDate: getNowFormatTime()
