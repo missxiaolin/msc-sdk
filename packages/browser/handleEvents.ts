@@ -60,8 +60,8 @@ const HandleEvents = {
       errorMsg: result.message,
       category: ERRORTYPES_CATEGORY.JS_ERROR,
       type: result.name || 'UnKnowun',
-      line: 0,
-      col: 0,
+      line: lineno || 0,
+      col: colno || 0,
       stackTraces: result.stack,
       subType: 'jsError',
       level: Severity.ERROR,
@@ -89,8 +89,8 @@ const HandleEvents = {
       url,
       func: 'UNKNOWN_FUNCTION',
       args: 'UNKNOWN',
-      line: lineno,
-      col: colno
+      lineno: lineno,
+      colno: colno
     }
     return {
       url,
