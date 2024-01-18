@@ -97,7 +97,7 @@ class Store extends Event {
   async handleWxAction(data: WxPerformanceItem) {
     if (!this.firstAction) {
       const d = await this._createPerformanceData(WxPerformanceDataType.WX_USER_ACTION, [data])
-      this._pushData([d])
+      this._pushData(d)
       this.firstAction = true
     }
   }
@@ -127,7 +127,7 @@ class Store extends Event {
    */
   async simpleHandle(type: WxPerformanceDataType, data: WxPerformanceItem) {
     const d = await this._createPerformanceData(type as WxPerformanceDataType, [data])
-    this._pushData([d])
+    this._pushData(d)
   }
 
   /**
@@ -174,7 +174,7 @@ class Store extends Event {
             duration: now - navigationStart
           }
         ])
-        this._pushData([data])
+        this._pushData(data)
       }
     }, 1000)
   }
