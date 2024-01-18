@@ -6,7 +6,7 @@ export interface WxPerformanceInitOptions {
   /**
    * 上报方法
    */
-  reportCallback: (data) => void
+  reportCallback: (data: WxPerformanceAnyObj) => void
   /**
    * 是否立即上报
    */
@@ -101,29 +101,6 @@ export interface WxPerformanceNetworkItem {
 export interface WxPerformanceItem extends WxPerformanceMemoryItem, WxPerformanceNetworkItem, WxPerformanceAnyObj {
   itemType: WxPerformanceItemType
   timestamp?: number
-}
-
-export interface WxPerformanceData {
-  timestamp: number
-  time: string
-  networkType: WxNetworkType
-  batteryLevel: string
-  systemInfo: WechatMiniprogram.SystemInfo
-  wxLaunch: number
-  page: string
-  type: WxPerformanceDataType
-  item: null | WxPerformanceItem | Array<WxPerformanceItem>
-}
-
-// performance类型
-export interface WxPerformanceEntryObj {
-  entryType?: 'navigation' | 'render' | 'script' // 	指标类型
-  name?: 'route' | 'appLaunch' | 'firstRender' | 'evaluateScript' // 指标名称
-  startTime?: number // 指标调用开始时间；appLaunch为点击图标的时间
-  duration?: number //	耗时
-  path?: string //	路径
-  navigationStart?: number // 路由真正响应开始时间
-  navigationType?: 'appLaunch' | 'navigateTo' | 'switchTab' | 'redirectTo' | 'reLaunch' // 路由详细类型
 }
 
 export type Listener = (...args: any[]) => void

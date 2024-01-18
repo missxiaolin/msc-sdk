@@ -1,10 +1,7 @@
 import { toStringValidateOption, validateOption } from '../../utils/helpers'
 import {
   WxPerformanceInitOptions,
-  WxPerformanceData,
   WxPerformanceItem,
-  WxNetworkType,
-  WxPerformanceEntryObj,
   WxPerformanceAnyObj
 } from '../types/index'
 import { WxPerformanceDataType, WxPerformanceItemType } from '../constant/index'
@@ -15,9 +12,9 @@ class Store extends Event {
   immediately?: boolean
   maxBreadcrumbs?: number
   ignoreUrl?: RegExp
-  report: (data: Array<WxPerformanceData>) => void
+  report: (data: any) => void
 
-  private stack: Array<WxPerformanceData>
+  private stack: Array<any>
 
   // wx
   systemInfo: WechatMiniprogram.SystemInfo
@@ -58,38 +55,18 @@ class Store extends Event {
   }
 
   /**
-   * 获取网络状态
-   * @returns
-   */
-  async _getNetworkType(): Promise<WxNetworkType> {
-    let nk = { networkType: 'none', errMsg: '' } as WechatMiniprogram.GetNetworkTypeSuccessCallbackResult
-    try {
-      nk = await this.getNetworkType()
-    } catch (err) {
-      console.warn(`getNetworkType err = `, err)
-    }
-    return nk.networkType
-  }
-
-  /**
    * 数据
    * @param type
    * @param item
    * @returns
    */
-  async _createPerformanceData(type: WxPerformanceDataType, item: Array<WxPerformanceItem>): Promise<WxPerformanceData> {
-    const networkType = await this._getNetworkType()
-    const date = new Date()
+  async _createPerformanceData(type: WxPerformanceDataType, item: WxPerformanceAnyObj | number): Promise<WxPerformanceAnyObj> {
     return {
-      timestamp: date.getTime(),
-      time: date.toLocaleString(),
-      networkType: networkType,
-      batteryLevel: this.getBatteryInfo().level,
-      // systemInfo: this._getSystemInfo(),
-      wxLaunch: this.wxLaunchTime,
-      page: getPageUrl(),
-      type: type,
-      item: item
+			[type]: {
+				name: type,
+				value: item,
+				page: getPageUrl(),
+			}
     }
   }
 
@@ -97,17 +74,17 @@ class Store extends Event {
    * @param type
    * @param data
    */
-  push(type: WxPerformanceDataType, data: WxPerformanceItem | Array<WxPerformanceItem>) {
+  push(type: WxPerformanceDataType, data: number | WxPerformanceAnyObj) {
     switch (type) {
       case WxPerformanceDataType.WX_LIFE_STYLE:
       case WxPerformanceDataType.WX_NETWORK:
         this.simpleHandle(type, data as WxPerformanceItem)
         break
-      case WxPerformanceDataType.MEMORY_WARNING:
-        this.handleMemoryWarning(data as WechatMiniprogram.OnMemoryWarningCallbackResult)
+      case WxPerformanceDataType.MEMORY_WARNING: // 内存告警
+        this.handleMemoryWarning(data)
         break
-      case WxPerformanceDataType.WX_PERFORMANCE:
-				this.handleWxPerformance(data as Array<WxPerformanceItem>)
+      case WxPerformanceDataType.WX_PERFORMANCE: // 性能
+				this.handleWxPerformance(data)
 				break
       case WxPerformanceDataType.WX_USER_ACTION:
         this.handleWxAction(data as WxPerformanceItem)
@@ -125,36 +102,22 @@ class Store extends Event {
     }
   }
 
-  /**
-   * @param entry
-   */
-  buildNavigationStart(entry: WxPerformanceEntryObj) {
-    if (entry.entryType === 'navigation') {
-      // appLaunch时没有navigationStart
-      this.navigationMap[entry.path] = entry.navigationStart || entry.startTime
-    }
-  }
-
-  async handleWxPerformance(data: Array<WxPerformanceItem> = []) {
-    const _data: Array<WxPerformanceItem> = data.map((d) => {
-      this.buildNavigationStart(d)
-      d.itemType = WxPerformanceItemType.Performance
-      d.timestamp = Date.now()
-      return d
-    })
-    const item = await this._createPerformanceData(WxPerformanceDataType.WX_PERFORMANCE, _data)
-    this._pushData([item])
+	/**
+	 * 性能
+	 * @param data 
+	 */
+  async handleWxPerformance(data: number | WxPerformanceAnyObj) {
+		const item = await this._createPerformanceData(WxPerformanceDataType.WX_PERFORMANCE, data)
+    this._pushData(item)
   }
 
   /**
    * 内存警告会立即上报
    * @param data
    */
-  async handleMemoryWarning(data: WechatMiniprogram.OnMemoryWarningCallbackResult) {
-    const d = await this._createPerformanceData(WxPerformanceDataType.MEMORY_WARNING, [
-      { ...data, itemType: WxPerformanceItemType.MemoryWarning, timestamp: Date.now() }
-    ])
-    this.report([d])
+  async handleMemoryWarning(data: WxPerformanceAnyObj | number) {
+    const d = await this._createPerformanceData(WxPerformanceDataType.MEMORY_WARNING, data)
+    this.report(d)
   }
 
   /**
@@ -181,7 +144,7 @@ class Store extends Event {
    * @param data
    * @returns
    */
-  async _pushData(data: Array<WxPerformanceData>) {
+  async _pushData(data: WxPerformanceAnyObj | number) {
     if (this.immediately) {
       this.report(data)
       return

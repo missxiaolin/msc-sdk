@@ -117,7 +117,7 @@ export function targetAsString(e: WechatMiniprogram.BaseEvent): string {
 export function setUrlQuery(url: string, query: object) {
   const queryArr = []
   Object.keys(query).forEach((k) => {
-    queryArr.push(`${k}=${query[k]}`)
+    queryArr.push(`${k}=*`)
   })
   if (url.indexOf('?') !== -1) {
     url = `${url}&${queryArr.join('&')}`

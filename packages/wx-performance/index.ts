@@ -25,7 +25,7 @@ class WxPerformance {
     initMemoryWarning(store, needMemoryWarning)
     // 如果 immediately为false 会在appHide的时候发送数据
     initWxHideReport(store, immediately, onAppHideReport)
-    // initWxPerformance(store)
+    initWxPerformance(store)
     // initWxNetwork(store)
   }
 

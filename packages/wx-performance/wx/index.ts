@@ -1,6 +1,5 @@
 import Store from '../core/store'
 import { WxPerformanceDataType, WxPerformanceItemType } from '../constant/index'
-import { WxPerformanceItem } from '../types/index'
 import HandleEvents from './handleEvents'
 import { replaceApp, replaceComponent, replaceNetwork, replacePage } from './replace'
 
@@ -60,9 +59,41 @@ export function initWxHideReport(store: Store, immediately: boolean, onAppHideRe
 export function initWxPerformance(store: Store) {
   const performance = wx.getPerformance()
   const observer = performance.createObserver((entryList) => {
-    store.push(WxPerformanceDataType.WX_PERFORMANCE, entryList.getEntries())
+		const obj = {}
+		const entries = entryList.getEntries() || []
+		entries.forEach(item => {
+			obj[`${item.name}name`] = item.name || ''
+			obj[`${item.name}duration`] = item.duration || 0
+			obj[`${item.name}entryType`] = item.entryType || ""
+			obj[`${item.name}startTime`] = item.startTime || ""
+			if (item.navigationType) {
+				obj[`${item.name}navigationType`] = item.navigationType || ""
+			}
+			if (item.viewLayerReadyTime) { // 渲染层代码注入完成时间。仅 firstRender 指标有效。
+				obj[`${item.name}viewLayerReadyTime`] = item.viewLayerReadyTime || 0
+			}
+			if (item.initDataSendTime) { // 首次渲染参数从逻辑层发出的时间。仅 firstRender 指标有效。
+				obj[`${item.name}initDataSendTime`] = item.initDataSendTime || 0
+			}
+			if (item.initDataRecvTime) { // 首次渲染参数在渲染层收到的时间。仅 firstRender 指标有效。
+				obj[`${item.name}initDataRecvTime`] = item.initDataRecvTime || 0
+			}
+			if (item.viewLayerRenderStartTime) { // 渲染层执行渲染开始时间。仅 firstRender 指标有效。
+				obj[`${item.name}viewLayerRenderStartTime`] = item.viewLayerRenderStartTime || 0
+			}
+			if (item.viewLayerRenderEndTime) { // 渲染层执行渲染结束时间。仅 firstRender 指标有效。
+				obj[`${item.name}viewLayerRenderEndTime`] = item.viewLayerRenderEndTime || 0
+			}
+			if (item.packageName) { // 渲染层执行渲染结束时间。仅 firstRender 指标有效。
+				obj[`${item.name}packageName`] = item.packageName || ''
+			}
+			if (item.packageSize) { // 渲染层执行渲染结束时间。仅 firstRender 指标有效。
+				obj[`${item.name}packageSize`] = item.packageSize || 0
+			}
+		})
+    store.push(WxPerformanceDataType.WX_PERFORMANCE, obj)
   })
-  observer.observe({ entryTypes: ['navigation', 'render', 'script'] })
+  observer.observe({ entryTypes: ['navigation', 'render', 'script', 'loadPackage', 'resource'] })
 }
 
 // 网络请求性能和点击时间

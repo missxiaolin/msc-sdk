@@ -6,11 +6,11 @@ export enum EListenerTypes {
 }
 
 export enum WxPerformanceDataType {
-  MEMORY_WARNING = 'MEMORY_WARNING',
-  WX_PERFORMANCE = 'WX_PERFORMANCE',
-  WX_NETWORK = 'WX_NETWORK',
-  WX_LIFE_STYLE = 'WX_LIFE_STYLE',
-  WX_USER_ACTION = 'WX_USER_ACTION'
+  MEMORY_WARNING = 'memory-waring', // MEMORY_WARNING
+  WX_PERFORMANCE = 'wx-performance', // WX_PERFORMANCE
+  WX_NETWORK = 'wx-network', // WX_NETWORK
+  WX_LIFE_STYLE = 'wx-life_style', // WX_LIFE_STYLE
+  WX_USER_ACTION = 'wx-user_action' // WX_LIFE_STYLE
 }
 
 export enum WxPerformanceItemType {
