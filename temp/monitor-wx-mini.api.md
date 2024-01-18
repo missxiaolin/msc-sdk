@@ -4,8 +4,13 @@
 
 ```ts
 
+/// <reference types="wechat-miniprogram" />
+
 import { Breadcrumb } from '../core/index';
 import { BreadcrumbPushData } from './breadcrumb';
+
+// @public (undocumented)
+export function getUser(key: string): any;
 
 // Warning: (ae-forgotten-export) The symbol "InitOptions" needs to be exported by the entry point index.d.ts
 //

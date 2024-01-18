@@ -1,6 +1,6 @@
 import { WxPerformanceInitOptions } from './types/index'
 import Store from './core/store'
-import { initBatteryInfo, initNetworkInfo, initMemoryWarning, initWxHideReport, initWxPerformance, initWxNetwork } from './wx'
+import { initBatteryInfo, initNetworkInfo, initMemoryWarning, initWxHideReport, initWxPerformance, initWxNetwork } from './wx/index'
 
 class WxPerformance {
   private store: Store
@@ -25,8 +25,8 @@ class WxPerformance {
     initMemoryWarning(store, needMemoryWarning)
     // 如果 immediately为false 会在appHide的时候发送数据
     initWxHideReport(store, immediately, onAppHideReport)
-    initWxPerformance(store)
-    initWxNetwork(store)
+    // initWxPerformance(store)
+    // initWxNetwork(store)
   }
 
   customPaint() {

@@ -4,6 +4,7 @@ import { isWxMiniEnv, setFlag } from '../../utils/global'
 import { InitOptions } from '../../types/options'
 import { setupReplace } from './load'
 import { SDK_NAME, SDK_VERSION, EVENTTYPES } from '../../shared/index'
+import { getUser } from './utils'
 
 export function init(options: InitOptions = {}) {
 	if (!isWxMiniEnv) return
@@ -15,4 +16,4 @@ export function init(options: InitOptions = {}) {
   Object.assign(wx, { mitoLog: log, SDK_NAME, SDK_VERSION })
 }
 
-export { log }
+export { log, getUser }

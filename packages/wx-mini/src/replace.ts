@@ -277,6 +277,8 @@ function replacePerformance() {
   }
   new WxPerformance({
     reportCallback: (data) => {
+			console.log(data)
+			return
       triggerHandlers(EVENTTYPES.PERFORMANCE, data)
     }
   })

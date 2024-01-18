@@ -1,4 +1,4 @@
-import { variableTypeDetection } from "packages/utils/is"
+import { variableTypeDetection } from "../../utils/is"
 
 export async function getWxMiniNetWrokType(): Promise<string> {
   return new Promise((resolve) => {
@@ -49,7 +49,7 @@ export function getSystemInfoSync() {
  */
 export function getPhoneInfo() {
   const res = wx.getSystemInfoSync()
-  let obj = {
+  const obj = {
     screen: {
       height: res.screenWidth,
       width: res.screenHeight
@@ -108,81 +108,6 @@ export function targetAsString(e: WechatMiniprogram.BaseEvent): string {
   return `<element ${id} ${dataSets.join(' ')}/>`
 }
 
-/**
- * 格式化性能数据
- * @param {*} data
- * @returns
- */
-export function getWxPerformance(data) {
-  const RF = []
-  const FP = {
-    name: 'first-contentful-paint',
-    startTime: '',
-    RF: []
-  }
-  const FCP = {
-    name: 'first-contentful-paint',
-    startTime: '',
-    RF: []
-  }
-  const LCP = {
-    name: 'first-contentful-paint',
-    startTime: '',
-    RF: []
-  }
-  const NT = {
-    appLaunch: 0, // 小程序启动耗时。
-    appLaunchStartTime: '',
-    route: 0, // 路由耗时
-    routeStartTime: '',
-    firstRender: 0, // 页面首次渲染耗时
-    firstRenderStartTime: '',
-    script: 0, // 逻辑层 JS 代码注入耗时
-    scriptStartTime: '',
-    loadPackage: 0, // 代码包下载耗时。(entryType: loadPackage)
-    loadPackageStartTime: ''
-  }
-  data.forEach((item) => {
-    if (item.entryType == 'resource') {
-      RF.push({
-        ...item
-      })
-    } else if (item.name == 'firstPaint' && item.entryType == 'render') {
-      FP.startTime = item.startTime
-    } else if (item.name == 'firstContentfulPaint' && item.entryType == 'render') {
-      FCP.startTime = item.startTime
-    } else if (item.name == 'largestContentfulPaint' && item.entryType == 'render') {
-      LCP.startTime = item.startTime
-    } else if (item.name == 'appLaunch' && item.entryType == 'navigation') {
-      NT.appLaunch = item.duration || 0
-      NT.appLaunchStartTime = item.startTime || ''
-    } else if (item.name == 'firstRender' && item.entryType == 'render') {
-      NT.firstRender = item.duration || 0
-      NT.firstRenderStartTime = item.startTime || 0
-    } else if (item.name == 'evaluateScript' && item.entryType == 'script') {
-      NT.script = item.duration || 0
-      NT.scriptStartTime = item.startTime || ''
-    } else if (item.name == 'downloadPackage' && item.entryType == 'loadPackage') {
-      NT.loadPackage = item.duration || 0
-      NT.loadPackageStartTime = item.startTime || ''
-    } else if (item.name == 'route' && item.entryType == 'navigation') {
-      NT.route = item.duration || 0
-      NT.routeStartTime = item.startTime || ''
-    } else {
-      console.log(item)
-    }
-  })
-  const result = {
-    RF,
-    FP,
-    FCP,
-    LCP,
-    FMP: '',
-    NT
-  }
-  return result
-}
-
 
 /**
  * 给url添加query
@@ -234,4 +159,8 @@ export function getNavigateBackTargetUrl(delta: number | undefined) {
   delta = delta || 1
   const toPage = pages[pages.length - delta]
   return setUrlQuery(toPage.route, toPage.options)
+}
+
+export function getUser(key: string) {
+  return wx.getStorageSync(key)
 }

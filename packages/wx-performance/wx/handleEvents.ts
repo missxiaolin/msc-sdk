@@ -1,5 +1,5 @@
 import Store from '../core/store'
-import { WxPerformanceDataType, WxPerformanceItemType } from '../constant'
+import { WxPerformanceDataType, WxPerformanceItemType } from '../constant/index'
 import { WxPerformanceItem, WxPerformanceAnyObj } from '../types/index'
 
 function pushLife(store: Store, itemType: WxPerformanceItemType) {

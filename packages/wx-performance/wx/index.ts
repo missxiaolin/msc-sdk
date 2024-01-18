@@ -1,5 +1,5 @@
 import Store from '../core/store'
-import { WxPerformanceDataType, WxPerformanceItemType } from '../constant'
+import { WxPerformanceDataType, WxPerformanceItemType } from '../constant/index'
 import { WxPerformanceItem } from '../types/index'
 import HandleEvents from './handleEvents'
 import { replaceApp, replaceComponent, replaceNetwork, replacePage } from './replace'
@@ -27,7 +27,7 @@ export function noNetworkType<T extends WechatMiniprogram.GetNetworkTypeOption =
 export function initMemoryWarning(store: Store, need: boolean) {
   if (!need) return
   wx.onMemoryWarning((res: WechatMiniprogram.OnMemoryWarningCallbackResult) => {
-    store.push(WxPerformanceDataType.MEMORY_WARNING, res as WxPerformanceItem)
+    store.push(WxPerformanceDataType.MEMORY_WARNING, res.level)
   })
 }
 
@@ -67,7 +67,7 @@ export function initWxPerformance(store: Store) {
 
 // 网络请求性能和点击时间
 export function initWxNetwork(store: Store) {
-  for (let k in HandleEvents) {
+  for (const k in HandleEvents) {
     store.on(k as WxPerformanceItemType, HandleEvents[k])
   }
   replaceApp(store)

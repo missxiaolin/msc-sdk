@@ -5,6 +5,7 @@ import { parseErrorString, getNowFormatTime, getTimestamp, unknownToString, getP
 import { breadcrumb } from '../../core/breadcrumb'
 import { MITOHttp } from '../../types/common'
 import { MiniRoute } from './types'
+import generateUniqueID from '../../utils/generateUniqueID'
 
 
 const HandleWxAppEvents = {
@@ -160,6 +161,7 @@ const HandleNetworkEvents = {
 const HandlePerformanceEvents = {
   handlePerformance(data) {
     const pageUrl = getPageURL()
+
     breadcrumb.push({
       level: Severity.INFO,
       category: ERRORTYPES_CATEGORY.PERFORMANCE,
@@ -167,7 +169,10 @@ const HandlePerformanceEvents = {
       happenDate: getNowFormatTime(),
       pageUrl,
       simpleUrl: formatUrlToStr(pageUrl),
-      ...data
+      metrics: {
+        sessionId: generateUniqueID(),
+        objs: data
+      }
     })
   }
 }

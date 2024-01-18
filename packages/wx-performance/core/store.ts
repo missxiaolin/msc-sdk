@@ -7,8 +7,8 @@ import {
   WxPerformanceEntryObj,
   WxPerformanceAnyObj
 } from '../types/index'
-import { WxPerformanceDataType, WxPerformanceItemType } from '../constant'
-import { noop, getPageUrl } from '../utils'
+import { WxPerformanceDataType, WxPerformanceItemType } from '../constant/index'
+import { noop, getPageUrl } from '../utils/index'
 import Event from './event'
 
 class Store extends Event {
@@ -85,7 +85,7 @@ class Store extends Event {
       time: date.toLocaleString(),
       networkType: networkType,
       batteryLevel: this.getBatteryInfo().level,
-      systemInfo: this._getSystemInfo(),
+      // systemInfo: this._getSystemInfo(),
       wxLaunch: this.wxLaunchTime,
       page: getPageUrl(),
       type: type,
@@ -107,7 +107,8 @@ class Store extends Event {
         this.handleMemoryWarning(data as WechatMiniprogram.OnMemoryWarningCallbackResult)
         break
       case WxPerformanceDataType.WX_PERFORMANCE:
-        this.handleWxPerformance(data as Array<WxPerformanceItem>)
+				this.handleWxPerformance(data as Array<WxPerformanceItem>)
+				break
       case WxPerformanceDataType.WX_USER_ACTION:
         this.handleWxAction(data as WxPerformanceItem)
         break
