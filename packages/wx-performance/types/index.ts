@@ -1,5 +1,9 @@
 export interface WxPerformanceInitOptions {
   /**
+   * 可忽略URL正则
+   */
+  ignoreUrl?: RegExp
+  /**
    * 上报方法
    */
   reportCallback: (data) => void

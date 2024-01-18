@@ -8,6 +8,7 @@ class WxPerformance {
   constructor(options: WxPerformanceInitOptions) {
     const {
       reportCallback,
+      ignoreUrl,
       immediately = true,
       maxBreadcrumbs = 10,
       needNetworkStatus = true,
@@ -15,7 +16,7 @@ class WxPerformance {
       needMemoryWarning = true,
       onAppHideReport = true
     } = options
-    const store = new Store({ maxBreadcrumbs, immediately, reportCallback })
+    const store = new Store({ maxBreadcrumbs, immediately, reportCallback, ignoreUrl })
     this.store = store
 
     // 用户电量

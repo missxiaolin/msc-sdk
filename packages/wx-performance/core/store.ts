@@ -1,4 +1,4 @@
-import { validateOption } from '../../utils/helpers'
+import { toStringValidateOption, validateOption } from '../../utils/helpers'
 import {
   WxPerformanceInitOptions,
   WxPerformanceData,
@@ -14,6 +14,7 @@ import Event from './event'
 class Store extends Event {
   immediately?: boolean
   maxBreadcrumbs?: number
+  ignoreUrl?: RegExp
   report: (data: Array<WxPerformanceData>) => void
 
   private stack: Array<WxPerformanceData>
@@ -36,11 +37,17 @@ class Store extends Event {
 
   constructor(options: WxPerformanceInitOptions) {
     super()
-    const { maxBreadcrumbs, immediately, reportCallback } = options
+    const { maxBreadcrumbs, immediately, reportCallback, ignoreUrl } = options
     validateOption(immediately, 'immediately', 'boolean') && (this.immediately = immediately)
     validateOption(maxBreadcrumbs, 'maxBreadcrumbs', 'number') && (this.maxBreadcrumbs = maxBreadcrumbs)
     this.report = validateOption(reportCallback, 'report', 'function') ? reportCallback : noop
+    toStringValidateOption(ignoreUrl, 'ignoreUrl', '[object RegExp]') && (this.ignoreUrl = ignoreUrl)
     this.stack = []
+  }
+
+  filterUrl(url: string) {
+    if (this.ignoreUrl && this.ignoreUrl.test(url)) return true
+    return false
   }
 
   /**
