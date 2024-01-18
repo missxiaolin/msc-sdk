@@ -18,8 +18,9 @@ import { options as sdkOptions } from '../../core/options'
 import { transportData } from '../../core/transportData'
 import { MITOHttp } from '../../types/common'
 import { variableTypeDetection, isEmptyObject } from '../../utils/is'
-import { getWxPerformance, getCurrentRoute, getNavigateBackTargetUrl } from './utils'
+import { getCurrentRoute, getNavigateBackTargetUrl } from './utils'
 import { MiniRoute } from './types'
+import { WxPerformance } from '../../wx-performance/index'
 
 /**
  * @param type
@@ -271,9 +272,14 @@ function replaceNetwork() {
 
 // 性能
 function replacePerformance() {
-  // if (!getFlag(EVENTTYPES.PERFORMANCE)) {
-  //   return
-  // }
+  if (!getFlag(EVENTTYPES.PERFORMANCE)) {
+    return
+  }
+  new WxPerformance({
+    reportCallback: (data) => {
+      triggerHandlers(EVENTTYPES.PERFORMANCE, data)
+    }
+  })
   // const performance = wx.getPerformance()
   // const observer = performance.createObserver((entryList) => {
   //   const data = getWxPerformance(entryList.getEntries())
