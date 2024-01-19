@@ -144,6 +144,31 @@ export function getCurrentRoute() {
   return setUrlQuery(currentPage.route, currentPage.options)
 }
 
+export function setUrlQueryPlaintext(url: string, query: object) {
+  const queryArr = []
+  Object.keys(query).forEach((k) => {
+    queryArr.push(k + "=" + query[k]);
+  })
+  if (url.indexOf('?') !== -1) {
+    url = `${url}&${queryArr.join('&')}`
+  } else {
+    url = `${url}?${queryArr.join('&')}`
+  }
+  return url
+}
+
+export function getCurrentRoutePlaintext() {
+  if (!variableTypeDetection.isFunction(getCurrentPages)) {
+    return ''
+  }
+  const pages = getCurrentPages() // 在App里调用该方法，页面还没有生成，长度为0
+  if (!pages.length) {
+    return 'App'
+  }
+  const currentPage = pages.pop()
+  return setUrlQueryPlaintext(currentPage.route, currentPage.options)
+}
+
 /**
  * 后退时需要计算当前页面地址
  * @param delta 返回的页面数，如果 delta 大于现有页面数，则返回到首页

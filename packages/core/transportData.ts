@@ -1,3 +1,4 @@
+import { getCurrentRoute, getCurrentRoutePlaintext } from '../wx-mini/src/utils'
 import { BreadcrumbPushData } from '../types/breadcrumb'
 import { InitOptions, FinalReportType, TransportDataType, DeviceInfo, EMethods } from '../types/index'
 import { _support, formatUrlToStr, getPageURL, isBrowserEnv, isWxMiniEnv, validateOption, variableTypeDetection } from '../utils/index'
@@ -98,8 +99,8 @@ export class TransportData {
       deviceInfo: this.getDeviceInfo(),
       lists: [{
         ...data,
-        pageUrl: pageUrl,
-        simpleUrl: formatUrlToStr(pageUrl)
+        pageUrl: isWxMiniEnv ? getCurrentRoutePlaintext() : pageUrl,
+        simpleUrl: isWxMiniEnv ? getCurrentRoute() : formatUrlToStr(pageUrl)
       }]
     }
   }
