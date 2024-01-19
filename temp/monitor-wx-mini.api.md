@@ -10,6 +10,9 @@ import { Breadcrumb } from '../core/index';
 import { BreadcrumbPushData } from './breadcrumb';
 
 // @public (undocumented)
+export const generateUniqueID: () => string;
+
+// @public (undocumented)
 export function getUser(key: string): any;
 
 // Warning: (ae-forgotten-export) The symbol "InitOptions" needs to be exported by the entry point index.d.ts
@@ -19,6 +22,9 @@ export function init(options?: InitOptions): void;
 
 // @public (undocumented)
 export function log(): void;
+
+// @public (undocumented)
+export function setUserId(userId: string | number): void;
 
 // (No @packageDocumentation comment for this package)
 

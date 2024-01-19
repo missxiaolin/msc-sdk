@@ -1,9 +1,10 @@
 import { initOptions } from '../../core/options'
-import { log } from '../../core/external'
+import { log, setUserId } from '../../core/external'
 import { isWxMiniEnv, setFlag } from '../../utils/global'
 import { InitOptions } from '../../types/options'
 import { setupReplace } from './load'
 import { SDK_NAME, SDK_VERSION, EVENTTYPES } from '../../shared/index'
+import generateUniqueID from '../../utils/generateUniqueID'
 import { getUser } from './utils'
 
 export function init(options: InitOptions = {}) {
@@ -16,4 +17,4 @@ export function init(options: InitOptions = {}) {
   Object.assign(wx, { mitoLog: log, SDK_NAME, SDK_VERSION })
 }
 
-export { log, getUser }
+export { log, getUser, setUserId, generateUniqueID }

@@ -9,6 +9,9 @@ import { BreadcrumbPushData as BreadcrumbPushData_2 } from './breadcrumb';
 import { VueInstance } from './types';
 
 // @public (undocumented)
+export const generateUniqueID: () => string;
+
+// @public (undocumented)
 export const getCookie: (name: string) => string;
 
 // Warning: (ae-forgotten-export) The symbol "InitOptions" needs to be exported by the entry point index.d.ts
@@ -29,6 +32,9 @@ export const SDK_NAME = "@xiaolin/monitor";
 
 // @public (undocumented)
 export const SDK_VERSION = "1.0.0";
+
+// @public (undocumented)
+export function setUserId(userId: string | number): void;
 
 // (No @packageDocumentation comment for this package)
 
