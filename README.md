@@ -28,6 +28,10 @@ msc 是一款前端监控工具，主要包含下面几个方面信息监控：
 - 9）页面加载完成的时间；
 - ...
 
+
+现在 chrome 开发团队提供了 web-vitals(https://www.npmjs.com/package/web-vitals) 库，方便来计算各性能数据（注意：web-vitals 不支持safari浏览器）
+
+
 ### 4、设备信息采集
 
 - 1）设备类型；
