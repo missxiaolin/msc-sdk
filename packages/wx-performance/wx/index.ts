@@ -1,6 +1,7 @@
 import Store from '../core/store'
 import { WxPerformanceDataType, WxPerformanceItemType } from '../constant/index'
 import HandleEvents from './handleEvents'
+import { getPageUrl } from '../utils/index'
 import { replaceApp, replaceComponent, replaceNetwork, replacePage } from './replace'
 
 // 电量
@@ -60,8 +61,13 @@ export function initWxPerformance(store: Store) {
   const performance = wx.getPerformance()
   const observer = performance.createObserver((entryList) => {
 		const obj = {}
+    const arr = []
 		const entries = entryList.getEntries() || []
 		entries.forEach(item => {
+      if (item.name == 'resourceTiming') {
+        arr.push(item)
+        return
+      }
 			obj[`${item.name}name`] = item.name || ''
 			obj[`${item.name}duration`] = item.duration || 0
 			obj[`${item.name}entryType`] = item.entryType || ""
@@ -91,7 +97,18 @@ export function initWxPerformance(store: Store) {
 				obj[`${item.name}packageSize`] = item.packageSize || 0
 			}
 		})
-    store.push(WxPerformanceDataType.WX_PERFORMANCE, obj)
+    store.push(WxPerformanceDataType.WX_PERFORMANCE, {
+      [WxPerformanceDataType.WX_PERFORMANCE]: {
+        name: WxPerformanceDataType.WX_PERFORMANCE,
+        value: obj,
+        page: getPageUrl(),
+      },
+      [WxPerformanceDataType.WX_RESOURCE_FLOW]: {
+        name: WxPerformanceDataType.WX_RESOURCE_FLOW,
+        value: arr,
+        page: getPageUrl(),
+      }
+    })
   })
   observer.observe({ entryTypes: ['navigation', 'render', 'script', 'loadPackage', 'resource'] })
 }

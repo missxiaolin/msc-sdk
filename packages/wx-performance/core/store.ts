@@ -107,8 +107,8 @@ class Store extends Event {
 	 * @param data 
 	 */
   async handleWxPerformance(data: number | WxPerformanceAnyObj) {
-		const item = await this._createPerformanceData(WxPerformanceDataType.WX_PERFORMANCE, data)
-    this._pushData(item)
+		// const item = await this._createPerformanceData(WxPerformanceDataType.WX_PERFORMANCE, data)
+    this._pushData(data)
   }
 
   /**

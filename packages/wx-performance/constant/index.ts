@@ -10,7 +10,8 @@ export enum WxPerformanceDataType {
   WX_PERFORMANCE = 'wx-performance', // WX_PERFORMANCE
   WX_NETWORK = 'wx-network', // WX_NETWORK
   WX_LIFE_STYLE = 'wx-life_style', // WX_LIFE_STYLE
-  WX_USER_ACTION = 'wx-user_action' // WX_LIFE_STYLE
+  WX_USER_ACTION = 'wx-user_action', // WX_LIFE_STYLE
+  WX_RESOURCE_FLOW = 'wx-resource-flow'
 }
 
 export enum WxPerformanceItemType {
