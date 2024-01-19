@@ -61,7 +61,7 @@ export default class Queue {
    * 并发限制
    * @return {?}
    */
-  clear(): any {
+  async clear() {
     let e: any;
     if (this.synNum > this.synRequestNum) {
       return (
@@ -76,7 +76,12 @@ export default class Queue {
       this.synNum < this.synRequestNum && (e = this.requestQueue.pop());
       this.synNum++
     ) {
-        e()
+        try {
+          await e()
+          this.reduceSynNumFun()
+        } catch (e) {
+          this.reduceSynNumFun()
+        }
     }
     // 执行完如果还有数据则继续执行（放到宏任务）
     !!this.requestQueue.length &&
