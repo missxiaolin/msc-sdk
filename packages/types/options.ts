@@ -119,6 +119,21 @@ export interface InitOptions extends HooksTypes {
 
 export interface HooksTypes {
   /**
+   * 钩子函数，配置发送到服务端的xhr
+   * 可以对当前xhr实例做一些配置：xhr.setRequestHeader()、xhr.withCredentials
+   * 会在xhr.setRequestHeader('Content-Type', 'text/plain;charset=UTF-8')、
+   * xhr.withCredentials = true,后面调用该函数
+   * ../param xhr XMLHttpRequest的实例
+   */
+  configReportXhr?(xhr: XMLHttpRequest, reportData:  any): void
+  /**
+   * 钩子函数，在每次发送事件前会调用
+   *
+   * ../param event 有SDK生成的错误事件
+   * ../returns 如果返回 null | undefined | boolean 时，将忽略本次上传
+   */
+  beforeDataReport?(event: any): Promise<any | null | CANCEL> | any | CANCEL | null
+  /**
    * 钩子函数，在每次添加用户行为事件前都会调用
    *
    * ../param breadcrumb 由SDK生成的breacrumb事件栈

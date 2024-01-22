@@ -13,6 +13,8 @@ import Queue from '../utils/queue'
  */
 export class TransportData {
   queue: Queue
+  beforeDataReport: unknown = null
+  configReportXhr: unknown = null
   url = ''
   trackUrl = ''
   monitorAppId = ''
@@ -56,6 +58,8 @@ export class TransportData {
       monitorAppId,
       uuId,
       report,
+      beforeDataReport,
+      configReportXhr,
     } = options
     const { url, trackUrl, reportType, maxQueues } = report
     validateOption(monitorAppId, 'monitorAppId', 'string') && (this.monitorAppId = monitorAppId)
@@ -65,6 +69,11 @@ export class TransportData {
     this.setUserId(uuId)
     // 设置请求最大值
     validateOption(maxQueues, 'maxQueues', 'number') && (this.queue.setMaxQueues(maxQueues))
+
+    // 钩子函数，在每次发送事件前会调用
+    validateOption(beforeDataReport, 'beforeDataReport', 'function') && (this.beforeDataReport = beforeDataReport)
+    // 钩子函数，配置发送到服务端的xhr
+    validateOption(configReportXhr, 'configReportXhr', 'function') && (this.configReportXhr = configReportXhr)
   }
 
   /**
@@ -72,7 +81,12 @@ export class TransportData {
    * @returns 
    */
   async beforePost(data: FinalReportType) {
-    const transportData = this.getTransportData(data)
+    let transportData = this.getTransportData(data)
+    if (typeof this.beforeDataReport === 'function') {
+      transportData = await this.beforeDataReport(transportData)
+      if (!transportData) return false
+    }
+    
     return transportData
   }
 
@@ -151,6 +165,9 @@ export class TransportData {
       xhr.open(EMethods.Post, url)
       xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
       xhr.withCredentials = true
+      if (typeof this.configReportXhr === 'function') {
+        this.configReportXhr(xhr, data)
+      }
       xhr.send(JSON.stringify({
         data: data
       }))
