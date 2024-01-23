@@ -24,6 +24,7 @@
             ]
         },
         "types": [
+            "alipay",
             "node",
             "jest",
             "wechat-miniprogram",
@@ -37,7 +38,8 @@
         // "declarationDir": "./dist/packages/", // 类型声明文件的输出目录
         "typeRoots": [
             // 指定某个文件夹的声明文件
-            "node_modules/@types"
+            "node_modules/@types",
+            "node_modules/@mini-types"
         ],
         "allowJs": false, // 不允许编译javascript文件。
         "lib": [
@@ -50,6 +52,7 @@
         "packages",
         "mito",
         "test",
-        "examples"
+        "examples",
+        "packages/**/*.d.ts",
     ]
 }

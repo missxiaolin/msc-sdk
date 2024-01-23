@@ -1,0 +1,17 @@
+{
+    "name": "@xiaolin/monitor-alipay-mini",
+    "version": "1.0.0",
+    "description": "A SDK For Monitoring ali-mini Errors",
+    "author": "xiaolin",
+    "license": "MIT",
+    "main": "dist/alipay-mini.js",
+    "module": "dist/alipay-mini.js",
+    "types": "dist/alipay-mini.d.ts",
+    "files": [
+      "dist"
+    ],
+    "dependencies": {
+      "@mini-types/alipay": "^3.0.11"
+    }
+  }
+  
