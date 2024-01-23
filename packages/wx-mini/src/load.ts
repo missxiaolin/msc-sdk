@@ -1,5 +1,5 @@
 import { EVENTTYPES } from '../../shared/index'
-import { HandleWxPageEvents, HandleNetworkEvents, HandlePerformanceEvents, HandleWxEvents } from './handleWxEvents'
+import { HandleWxPageEvents, HandleNetworkEvents, HandlePerformanceEvents, HandleWxEvents, HandleWxConsoleEvents } from './handleWxEvents'
 import { replaceApp, replacePage, addReplaceHandler, replaceComponent, replaceBehavior } from './replace'
 
 export function setupReplace() {
@@ -26,5 +26,12 @@ export function setupReplace() {
       HandlePerformanceEvents.handlePerformance(data)
     },
     type: EVENTTYPES.PERFORMANCE
+  })
+
+  addReplaceHandler({
+    callback: (data) => {
+      HandleWxConsoleEvents.console(data)
+    },
+    type: EVENTTYPES.CONSOLE
   })
 }

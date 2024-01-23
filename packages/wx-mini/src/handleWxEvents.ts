@@ -5,6 +5,8 @@ import { parseErrorString, getNowFormatTime, getTimestamp, unknownToString, getP
 import { breadcrumb } from '../../core/breadcrumb'
 import { MITOHttp } from '../../types/common'
 import { MiniRoute } from './types'
+import { Replace } from '../../types/replace'
+import { handleConsole } from '../../core/transformData'
 import generateUniqueID from '../../utils/generateUniqueID'
 
 
@@ -177,4 +179,10 @@ const HandlePerformanceEvents = {
   }
 }
 
-export { HandleWxAppEvents, HandleWxPageEvents, HandleNetworkEvents, HandlePerformanceEvents, HandleWxEvents }
+const HandleWxConsoleEvents = {
+  console(data: Replace.TriggerConsole) {
+    handleConsole(data)
+  }
+}
+
+export { HandleWxAppEvents, HandleWxPageEvents, HandleNetworkEvents, HandlePerformanceEvents, HandleWxEvents, HandleWxConsoleEvents }
