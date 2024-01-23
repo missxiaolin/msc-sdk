@@ -12,6 +12,9 @@ function replace(type: EVENTTYPES) {
     case EVENTTYPES.XHR:
       xhrReplace()
       break
+    case EVENTTYPES.CONSOLE:
+        consoleReplace()
+        break
     case EVENTTYPES.FETCH:
       fetchReplace()
       break
@@ -324,4 +327,22 @@ function listenPerformance(): void {
   //   const entryList = _global.performance.getEntries() || [];
   //   triggerHandlers(EVENTTYPES.PERFORMANCE, entryList)
   // })
+}
+
+function consoleReplace(): void {
+  if (!('console' in _global)) {
+    return
+  }
+  const logType = ['log', 'debug', 'info', 'warn', 'error', 'assert']
+  logType.forEach(function (level: string): void {
+    if (!(level in _global.console)) return
+    replaceOld(_global.console, level, function (originalConsole: () => any): Function {
+      return function (...args: any[]): void {
+        if (originalConsole) {
+          triggerHandlers(EVENTTYPES.CONSOLE, { args, level })
+          originalConsole.apply(_global.console, args)
+        }
+      }
+    })
+  })
 }

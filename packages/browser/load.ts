@@ -1,6 +1,7 @@
 import { HandleEvents } from './handleEvents'
 import { EVENTTYPES, BREADCRUMBTYPES } from '../shared/index'
 import { addReplaceHandler } from './replace'
+import { handleConsole } from '../core/transformData'
 
 export function setupReplace(): void {
   addReplaceHandler({
@@ -51,5 +52,12 @@ export function setupReplace(): void {
       HandleEvents.handlePerformance(data)
     },
     type: EVENTTYPES.PERFORMANCE
+  })
+
+  addReplaceHandler({
+    callback: (data) => {
+      handleConsole(data)
+    },
+    type: EVENTTYPES.CONSOLE
   })
 }
