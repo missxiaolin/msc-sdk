@@ -44,6 +44,15 @@ export enum WxAppEvents {
   AppOnUnhandledRejection = 'AppOnUnhandledRejection' // 监听未处理的 Promise 拒绝事件。
 }
 
+export enum AliAppEvents {
+  AppOnLaunch = 'AppOnLaunch', // 刚进入小程序
+  AppOnShow = 'AppOnShow', // app onshow
+  AppOnHide = 'AppOnHide', // app onHide
+  AppOnError = 'AppOnError',
+  AppOnPageNotFound = 'AppOnPageNotFound', // 监听小程序要打开的页面不存在事件。
+  AppOnUnhandledRejection = 'AppOnUnhandledRejection' // 监听未处理的 Promise 拒绝事件。
+}
+
 export enum ELinstenerTypes {
   Touchmove = 'touchmove',
   Tap = 'tap',
@@ -72,7 +81,17 @@ export enum WxRouteEvents {
   RouteFail = 'routeFail'
 }
 
-export type WxEvents = WxAppEvents | WxPageEvents | WxRouteEvents
+export enum AliRouteEvents {
+  SwitchTab = 'switchTab',
+  ReLaunch = 'reLaunch',
+  RedirectTo = 'redirectTo',
+  NavigateTo = 'navigateTo',
+  NavigateBack = 'navigateBack',
+  NavigateToMiniProgram = 'navigateToMiniProgram',
+  RouteFail = 'routeFail'
+}
+
+export type WxEvents = WxAppEvents | WxPageEvents | WxRouteEvents | AliAppEvents | AliRouteEvents
 /**
  * 重写的事件类型
  */

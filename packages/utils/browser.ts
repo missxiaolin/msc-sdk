@@ -1,6 +1,6 @@
-import { EVENTTYPES, WxAppEvents, WxPageEvents } from '../shared/index'
+import { AliAppEvents, EVENTTYPES, WxAppEvents, WxPageEvents } from '../shared/index'
 import { InitOptions } from '../types/index'
-import { setFlag } from './index'
+import { isAliMiniEnv, isWxMiniEnv, setFlag } from './index'
 
 /**
  * 将地址字符串转换成对象
@@ -49,11 +49,15 @@ export function setSilentFlag(paramOptions: InitOptions = {}): void {
   setFlag(EVENTTYPES.PERFORMANCE, !!paramOptions.watch.performance)
   setFlag(EVENTTYPES.VUE, !!paramOptions.watch.vueError)
   // wx App
-  setFlag(WxAppEvents.AppOnError, !!paramOptions.watch.jsError)
-  setFlag(WxAppEvents.AppOnUnhandledRejection, !!paramOptions.watch.promise)
-  // setFlag(WxAppEvents.AppOnPageNotFound, !!paramOptions.watch)
-  // wx Page
-  setFlag(EVENTTYPES.PageOnLoad, !!paramOptions.watch.pageChange)
-  // mini Route
-  // setFlag(EVENTTYPES.MINI_ROUTE, !!paramOptions.watch.pageChange)
+  if (isWxMiniEnv) {
+    setFlag(WxAppEvents.AppOnError, !!paramOptions.watch.jsError)
+    setFlag(WxAppEvents.AppOnUnhandledRejection, !!paramOptions.watch.promise)
+    setFlag(EVENTTYPES.PageOnLoad, !!paramOptions.watch.pageChange)
+  }
+  // 支付宝小程序
+  if (isAliMiniEnv) {
+    setFlag(AliAppEvents.AppOnError, !!paramOptions.watch.jsError)
+    setFlag(AliAppEvents.AppOnUnhandledRejection, !!paramOptions.watch.promise)
+    setFlag(EVENTTYPES.PageOnLoad, !!paramOptions.watch.pageChange)
+  }
 }
