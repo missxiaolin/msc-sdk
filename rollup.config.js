@@ -61,6 +61,8 @@ const common = {
     typescript({
       tsconfig: 'tsconfig.build.json',
       useTsconfigDeclarationDir: true,
+      // 是否开启错误检查
+      check: false,
       tsconfigOverride: {
         compilerOptions: {
           declaration: isDeclaration,
