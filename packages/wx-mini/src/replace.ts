@@ -316,37 +316,38 @@ function replaceRoute() {
         } else {
           toUrl = (options as WechatMiniprogram.SwitchTabOption).url
         }
-        const data = {
+        const data: MiniRoute = {
           from: getCurrentRoute(),
-          to: toUrl
+          to: toUrl,
+          subType: method
         }
         triggerHandlers(EVENTTYPES.MINI_ROUTE, data)
         // 如果complete||success||fail一个都没有，则原方法返回promise，此时sdk也不需要处理
-        if (
-          variableTypeDetection.isFunction(options.complete) ||
-          variableTypeDetection.isFunction(options.success) ||
-          variableTypeDetection.isFunction(options.fail)
-        ) {
-          const _fail = options.fail
-          const failHandler:
-            | WechatMiniprogram.SwitchTabFailCallback
-            | WechatMiniprogram.ReLaunchFailCallback
-            | WechatMiniprogram.RedirectToFailCallback
-            | WechatMiniprogram.NavigateToFailCallback
-            | WechatMiniprogram.NavigateBackFailCallback = function (res) {
-            const failData: MiniRoute = {
-              ...data,
-              isFail: true,
-              message: res.errMsg,
-              subType: method
-            }
-            triggerHandlers(EVENTTYPES.MINI_ROUTE, failData)
-            if (variableTypeDetection.isFunction(_fail)) {
-              return _fail(res)
-            }
-          }
-          options.fail = failHandler
-        }
+        // if (
+        //   variableTypeDetection.isFunction(options.complete) ||
+        //   variableTypeDetection.isFunction(options.success) ||
+        //   variableTypeDetection.isFunction(options.fail)
+        // ) {
+        //   const _fail = options.fail
+        //   const failHandler:
+        //     | WechatMiniprogram.SwitchTabFailCallback
+        //     | WechatMiniprogram.ReLaunchFailCallback
+        //     | WechatMiniprogram.RedirectToFailCallback
+        //     | WechatMiniprogram.NavigateToFailCallback
+        //     | WechatMiniprogram.NavigateBackFailCallback = function (res) {
+        //     const failData: MiniRoute = {
+        //       ...data,
+        //       isFail: true,
+        //       message: res.errMsg,
+        //       subType: method
+        //     }
+        //     triggerHandlers(EVENTTYPES.MINI_ROUTE, failData)
+        //     if (variableTypeDetection.isFunction(_fail)) {
+        //       return _fail(res)
+        //     }
+        //   }
+        //   options.fail = failHandler
+        // }
         return originMethod.call(this, options)
       }
     })

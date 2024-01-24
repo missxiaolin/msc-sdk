@@ -1,9 +1,9 @@
-import { EVENTTYPES, WxEvents } from '../shared/index'
+import { AliEvents, EVENTTYPES, WxEvents } from '../shared/index'
 import { getFlag, setFlag, nativeTryCatch, getFunctionName } from '../utils/index'
 type ReplaceCallback = (data: any) => void
 
 export interface ReplaceHandler {
-  type: EVENTTYPES | WxEvents
+  type: EVENTTYPES | WxEvents | AliEvents
   callback: ReplaceCallback
 }
 

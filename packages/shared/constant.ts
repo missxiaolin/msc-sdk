@@ -91,7 +91,23 @@ export enum AliRouteEvents {
   RouteFail = 'routeFail'
 }
 
-export type WxEvents = WxAppEvents | WxPageEvents | WxRouteEvents | AliAppEvents | AliRouteEvents
+export enum AliPageEvents {
+  PageOnLoad = 'PageOnLoad',
+  PageOnShow = 'PageOnShow',
+  PageOnHide = 'PageOnHide',
+  PageOnReady = 'PageOnReady',
+  PageOnUnload = 'PageOnUnload',
+  PageOnShareAppMessage = 'PageOnShareAppMessage',
+  PageOnShareTimeline = 'PageOnShareTimeline',
+  PageOnTabItemTap = 'PageOnTabItemTap'
+}
+
+// 微信
+export type WxEvents = WxAppEvents | WxPageEvents | WxRouteEvents
+
+// 支付宝
+export type AliEvents = AliAppEvents | AliRouteEvents | AliPageEvents
+
 /**
  * 重写的事件类型
  */

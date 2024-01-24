@@ -1,4 +1,4 @@
-import { EVENTTYPES, WxEvents } from '../shared/index'
+import { AliEvents, EVENTTYPES, WxEvents } from '../shared/index'
 import { Breadcrumb, Options, TransportData } from '../core/index'
 import { DeviceInfo } from '../types/index'
 import { variableTypeDetection } from './is'
@@ -48,7 +48,7 @@ export { _global, _support }
 
 _support.replaceFlag = _support.replaceFlag || {}
 const replaceFlag = _support.replaceFlag
-export function setFlag(replaceType: EVENTTYPES | WxEvents, isSet: boolean): void {
+export function setFlag(replaceType: EVENTTYPES | WxEvents | AliEvents, isSet: boolean): void {
   if (replaceFlag[replaceType]) return
   replaceFlag[replaceType] = isSet
 }
@@ -63,6 +63,6 @@ export function getGlobalMitoSupport(): MitoSupport {
   return _global.__MITO__
 }
 
-export function getFlag(replaceType: EVENTTYPES | WxEvents): boolean {
+export function getFlag(replaceType: EVENTTYPES | WxEvents | AliEvents): boolean {
   return replaceFlag[replaceType] ? true : false
 }
