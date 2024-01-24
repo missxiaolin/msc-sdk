@@ -1,10 +1,11 @@
-import { AliAppEvents, AliEvents, AliRouteEvents, EVENTTYPES } from '../../shared/constant'
+import { AliAppEvents, AliEvents, AliPageEvents, AliRouteEvents, EVENTTYPES } from '../../shared/constant'
 import { ReplaceHandler, subscribeEvent, triggerHandlers } from '../../core/subscribe'
 import { getCurrentRoute, getNavigateBackTargetUrl } from './utils'
 import { getFlag } from '../../utils/global'
-import { HandleAliAppEvents } from './handleAliEvents'
-import { replaceOld } from '../../utils/helpers'
-import { voidFun } from '../../shared/index'
+import { HandleAliAppEvents, HandleAliPageEvents } from './handleAliEvents'
+import { replaceOld, throttle, getTimestamp } from '../../utils/helpers'
+import { voidFun, ELinstenerTypes } from '../../shared/index'
+import { options as sdkOptions } from '../../core/options'
 
 /**
  * @param type
@@ -106,4 +107,84 @@ export function replaceApp() {
 
     return originApp(appOptions)
   }
+}
+
+/**
+ * 监听配置项下的页面生命周期函数
+ * @param options
+ * @param methods
+ */
+function replacePageLifeMethods(options, methods) {
+  methods.forEach((method) => {
+    replaceOld(
+      options,
+      method.replace('PageOn', 'on'),
+      function (originMethod: (args: any) => void) {
+        return function (...args: any[]): void {
+          triggerHandlers.apply(null, [method, ...args])
+          if (originMethod) {
+            return originMethod.apply(this, args)
+          }
+        }
+      },
+      true
+    )
+  })
+}
+
+/**
+ * 监听配置项下的手势处理方法
+ * @param options 
+ */
+function replaceAction(options) {
+  function gestureTrigger(e) {
+    e.mitoWorked = true // 给事件对象增加特殊的标记，避免被无限透传
+    triggerHandlers(EVENTTYPES.DOM, e)
+  }
+  const throttleGesturetrigger = throttle(gestureTrigger, sdkOptions.throttleDelayTime)
+  const linstenerTypes = [ELinstenerTypes.Touchmove, ELinstenerTypes.Tap]
+  if (options) {
+    Object.keys(options).forEach((m) => {
+      if ('function' !== typeof options[m]) {
+        return
+      }
+      replaceOld(
+        options,
+        m,
+        function (originMethod: (args: any) => void) {
+          return function (...args: any): void {
+            const e = args[0]
+            if (e && e.type && e.currentTarget && !e.mitoWorked) {
+              if (linstenerTypes.indexOf(e.type) > -1) {
+                throttleGesturetrigger(e)
+              }
+            }
+            return originMethod.apply(this, args)
+          }
+        },
+        true
+      )
+    })
+  }
+}
+
+// 页面uv pv
+export function replacePage() {
+  if (!Page) {
+    return
+  }
+  const originPage = Page
+  const methods = [AliPageEvents.PageOnLoad]
+  methods.forEach((method) => {
+    if (!getFlag(method)) return
+    addReplaceHandler({
+      callback: (data) => HandleAliPageEvents[method.replace('PageOn', 'on')](data),
+      type: method
+    })
+    Page = function (pageOptions) {
+      replacePageLifeMethods(pageOptions, methods)
+      replaceAction(pageOptions)
+      return originPage.call(this, pageOptions)
+    }
+  })
 }

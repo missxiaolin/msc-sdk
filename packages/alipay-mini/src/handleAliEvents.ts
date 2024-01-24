@@ -1,4 +1,4 @@
-import { getWxMiniDeviceInfo } from './utils'
+import { getWxMiniDeviceInfo, targetAsString } from './utils'
 import { _support, getFlag } from '../../utils/global'
 import { parseErrorString, getNowFormatTime, getTimestamp, unknownToString, getPageURL, formatUrlToStr } from '../../utils/helpers'
 import { MiniRoute } from './types'
@@ -58,6 +58,8 @@ const HandleAliAppEvents = {
   }
 }
 
+
+
 let popstateStartTime = getTimestamp(),
   referrerPage = '',
   subType = ''
@@ -69,4 +71,62 @@ const HandleAliEvents = {
   }
 }
 
-export { HandleAliEvents, HandleAliAppEvents }
+const HandleAliPageEvents = {
+  onLoad() {
+    if (!getFlag(EVENTTYPES.PageOnLoad)) {
+      return
+    }
+    breadcrumb.push({
+      level: Severity.INFO,
+      category: ERRORTYPES_CATEGORY.PAGE_CHANGE,
+      referrer: getPageURL(),
+      type: '',
+      to: getPageURL(),
+      from: referrerPage || getPageURL(),
+      subType,
+      duration: Date.now() - popstateStartTime,
+      startTime: getTimestamp(),
+      happenTime: getTimestamp(),
+      happenDate: getNowFormatTime()
+    })
+    popstateStartTime = getTimestamp()
+  },
+  onAction(e) {
+    if (!getFlag(EVENTTYPES.DOM)) {
+      return
+    }
+    // @ts-ignore
+    const { target = {}, detail = {}, timeStamp = '', type = '', currentTarget } = e
+    try {
+      breadcrumb.push({
+        level: Severity.INFO,
+        category: ERRORTYPES_CATEGORY.USER_CLICK,
+        // @ts-ignore
+        top: target.offsetTop || currentTarget.offsetTop,
+        // @ts-ignore
+        left: target.offsetLeft || currentTarget.offsetLeft,
+        pageHeight: 0,
+        scrollTop: 0,
+        subType: type,
+        tagName: currentTarget.tagName,
+        targetInfo: {
+          offsetWidth: 0,
+          offsetHeight: 0
+        },
+        paths: '',
+        startTime: timeStamp,
+        innerHTML: targetAsString(e),
+        happenTime: getTimestamp(),
+        happenDate: getNowFormatTime(),
+        viewport: {
+          width: detail.x || 0,
+          height: detail.y || 0
+        }
+      })
+    } catch (e) {
+      // Ignore
+    }
+  }
+}
+
+export { HandleAliEvents, HandleAliAppEvents, HandleAliPageEvents }

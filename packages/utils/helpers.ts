@@ -1,7 +1,7 @@
 import { IAnyObject, ReportDataType } from '../types/index'
 import { Severity, globalVar } from '../shared/index'
 import { nativeToString, variableTypeDetection } from './is'
-import { _global, isWxMiniEnv } from './global';
+import { _global, isAliMiniEnv, isWxMiniEnv } from './global';
 export const defaultFunctionName = '<anonymous>'
 
 /**
@@ -15,7 +15,7 @@ export function getPage() {
   return path;
 }
 
-export const getPageURL = () => (isWxMiniEnv ? getPage() : window.location.href);
+export const getPageURL = () => ((isWxMiniEnv || isAliMiniEnv) ? getPage() : window.location.href);
 
 /**
  * 

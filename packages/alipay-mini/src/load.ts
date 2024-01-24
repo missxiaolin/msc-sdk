@@ -1,6 +1,6 @@
 import { EVENTTYPES } from '../../shared/index'
 import { HandleAliEvents } from './handleAliEvents'
-import { addReplaceHandler, replaceApp } from './replace'
+import { addReplaceHandler, replaceApp, replacePage } from './replace'
 import { MiniRoute } from './types'
 
 export function setupReplace() {
@@ -9,4 +9,5 @@ export function setupReplace() {
     type: EVENTTYPES.MINI_ROUTE
   })
   replaceApp()
+  replacePage()
 }
