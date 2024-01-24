@@ -27,7 +27,7 @@ function replace(type: AliEvents | EVENTTYPES) {
         replaceNetwork()
       break
     case EVENTTYPES.PERFORMANCE:
-      //   replacePerformance()
+        replacePerformance()
       break
     case EVENTTYPES.MINI_ROUTE:
       replaceRoute()
@@ -307,5 +307,12 @@ function replaceConsole() {
         }
       })
     })
+  }
+}
+
+// 性能数据
+function replacePerformance() {
+  if (!getFlag(EVENTTYPES.PERFORMANCE)) {
+    return
   }
 }

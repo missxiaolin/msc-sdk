@@ -1,5 +1,5 @@
-import { setUrlQuery } from "../../wx-mini/src/utils"
-import { variableTypeDetection } from "../../utils/is"
+import { setUrlQuery } from "../../utils"
+import { variableTypeDetection } from "../../../../utils/is"
 
 export function noop() {}
 

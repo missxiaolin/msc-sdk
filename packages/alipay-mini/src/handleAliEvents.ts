@@ -7,6 +7,7 @@ import { ERRORTYPES_CATEGORY, EVENTTYPES, Severity } from '../../shared/constant
 import { breadcrumb } from '../../core/breadcrumb'
 import { Replace } from '../../types/replace'
 import { handleConsole } from '../../core/transformData'
+import generateUniqueID from '../../utils/generateUniqueID'
 
 const HandleAliAppEvents = {
   /**
@@ -19,8 +20,8 @@ const HandleAliAppEvents = {
   },
   /**
    * JS 错误
-   * @param error 
-   * @returns 
+   * @param error
+   * @returns
    */
   onError(error: string) {
     if (!getFlag(EVENTTYPES.ERROR)) {
@@ -60,8 +61,6 @@ const HandleAliAppEvents = {
     breadcrumb.push(promiseError)
   }
 }
-
-
 
 let popstateStartTime = getTimestamp(),
   referrerPage = '',
@@ -165,4 +164,23 @@ const HandleAliConsoleEvents = {
   }
 }
 
-export { HandleAliEvents, HandleAliAppEvents, HandleAliPageEvents, HandleNetworkEvents, HandleAliConsoleEvents }
+const HandlePerformanceEvents = {
+  handlePerformance(data) {
+    const pageUrl = getPageURL()
+
+    breadcrumb.push({
+      level: Severity.INFO,
+      category: ERRORTYPES_CATEGORY.PERFORMANCE,
+      happenTime: getTimestamp(),
+      happenDate: getNowFormatTime(),
+      pageUrl,
+      simpleUrl: formatUrlToStr(pageUrl),
+      metrics: {
+        sessionId: generateUniqueID(),
+        objs: data
+      }
+    })
+  }
+}
+
+export { HandleAliEvents, HandleAliAppEvents, HandleAliPageEvents, HandleNetworkEvents, HandleAliConsoleEvents, HandlePerformanceEvents }

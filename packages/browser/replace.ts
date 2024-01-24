@@ -314,7 +314,7 @@ function domReplace(): void {
 //     window.addEventListener('pageshow', callback, { once: true, capture: true });
 //   }
 // };
-import { WebVitals } from '../web-performance/index'
+import { WebVitals } from './web-performance/index'
 
 function listenPerformance(): void {
   if (!('document' in _global) && !('performance' in _global)) return

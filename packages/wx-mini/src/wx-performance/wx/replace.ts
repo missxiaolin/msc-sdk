@@ -1,5 +1,5 @@
-import { isEmptyObject } from '../../utils/is'
-import { replaceOld } from '../../utils/helpers'
+import { isEmptyObject } from '../../../../utils/is'
+import { replaceOld } from '../../../../utils/helpers'
 import Store from '../core/store'
 import HandleEvents from './handleEvents'
 import { WxPerformanceItemType, WxListenerTypes } from '../constant/index'

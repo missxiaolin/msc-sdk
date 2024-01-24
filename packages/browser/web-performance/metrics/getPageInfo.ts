@@ -14,7 +14,7 @@
 import { IMetrics, IPageInformation } from '../types'
 import { metricsName } from '../constants'
 import metricsStore from '../lib/store'
-import { formatUrlToStr } from '../../utils'
+import { formatUrlToStr } from '../../../utils'
 
 const getPageInfo = (): IPageInformation => {
   if (!location) {

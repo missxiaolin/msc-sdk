@@ -1,4 +1,4 @@
-import { toStringValidateOption, validateOption } from '../../utils/helpers'
+import { toStringValidateOption, validateOption } from '../../../../utils/helpers'
 import {
   WxPerformanceInitOptions,
   WxPerformanceItem,

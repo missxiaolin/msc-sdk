@@ -20,7 +20,7 @@ import { MITOHttp } from '../../types/common'
 import { variableTypeDetection, isEmptyObject } from '../../utils/is'
 import { getCurrentRoute, getNavigateBackTargetUrl } from './utils'
 import { MiniRoute } from './types'
-import { WxPerformance } from '../../wx-performance/index'
+import { WxPerformance } from './wx-performance/index'
 
 /**
  * @param type
