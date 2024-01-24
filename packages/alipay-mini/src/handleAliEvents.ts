@@ -2,6 +2,7 @@ import { getWxMiniDeviceInfo, targetAsString } from './utils'
 import { _support, getFlag } from '../../utils/global'
 import { parseErrorString, getNowFormatTime, getTimestamp, unknownToString, getPageURL, formatUrlToStr } from '../../utils/helpers'
 import { MiniRoute } from './types'
+import { MITOHttp } from '../../types/common'
 import { ERRORTYPES_CATEGORY, EVENTTYPES, Severity } from '../../shared/constant'
 import { breadcrumb } from '../../core/breadcrumb'
 
@@ -129,4 +130,31 @@ const HandleAliPageEvents = {
   }
 }
 
-export { HandleAliEvents, HandleAliAppEvents, HandleAliPageEvents }
+const HandleNetworkEvents = {
+  handleRequest(data: MITOHttp) {
+    if (!getFlag(EVENTTYPES.XHR)) {
+      return
+    }
+    const isSuceess = data.status == 200
+    breadcrumb.push({
+      method: data.method,
+      pathName: data.url || '', // 请求url
+      requestText: data.reqData ? JSON.stringify(data.reqData) : '',
+      requestTime: data.sTime,
+      type: data.type,
+      level: isSuceess ? Severity.INFO : Severity.ERROR,
+      category: ERRORTYPES_CATEGORY.HTTP_LOG,
+      status: data.status,
+      eventType: 'load',
+      statusText: '',
+      responseText: data.responseText ? JSON.stringify(data.responseText) : '',
+      duration: data.elapsedTime,
+      happenTime: getTimestamp(),
+      happenDate: getNowFormatTime(),
+      responseTime: data.eTime,
+      timeout: data.timeout || ''
+    })
+  }
+}
+
+export { HandleAliEvents, HandleAliAppEvents, HandleAliPageEvents, HandleNetworkEvents }

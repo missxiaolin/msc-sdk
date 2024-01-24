@@ -1,4 +1,4 @@
-import { AliAppEvents, AliEvents, AliPageEvents, AliRouteEvents, EVENTTYPES } from '../../shared/constant'
+import { AliAppEvents, AliEvents, AliPageEvents, AliRouteEvents, EVENTTYPES, HTTPTYPE } from '../../shared/constant'
 import { ReplaceHandler, subscribeEvent, triggerHandlers } from '../../core/subscribe'
 import { getCurrentRoute, getNavigateBackTargetUrl } from './utils'
 import { getFlag } from '../../utils/global'
@@ -6,6 +6,14 @@ import { HandleAliAppEvents, HandleAliPageEvents } from './handleAliEvents'
 import { replaceOld, throttle, getTimestamp } from '../../utils/helpers'
 import { voidFun, ELinstenerTypes } from '../../shared/index'
 import { options as sdkOptions } from '../../core/options'
+import { EMethods } from '../../types/options'
+import { transportData } from '../../core/transportData'
+import { variableTypeDetection } from '../../utils/is'
+import { MITOHttp } from '../../types/common'
+
+function isFilterHttpUrl(url: string) {
+  return sdkOptions.filterXhrUrlRegExp && sdkOptions.filterXhrUrlRegExp.test(url)
+}
 
 /**
  * @param type
@@ -16,7 +24,7 @@ function replace(type: AliEvents | EVENTTYPES) {
       //   replaceConsole()
       break
     case EVENTTYPES.XHR:
-      //   replaceNetwork()
+        replaceNetwork()
       break
     case EVENTTYPES.PERFORMANCE:
       //   replacePerformance()
@@ -186,5 +194,101 @@ export function replacePage() {
       replaceAction(pageOptions)
       return originPage.call(this, pageOptions)
     }
+  })
+}
+
+
+// 网络请求
+function replaceNetwork() {
+  // const hookMethods = ['request', 'downloadFile', 'uploadFile']
+  const hookMethods = ['request']
+  hookMethods.forEach((hook) => {
+    const originRequest = my[hook]
+    Object.defineProperty(my, hook, {
+      writable: true,
+      enumerable: true,
+      configurable: true,
+      value: function (...args: any[]) {
+        const options = args[0]
+        let method: string
+        if (options.method) {
+          method = options.method
+        } else if (hook === 'downloadFile') {
+          method = EMethods.Get
+        } else {
+          method = EMethods.Post
+        }
+        const { url } = options
+        let header = options.header
+        !header && (header = {})
+
+        if ((method === EMethods.Post && transportData.isSdkTransportUrl(url)) || isFilterHttpUrl(url)) {
+          return originRequest.call(this, options)
+        }
+        let reqData = undefined
+        if (hook === 'request') {
+          reqData = options.data
+        } else if (hook === 'downloadFile') {
+          reqData = {
+            filePath: options.filePath
+          }
+        } else {
+          // uploadFile
+          reqData = {
+            filePath: options.filePath,
+            name: options.name
+          }
+        }
+
+        const data: MITOHttp = {
+          type: HTTPTYPE.XHR,
+          method,
+          url,
+          reqData,
+          sTime: getTimestamp(),
+          timeout: options.timeout
+        }
+        function setRequestHeader(key: string, value: string) {
+          header[key] = value
+        }
+        sdkOptions.beforeAppAjaxSend && sdkOptions.beforeAppAjaxSend({ method, url }, { setRequestHeader })
+
+        const successHandler = function (res) {
+          const endTime = getTimestamp()
+          data.responseText = (variableTypeDetection.isString(res.data) || variableTypeDetection.isObject(res.data)) && res.data
+          data.elapsedTime = endTime - data.sTime
+          data.status = res.statusCode
+          data.errMsg = res.errMsg
+          data.time = endTime
+
+          triggerHandlers(EVENTTYPES.XHR, data)
+          if (typeof options.success === 'function') {
+            return options.success(res)
+          }
+        }
+
+        const _fail = options.fail
+        const failHandler = function (err) {
+          // 系统和网络层面的失败
+          const endTime = getTimestamp()
+          data.eTime = endTime
+          data.elapsedTime = endTime - data.sTime
+          data.errMsg = err.errMsg
+          data.status = 0
+          triggerHandlers(EVENTTYPES.XHR, data)
+          if (variableTypeDetection.isFunction(_fail)) {
+            return _fail(err)
+          }
+        }
+
+        const actOptions = {
+          ...options,
+          success: successHandler,
+          fail: failHandler
+        }
+
+        return originRequest.call(this, actOptions)
+      }
+    })
   })
 }
