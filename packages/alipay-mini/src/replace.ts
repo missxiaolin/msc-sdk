@@ -10,6 +10,7 @@ import { EMethods } from '../../types/options'
 import { transportData } from '../../core/transportData'
 import { variableTypeDetection } from '../../utils/is'
 import { MITOHttp } from '../../types/common'
+import AliPerformance from './ali-performance'
 
 function isFilterHttpUrl(url: string) {
   return sdkOptions.filterXhrUrlRegExp && sdkOptions.filterXhrUrlRegExp.test(url)
@@ -315,4 +316,9 @@ function replacePerformance() {
   if (!getFlag(EVENTTYPES.PERFORMANCE)) {
     return
   }
+  new AliPerformance({
+    reportCallback: (data) => {
+      triggerHandlers(EVENTTYPES.PERFORMANCE, data)
+    }
+  })
 }

@@ -221,7 +221,7 @@
               "text": ";"
             }
           ],
-          "fileUrlPath": "packages/alipay-mini/src/utils.ts",
+          "fileUrlPath": "packages/alipay-mini/dist/packages/alipay-mini/src/utils.d.ts",
           "returnTypeTokenRange": {
             "startIndex": 3,
             "endIndex": 4

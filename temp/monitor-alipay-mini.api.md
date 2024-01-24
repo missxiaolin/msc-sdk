@@ -4,6 +4,8 @@
 
 ```ts
 
+/// <reference types="wechat-miniprogram" />
+
 import { Breadcrumb } from '../core/index';
 import { BreadcrumbPushData } from './breadcrumb';
 
