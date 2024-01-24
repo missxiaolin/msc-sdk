@@ -5,6 +5,8 @@ import { MiniRoute } from './types'
 import { MITOHttp } from '../../types/common'
 import { ERRORTYPES_CATEGORY, EVENTTYPES, Severity } from '../../shared/constant'
 import { breadcrumb } from '../../core/breadcrumb'
+import { Replace } from '../../types/replace'
+import { handleConsole } from '../../core/transformData'
 
 const HandleAliAppEvents = {
   /**
@@ -157,4 +159,10 @@ const HandleNetworkEvents = {
   }
 }
 
-export { HandleAliEvents, HandleAliAppEvents, HandleAliPageEvents, HandleNetworkEvents }
+const HandleAliConsoleEvents = {
+  console(data: Replace.TriggerConsole) {
+    handleConsole(data)
+  }
+}
+
+export { HandleAliEvents, HandleAliAppEvents, HandleAliPageEvents, HandleNetworkEvents, HandleAliConsoleEvents }

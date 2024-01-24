@@ -1,5 +1,5 @@
 import { EVENTTYPES } from '../../shared/index'
-import { HandleAliEvents, HandleAliPageEvents, HandleNetworkEvents } from './handleAliEvents'
+import { HandleAliConsoleEvents, HandleAliEvents, HandleAliPageEvents, HandleNetworkEvents } from './handleAliEvents'
 import { addReplaceHandler, replaceApp, replacePage } from './replace'
 import { MiniRoute } from './types'
 
@@ -20,5 +20,11 @@ export function setupReplace() {
       HandleNetworkEvents.handleRequest(data)
     },
     type: EVENTTYPES.XHR
+  })
+  addReplaceHandler({
+    callback: (data) => {
+      HandleAliConsoleEvents.console(data)
+    },
+    type: EVENTTYPES.CONSOLE
   })
 }

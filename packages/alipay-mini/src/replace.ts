@@ -21,7 +21,7 @@ function isFilterHttpUrl(url: string) {
 function replace(type: AliEvents | EVENTTYPES) {
   switch (type) {
     case EVENTTYPES.CONSOLE:
-      //   replaceConsole()
+        replaceConsole()
       break
     case EVENTTYPES.XHR:
         replaceNetwork()
@@ -291,4 +291,21 @@ function replaceNetwork() {
       }
     })
   })
+}
+
+function replaceConsole() {
+  if (console && variableTypeDetection.isObject(console)) {
+    const logType = ['log', 'debug', 'info', 'warn', 'error', 'assert']
+    logType.forEach(function (level: string): void {
+      if (!(level in console)) return
+      replaceOld(console, level, function (originalConsole): Function {
+        return function (...args: any[]): void {
+          if (originalConsole) {
+            triggerHandlers(EVENTTYPES.CONSOLE, { args, level })
+            originalConsole.apply(console, args)
+          }
+        }
+      })
+    })
+  }
 }
