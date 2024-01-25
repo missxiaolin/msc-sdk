@@ -129,6 +129,7 @@ export enum EVENTTYPES {
   // for miniprogram
   AppOnShow = 'AppOnShow', // app onshow
   PageOnLoad = 'PageOnLoad',
+  PageOnHide = 'PageOnHide',
   MINI_ROUTE = 'miniRoute',
 }
 

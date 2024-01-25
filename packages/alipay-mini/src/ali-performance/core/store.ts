@@ -23,7 +23,7 @@ class Store extends Event {
    * @param type 
    * @param data 
    */
-  async handleWxPerformance(type: AliPerformanceDataType, data: AliPerformanceAnyObj) {
+  async handleAliPerformance(type: AliPerformanceDataType, data: AliPerformanceAnyObj) {
     switch (type) {
         case AliPerformanceDataType.ALI_PERFORMANCE:
             this.performanceObj = {
@@ -60,12 +60,18 @@ class Store extends Event {
    * 发送请求
    */
   async reportPerformanceData() {
-    const d = {}
+    let d = {}
     if (Object.keys(this.performanceObj).length > 0) {
-      d[AliPerformanceDataType.ALI_PERFORMANCE] = await this._createPerformanceData(AliPerformanceDataType.ALI_PERFORMANCE, this.performanceObj)
+      d = {
+        ...d,
+        ...await this._createPerformanceData(AliPerformanceDataType.ALI_PERFORMANCE, this.performanceObj)
+      }
     }
     if (this.performanceResource.length > 0) {
-      d[AliPerformanceDataType.ALI_RESOURCE_FLOW] = await this._createPerformanceData(AliPerformanceDataType.ALI_RESOURCE_FLOW, this.performanceResource)
+      d = {
+        ...d,
+        ...await this._createPerformanceData(AliPerformanceDataType.ALI_RESOURCE_FLOW, this.performanceResource)
+      }
     }
     this.performanceObj = {}
     this.performanceResource = []

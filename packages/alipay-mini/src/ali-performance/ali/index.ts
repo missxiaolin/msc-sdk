@@ -47,11 +47,11 @@ function handlePerformanceData(store: Store, entryList) {
     })
     // 性能数据
     if (Object.keys(obj).length > 0) {
-        store.handleWxPerformance(AliPerformanceDataType.ALI_PERFORMANCE, obj)
+        store.handleAliPerformance(AliPerformanceDataType.ALI_PERFORMANCE, obj)
     }
     // 资源
     if (arr.length > 0) {
-        store.handleWxPerformance(AliPerformanceDataType.ALI_RESOURCE_FLOW, obj)
+        store.handleAliPerformance(AliPerformanceDataType.ALI_RESOURCE_FLOW, arr)
     }
 }
 

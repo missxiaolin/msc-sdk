@@ -11,6 +11,7 @@ export function init(options: InitOptions = {}) {
 	if (!isAliMiniEnv) return
 	// 为了得到网络还有设备信息 在appOnShow里面去拿到
   setFlag(EVENTTYPES.AppOnShow, true)
+  setFlag(EVENTTYPES.PageOnHide, true)
 	setFlag(EVENTTYPES.MINI_ROUTE, true)
   initOptions(options)
   setupReplace()

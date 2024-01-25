@@ -164,7 +164,6 @@ function replaceAction(options) {
           return function (...args: any): void {
             const e = args[0]
             if (e && e.type && e.currentTarget && !e.mitoWorked) {
-              console.log(e.type)
               if (linstenerTypes.indexOf(e.type) > -1) {
                 throttleGesturetrigger(e)
               }
