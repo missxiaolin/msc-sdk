@@ -159,7 +159,6 @@ export function replacePage() {
   const originPage = Page
   const methods = [WxPageEvents.PageOnLoad]
   methods.forEach((method) => {
-    if (!getFlag(method)) return
     addReplaceHandler({
       callback: (data) => HandleWxPageEvents[method.replace('PageOn', 'on')](data),
       type: method

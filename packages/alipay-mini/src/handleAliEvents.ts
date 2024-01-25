@@ -27,15 +27,15 @@ const HandleAliAppEvents = {
     if (!getFlag(EVENTTYPES.ERROR)) {
       return
     }
-    const parsedError = parseErrorString(error)
+    // const parsedError = parseErrorString(error)
 
     breadcrumb.push({
-      errorMsg: parsedError.message,
+      errorMsg: error,
       category: ERRORTYPES_CATEGORY.JS_ERROR,
-      type: parsedError.name || 'UnKnowun',
+      type: 'UnKnowun',
       line: 0,
       col: 0,
-      stackTraces: parsedError.stack,
+      stackTraces: [],
       subType: 'jsError',
       level: Severity.ERROR,
       happenTime: getTimestamp(),

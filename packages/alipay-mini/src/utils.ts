@@ -50,7 +50,7 @@ export function getNavigateBackTargetUrl(delta: number | undefined) {
 }
 
 /**
- * 获取wx当前route的方法
+ * 获取支付宝当前route的方法
  * 必须是在进入Page或Component构造函数内部才能够获取到currentPages
  * 否则都是在注册Page和Component时执行的代码，此时url默认返回'App'
  */
