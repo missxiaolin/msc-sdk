@@ -183,7 +183,7 @@ export function replacePage() {
     return
   }
   const originPage = Page
-  const methods = [AliPageEvents.PageOnLoad]
+  const methods = [AliPageEvents.PageOnLoad, AliPageEvents.PageOnHide]
   methods.forEach((method) => {
     if (!getFlag(method)) return
     addReplaceHandler({

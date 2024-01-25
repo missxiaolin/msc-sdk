@@ -1,3 +1,4 @@
+import Store from '../alipay-mini/src/ali-performance/core/store'
 import { AliEvents, EVENTTYPES, WxEvents } from '../shared/index'
 import { Breadcrumb, Options, TransportData } from '../core/index'
 import { DeviceInfo } from '../types/index'
@@ -11,6 +12,7 @@ export interface MitoSupport {
   record?: any[]
   deviceInfo?: DeviceInfo | any
   options?: Options
+  aliStore?: Store // 支付宝性能缓存方法
 }
 
 interface MITOGlobal {

@@ -57,6 +57,22 @@ class Store extends Event {
   }
 
   /**
+   * 发送请求
+   */
+  async reportPerformanceData() {
+    const d = {}
+    if (Object.keys(this.performanceObj).length > 0) {
+      d[AliPerformanceDataType.ALI_PERFORMANCE] = await this._createPerformanceData(AliPerformanceDataType.ALI_PERFORMANCE, this.performanceObj)
+    }
+    if (this.performanceResource.length > 0) {
+      d[AliPerformanceDataType.ALI_RESOURCE_FLOW] = await this._createPerformanceData(AliPerformanceDataType.ALI_RESOURCE_FLOW, this.performanceResource)
+    }
+    this.performanceObj = {}
+    this.performanceResource = []
+    this.report(d)
+  }
+
+  /**
    * 内存警告会立即上报
    * @param data
    */

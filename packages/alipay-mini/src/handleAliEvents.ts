@@ -1,9 +1,9 @@
+import { ERRORTYPES_CATEGORY, EVENTTYPES, Severity } from '../../shared/constant'
+import { parseErrorString, getNowFormatTime, getTimestamp, unknownToString, getPageURL, formatUrlToStr } from '../../utils/helpers'
 import { getWxMiniDeviceInfo, targetAsString } from './utils'
 import { _support, getFlag } from '../../utils/global'
-import { parseErrorString, getNowFormatTime, getTimestamp, unknownToString, getPageURL, formatUrlToStr } from '../../utils/helpers'
 import { MiniRoute } from './types'
 import { MITOHttp } from '../../types/common'
-import { ERRORTYPES_CATEGORY, EVENTTYPES, Severity } from '../../shared/constant'
 import { breadcrumb } from '../../core/breadcrumb'
 import { Replace } from '../../types/replace'
 import { handleConsole } from '../../core/transformData'
@@ -92,6 +92,13 @@ const HandleAliPageEvents = {
       happenDate: getNowFormatTime()
     })
     popstateStartTime = getTimestamp()
+  },
+  onHide() {
+    if (!_support.aliStore) {
+      return
+    }
+    // TODO: 执行性能数据上报
+    _support.aliStore.reportPerformanceData()
   },
   onAction(e) {
     if (!getFlag(EVENTTYPES.DOM)) {

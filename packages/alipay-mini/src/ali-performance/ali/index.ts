@@ -1,3 +1,4 @@
+import { replaceOld } from '../../../../utils/helpers'
 import Store from '../core/store'
 import { AliPerformanceDataType } from '../types'
 
