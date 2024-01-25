@@ -236,8 +236,10 @@ function replaceNetwork() {
           data.status = res.statusCode
           data.errMsg = res.errMsg
           data.time = endTime
-
-          triggerHandlers(EVENTTYPES.XHR, data)
+          if (!transportData.isSdkTransportUrl(url) && !isFilterHttpUrl(url)) {
+            triggerHandlers(EVENTTYPES.XHR, data)
+          }
+          
           if (typeof options.success === 'function') {
             return options.success(res)
           }
@@ -254,7 +256,10 @@ function replaceNetwork() {
           data.elapsedTime = endTime - data.sTime
           data.errMsg = err.errMsg
           data.status = 0
-          triggerHandlers(EVENTTYPES.XHR, data)
+          if (!transportData.isSdkTransportUrl(url) && !isFilterHttpUrl(url)) {
+            triggerHandlers(EVENTTYPES.XHR, data)
+          }
+          
           if (variableTypeDetection.isFunction(_fail)) {
             return _fail(err)
           }
