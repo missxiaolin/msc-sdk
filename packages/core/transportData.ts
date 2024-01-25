@@ -1,7 +1,7 @@
 import { getCurrentRoute, getCurrentRoutePlaintext } from '../wx-mini/src/utils'
 import { BreadcrumbPushData } from '../types/breadcrumb'
 import { InitOptions, FinalReportType, TransportDataType, DeviceInfo, EMethods } from '../types/index'
-import { _support, formatUrlToStr, getPageURL, isBrowserEnv, isWxMiniEnv, validateOption, variableTypeDetection } from '../utils/index'
+import { _support, formatUrlToStr, getPageURL, isAliMiniEnv, isBrowserEnv, isWxMiniEnv, validateOption, variableTypeDetection } from '../utils/index'
 import Queue from '../utils/queue'
 
 /**
@@ -133,7 +133,30 @@ export class TransportData {
     if (isWxMiniEnv) {
       return this.wxPost(result, this.url)
     }
+    if (isAliMiniEnv) {
+      return this.aliPost(result, this.url)
+    }
 	}
+
+  /**
+	 * 支付宝请求发送
+	 * @param data 
+	 * @param url 
+	 */
+	async aliPost(data: any, url: string) {
+    const requestFun = (): void => {
+      let requestOptions: any = { method: 'POST' }
+      requestOptions = {
+        ...requestOptions,
+        data: JSON.stringify({
+					data: data
+				}),
+        url
+      }
+      my.request(requestOptions)
+    }
+		this.queue.pushToQueue(requestFun)
+  }
 
 	/**
 	 * 微信请求发送

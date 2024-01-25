@@ -41,7 +41,7 @@ const common = {
   input: `${packageDir}/src/index.ts`,
   output: {
     banner: `/* ${M}-${name} version ' + ${masterVersion} */`,
-    footer: '/* follow me on Github! @cjinhuo */'
+    footer: '/* follow me on Github! @missxiaolin */'
   },
   external: [...Object.keys(paths)],
   plugins: [

@@ -9,8 +9,11 @@ export const defaultFunctionName = '<anonymous>'
  */
 export function getPage() {
   let path = '';
-  if (getCurrentPages().length) {
+  if (getCurrentPages().length && isWxMiniEnv) {
     path = getCurrentPages()[getCurrentPages().length - 1].__route__;
+  }
+  if (getCurrentPages().length && isAliMiniEnv) {
+    path = getCurrentPages()[getCurrentPages().length - 1].route;
   }
   return path;
 }

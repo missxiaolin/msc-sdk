@@ -18,6 +18,9 @@ export function getUser(key: string) {
  */
 export function setUrlQuery(url: string, query: object) {
   const queryArr = []
+  if (!query || !variableTypeDetection.isObject(query)) {
+    return url
+  }
   Object.keys(query).forEach((k) => {
     queryArr.push(`${k}=*`)
   })
