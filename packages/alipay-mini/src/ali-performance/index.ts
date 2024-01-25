@@ -1,4 +1,5 @@
 import { AliPerformanceInitOptions } from './types/index'
+import { initAliPerformance } from './ali/index'
 import Store from './core/store'
 
 class AliPerformance {
@@ -8,6 +9,10 @@ class AliPerformance {
     const {
       reportCallback,
     } = options
+    const store = new Store({ reportCallback })
+
+    initAliPerformance(store)
+    
   }
 }
 

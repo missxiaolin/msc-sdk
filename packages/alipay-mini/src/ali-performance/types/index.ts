@@ -9,10 +9,10 @@ export interface AliPerformanceInitOptions {
   reportCallback: (data: AliPerformanceAnyObj) => void
 }
 
-export enum WxPerformanceDataType {
+export enum AliPerformanceDataType {
   MEMORY_WARNING = 'memory-waring', // MEMORY_WARNING
-  WX_PERFORMANCE = 'wx-performance', // WX_PERFORMANCE
-  WX_RESOURCE_FLOW = 'wx-resource-flow' // 资源
+  ALI_PERFORMANCE = 'ali-performance', // WX_PERFORMANCE
+  ALI_RESOURCE_FLOW = 'ali-resource-flow' // 资源
 }
 
 export enum AliPerformanceItemType {

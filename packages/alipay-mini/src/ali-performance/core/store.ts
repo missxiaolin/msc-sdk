@@ -6,17 +6,38 @@ import { noop, getPageUrl } from '../utils/index'
 class Store extends Event {
   report: (data: any) => void
   private stack: Array<any>
-  private performanceObj: any
+  private performanceObj: object
+  private performanceResource: Array<any>
 
   constructor(options: AliPerformanceInitOptions) {
     super()
     const { reportCallback } = options
     this.report = validateOption(reportCallback, 'report', 'function') ? reportCallback : noop
     this.stack = []
+    this.performanceObj = {}
+    this.performanceResource = []
   }
 
-  async handleWxPerformance(data: AliPerformanceAnyObj) {
-    // this.performanceObj[data.key] = data
+  /**
+   * 处理性能数据
+   * @param type 
+   * @param data 
+   */
+  async handleWxPerformance(type: AliPerformanceDataType, data: AliPerformanceAnyObj) {
+    switch (type) {
+        case AliPerformanceDataType.ALI_PERFORMANCE:
+            this.performanceObj = {
+                ...this.performanceObj,
+                ...data
+            }
+            break;
+        case AliPerformanceDataType.ALI_RESOURCE_FLOW:
+            this.performanceResource.concat(data)
+            break;
+        default:
+
+
+    }
   }
 
   /**
