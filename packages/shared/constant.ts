@@ -127,6 +127,7 @@ export enum EVENTTYPES {
   NETWORK_STATUS_CHANGE = 'miniNetworkStatusChange',
   BATTERY_INFO = 'miniBatteryInfo',
   // for miniprogram
+  AppOnLaunch = 'AppOnLaunch', // app onshow
   AppOnShow = 'AppOnShow', // app onshow
   PageOnLoad = 'PageOnLoad',
   PageOnHide = 'PageOnHide',

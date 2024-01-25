@@ -10,6 +10,10 @@ import { handleConsole } from '../../core/transformData'
 import generateUniqueID from '../../utils/generateUniqueID'
 
 const HandleAliAppEvents = {
+  async onLaunch(options) {
+    _support.deviceInfo = await getWxMiniDeviceInfo()
+    console.log(options, _support.deviceInfo)
+  },
   /**
    * 获取device
    * @param options
@@ -76,6 +80,13 @@ const HandleAliEvents = {
 const HandleAliPageEvents = {
   onLoad() {
     if (!getFlag(EVENTTYPES.PageOnLoad)) {
+      return
+    }
+    // 首次会慢
+    if (!_support.deviceInfo && getCurrentPages().length == 1) {
+      setTimeout(() => {
+        this.onLoad()
+      })
       return
     }
     breadcrumb.push({

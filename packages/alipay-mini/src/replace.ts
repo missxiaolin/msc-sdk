@@ -91,7 +91,7 @@ export function replaceApp() {
   }
   const originApp = App
   App = function (appOptions) {
-    const methods = [AliAppEvents.AppOnShow, AliAppEvents.AppOnError, AliAppEvents.AppOnUnhandledRejection]
+    const methods = [AliAppEvents.AppOnShow,AliAppEvents.AppOnLaunch, AliAppEvents.AppOnError, AliAppEvents.AppOnUnhandledRejection]
     methods.forEach((method) => {
       if (!getFlag(method)) return
       addReplaceHandler({
