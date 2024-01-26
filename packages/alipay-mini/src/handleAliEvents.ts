@@ -78,12 +78,13 @@ const HandleAliEvents = {
 }
 
 const HandleAliPageEvents = {
-  onLoad() {
+  async onLoad() {
     if (!getFlag(EVENTTYPES.PageOnLoad)) {
       return
     }
     // 首次会慢
     if (!_support.deviceInfo && getCurrentPages().length == 1) {
+      _support.deviceInfo = await getWxMiniDeviceInfo()
       setTimeout(() => {
         this.onLoad()
       })
