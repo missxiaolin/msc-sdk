@@ -101,11 +101,24 @@ MITO.init({
 });
 ~~~
 
-### 小程序接入
+### 微信小程序接入
 
 导入sdk
 
 http://www.missxiaolin.com/sdk/wx-mini.js
+
+~~~
+const r = `https://msc-serve.missxiaolin.com`; 
+MITO.init({
+	monitorAppId: `ys-tool-mp`,
+	uuId: () => MITO.getUser("user_id"),
+	watch: { "pageChange": true, "jsError": true, "performance": true, "request": true, "click": true }, report: { url: `${r}/api/update`, trackUrl: `${r}/api/tracker/update`, encryption: 0, maxQueues: 8, reportType: 1, delay: 30000 },
+})
+~~~
+
+### 支付宝小程序接入
+
+http://www.missxiaolin.com/sdk/alipay-mini.js
 
 ~~~
 const r = `https://msc-serve.missxiaolin.com`; 
