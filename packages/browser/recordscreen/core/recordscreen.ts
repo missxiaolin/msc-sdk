@@ -1,7 +1,7 @@
 import { record } from 'rrweb'
 import pako from 'pako'
 import { Base64 } from 'js-base64'
-import { _support, getTimestamp } from '../../../utils'
+import { _support } from '../../../utils'
 import generateUniqueID from '../../../utils/generateUniqueID'
 
 /**

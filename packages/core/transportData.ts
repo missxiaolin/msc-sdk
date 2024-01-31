@@ -142,6 +142,11 @@ export class TransportData {
     }
 	}
 
+  /**
+   * 录屏使用
+   * @param res 
+   * @returns 
+   */
   isRecordScreen(res) {
     if (!options.silentRecordScreen) {
       return
@@ -151,6 +156,7 @@ export class TransportData {
         if (options.recordScreenTypeList.includes(item.category) && item.level == Severity.ERROR) {
           // 修改hasError
           _support.hasError = true;
+          _support.recordScreenType = item.category
         }
       })
     } catch (err) {

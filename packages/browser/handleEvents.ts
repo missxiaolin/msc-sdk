@@ -1,6 +1,6 @@
 import { BREADCRUMBTYPES, Severity, ERRORTYPES_CATEGORY, EVENTTYPES, ERROR_TYPE_RE } from '../shared/index'
 import { MITOHttp, ResourceErrorTarget, ReportDataType, Replace } from '../types/index'
-import { extractErrorStack, formatUrlToStr, getFlag, getNowFormatTime, getPageURL, getTimestamp, isError, variableTypeDetection } from '../utils/index'
+import { _support, extractErrorStack, formatUrlToStr, getFlag, getNowFormatTime, getPageURL, getTimestamp, isError, variableTypeDetection } from '../utils/index'
 import { breadcrumb } from '../core/index'
 import { resourceTransform } from '../core/transformData'
 import generateUniqueID from '../utils/generateUniqueID'
@@ -235,6 +235,7 @@ const HandleEvents = {
       happenTime: getTimestamp(),
       happenDate: getNowFormatTime(),
       pageUrl,
+      errorType: _support.recordScreenType || "",
       sessionId: generateUniqueID(),
       simpleUrl: formatUrlToStr(pageUrl),
       events: data

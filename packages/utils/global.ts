@@ -15,6 +15,7 @@ export interface MitoSupport {
   aliStore?: Store // 支付宝性能缓存方法
   recordScreenId?: string // 录屏用
   hasError?: boolean // 录屏用
+  recordScreenType?: string // 录屏是什么错误导致
 }
 
 
