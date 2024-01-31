@@ -3,38 +3,26 @@ import pako from 'pako'
 import { Base64 } from 'js-base64'
 import { _support, getTimestamp } from '../../../utils'
 import generateUniqueID from '../../../utils/generateUniqueID'
-import { EVENTTYPES } from '../../../shared'
 
 /**
  * @param transportData
  * @param recordScreentime
  */
-export function handleScreen(transportData: any, recordScreentime: number): void {
+export function handleScreen(reportCallback: any, recordScreentime: number): void {
   // events存储录屏信息
   let events: any[] = []
   // 调用stopFn停止录像
   // let stopFn = record({});
   record({
-    emit(event, isCheckout) {
-      if (isCheckout) {
-        // 此段时间内发生错误，上报录屏信息
-        if (_support.hasError) {
-          const recordScreenId = _support.recordScreenId;
-          _support.recordScreenId = generateUniqueID();
-          transportData.send({
-            type: EVENTTYPES.RECORDSCREEN,
-            recordScreenId,
-            time: getTimestamp(),
-            events: zip(events),
-          });
-          events = [];
-          _support.hasError = false;
-        } else {
-            // 不上报，清空录屏
-          events = [];
-          _support.recordScreenId = generateUniqueID();
-        }
+    emit(event) {
+      // 此段时间内发生错误，上报录屏信息
+      if (_support.hasError) {
+        _support.recordScreenId = generateUniqueID();
+        reportCallback(zip(events));
+        events = [];
+        _support.hasError = false;
       }
+      events.push(event);
     },
     recordCanvas: true,
     // 默认每10s重新制作快照

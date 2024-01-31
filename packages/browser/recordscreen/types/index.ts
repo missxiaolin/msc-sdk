@@ -1,9 +1,11 @@
+import { Options } from '../../../core/index'
+
 // sdk插件核心core
 export interface SdkBase {
-  transportData: any // 数据上报
-  breadcrumb: any // 用户行为
-  options: any // 公共配置
-  notify: any // 发布消息
+  reportCallback: any // 数据上报
+  breadcrumb?: any // 用户行为
+  options: Options // 公共配置
+  notify?: any // 发布消息
 }
 
 export abstract class BasePlugin {

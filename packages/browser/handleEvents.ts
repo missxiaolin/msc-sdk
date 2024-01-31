@@ -222,6 +222,22 @@ const HandleEvents = {
         objs
       }
     })
+  },
+  /**
+   * 录屏上报
+   * @param data 
+   */
+  handleRecordSreen(data) {
+    const pageUrl = getPageURL()
+    breadcrumb.push({
+      level: Severity.ERROR,
+      category: ERRORTYPES_CATEGORY.RECORD_SCREEN,
+      happenTime: getTimestamp(),
+      happenDate: getNowFormatTime(),
+      pageUrl,
+      simpleUrl: formatUrlToStr(pageUrl),
+      events: data
+    })
   }
 }
 

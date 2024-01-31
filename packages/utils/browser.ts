@@ -48,6 +48,7 @@ export function setSilentFlag(paramOptions: InitOptions = {}): void {
   setFlag(EVENTTYPES.UNHANDLEDREJECTION, !!paramOptions.watch.promise)
   setFlag(EVENTTYPES.PERFORMANCE, !!paramOptions.watch.performance)
   setFlag(EVENTTYPES.VUE, !!paramOptions.watch.vueError)
+  setFlag(EVENTTYPES.RECORDSCREEN, !!paramOptions.watch.recordScreen)
   // wx App
   if (isWxMiniEnv) {
     setFlag(WxAppEvents.AppOnError, !!paramOptions.watch.jsError)

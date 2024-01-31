@@ -3,6 +3,8 @@ import { BreadcrumbPushData } from '../types/breadcrumb'
 import { InitOptions, FinalReportType, TransportDataType, DeviceInfo, EMethods } from '../types/index'
 import { _support, formatUrlToStr, getPageURL, isAliMiniEnv, isBrowserEnv, isWxMiniEnv, validateOption, variableTypeDetection } from '../utils/index'
 import Queue from '../utils/queue'
+import { Severity } from '../shared'
+import { options } from '../core/index'
 
 /**
  * 用来传输数据类，包含img标签、xhr请求
@@ -127,6 +129,8 @@ export class TransportData {
   async send(data: BreadcrumbPushData) {
     const result = await this.beforePost(data)
     if (!result) return
+    // 监控录屏
+    this.isRecordScreen(result)
     if (isBrowserEnv) {
       return this.xhrPost(result, this.url)
     }
@@ -137,6 +141,22 @@ export class TransportData {
       return this.aliPost(result, this.url)
     }
 	}
+
+  isRecordScreen(res) {
+    if (!options.silentRecordScreen) {
+      return
+    }
+    try {
+      res.lists.forEach(item => {
+        if (options.recordScreenTypeList.includes(item.category) && item.level == Severity.ERROR) {
+          // 修改hasError
+          _support.hasError = true;
+        }
+      })
+    } catch (err) {
+
+    }
+  }
 
   /**
 	 * 支付宝请求发送

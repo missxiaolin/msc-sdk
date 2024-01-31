@@ -5,7 +5,6 @@ const views = require('koa-views');
 const koaBody = require('koa-body');
 const path = require('path');
 const koaStatic = require('koa-static');
-// const puppeteer = require('puppeteer');
 const fetch = require('node-fetch');
 
 const router = new koaRouter();

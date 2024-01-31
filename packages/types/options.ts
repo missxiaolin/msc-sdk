@@ -67,6 +67,10 @@ export interface InitOptions extends HooksTypes {
      */
     recordScreen: boolean
     /**
+     * 录屏时间（web独有）
+     */
+    recordScreenTime?: number
+    /**
      * 页面
      */
     pageChange: boolean

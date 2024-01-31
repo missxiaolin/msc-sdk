@@ -1,7 +1,8 @@
 import { ReplaceHandler, subscribeEvent, triggerHandlers, transportData, options } from '../core/index'
-import { EVENTTYPES, voidFun, HTTPTYPE } from '../shared/index'
+import { EVENTTYPES, voidFun, HTTPTYPE, ERRORTYPES_CATEGORY } from '../shared/index'
 import { _global, replaceOld, getTimestamp, on, getPageURL, isExistProperty, supportsHistory, throttle } from '../utils/index'
 import { MITOXMLHttpRequest, EMethods, MITOHttp } from '../types/index'
+import RecordScreen from './recordscreen/index'
 
 function isFilterHttpUrl(url: string) {
   return options.filterXhrUrlRegExp && options.filterXhrUrlRegExp.test(url)
@@ -13,8 +14,8 @@ function replace(type: EVENTTYPES) {
       xhrReplace()
       break
     case EVENTTYPES.CONSOLE:
-        consoleReplace()
-        break
+      consoleReplace()
+      break
     case EVENTTYPES.FETCH:
       fetchReplace()
       break
@@ -35,6 +36,9 @@ function replace(type: EVENTTYPES) {
       break
     case EVENTTYPES.HASHCHANGE:
       listenHashchange()
+      break
+    case EVENTTYPES.RECORDSCREEN:
+      listenRecordScreen()
       break
     default:
       break
@@ -344,5 +348,27 @@ function consoleReplace(): void {
         }
       }
     })
+  })
+}
+
+/**
+ * 录屏上报
+ */
+function listenRecordScreen() {
+  const recordScreen = new RecordScreen({
+    recordScreenTypeList: [
+      ERRORTYPES_CATEGORY.JS_ERROR,
+      ERRORTYPES_CATEGORY.RESOURCE_ERROR,
+      ERRORTYPES_CATEGORY.PROMISE_ERROR,
+      ERRORTYPES_CATEGORY.HTTP_LOG,
+      ERRORTYPES_CATEGORY.UNKNOW_ERROR
+    ], // 录屏事件集合
+    recordScreentime: 2000 // 时间
+  })
+  recordScreen.core({
+    reportCallback: (data) => {
+      triggerHandlers(EVENTTYPES.RECORDSCREEN, data)
+    },
+    options
   })
 }

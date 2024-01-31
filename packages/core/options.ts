@@ -11,6 +11,10 @@ export class Options {
 
   throttleDelayTime = 0
 
+  // 录屏使用
+  silentRecordScreen: boolean = false
+  recordScreenTypeList: string[] = []
+
   constructor() {
     this.enableTraceId = false
   }

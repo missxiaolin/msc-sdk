@@ -53,7 +53,12 @@ export function setupReplace(): void {
     },
     type: EVENTTYPES.PERFORMANCE
   })
-
+  addReplaceHandler({
+    callback: (data) => {
+      HandleEvents.handleRecordSreen(data)
+    },
+    type: EVENTTYPES.RECORDSCREEN
+  })
   addReplaceHandler({
     callback: (data) => {
       handleConsole(data)
