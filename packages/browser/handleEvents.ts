@@ -235,6 +235,7 @@ const HandleEvents = {
       happenTime: getTimestamp(),
       happenDate: getNowFormatTime(),
       pageUrl,
+      sessionId: generateUniqueID(),
       simpleUrl: formatUrlToStr(pageUrl),
       events: data
     })
