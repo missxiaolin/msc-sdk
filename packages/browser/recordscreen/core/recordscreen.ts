@@ -21,6 +21,10 @@ export function handleScreen(reportCallback: any, recordScreentime: number): voi
         reportCallback(zip(events));
         events = [];
         _support.hasError = false;
+      } else {
+        if (events.length > 200) {
+          events = []
+        }
       }
       events.push(event);
     },
