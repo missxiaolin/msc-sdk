@@ -80,12 +80,12 @@ MITO.init({
     monitorAppId: "adm",
     uuId: () => MITO.getCookie("userId"),
     watch: {
+        recordScreen: true,
         pageChange: true,
         jsError: true,
         vueError: true,
         promise: true,
         performance: true,
-        whiteScreen: true,
         click: true,
         resource: true,
         request: true,
@@ -178,7 +178,10 @@ export interface InitOptions extends HooksTypes {
     delay: number
   }
   watch?: {
-    whiteScreen: boolean
+    /**
+     * 录屏监控
+     */
+    recordScreen: boolean
     /**
      * 页面
      */

@@ -76,6 +76,9 @@
   },
   "dependencies": {
     "core-js": "^3.19.1",
-    "path-to-regexp": "^6.2.0"
+    "js-base64": "^3.7.6",
+    "pako": "^2.1.0",
+    "path-to-regexp": "^6.2.0",
+    "rrweb": "^2.0.0-alpha.4"
   }
 }

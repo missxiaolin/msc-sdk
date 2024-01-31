@@ -126,6 +126,7 @@ export enum EVENTTYPES {
   MEMORY_WARNING = 'miniMemoryWarning',
   NETWORK_STATUS_CHANGE = 'miniNetworkStatusChange',
   BATTERY_INFO = 'miniBatteryInfo',
+  RECORDSCREEN = 'recordScreen', // 录屏
   // for miniprogram
   AppOnLaunch = 'AppOnLaunch', // app onshow
   AppOnShow = 'AppOnShow', // app onshow

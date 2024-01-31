@@ -62,7 +62,10 @@ export interface InitOptions extends HooksTypes {
     delay: number
   }
   watch?: {
-    whiteScreen: boolean
+    /**
+     * 录屏监控（web独有）
+     */
+    recordScreen: boolean
     /**
      * 页面
      */

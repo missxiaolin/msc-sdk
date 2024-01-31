@@ -13,7 +13,11 @@ export interface MitoSupport {
   deviceInfo?: DeviceInfo | any
   options?: Options
   aliStore?: Store // 支付宝性能缓存方法
+  recordScreenId?: string // 录屏用
+  hasError?: boolean // 录屏用
 }
+
+
 
 interface MITOGlobal {
   console?: Console
@@ -45,6 +49,8 @@ export function getGlobal<T>() {
 
 const _global = getGlobal<Window>()
 const _support = getGlobalMitoSupport()
+
+_support.hasError = false;
 
 export { _global, _support }
 
