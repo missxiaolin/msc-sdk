@@ -6,8 +6,8 @@
 
 /// <reference types="wechat-miniprogram" />
 
-import { Breadcrumb } from '../core/index';
-import { BreadcrumbPushData } from './breadcrumb';
+import { BreadcrumbPushData } from '../types/breadcrumb';
+import { BreadcrumbPushData as BreadcrumbPushData_2 } from './breadcrumb';
 
 // @public (undocumented)
 export const generateUniqueID: () => string;
