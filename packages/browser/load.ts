@@ -61,6 +61,12 @@ export function setupReplace(): void {
   })
   addReplaceHandler({
     callback: (data) => {
+      HandleEvents.handleWhiteScreen(data)
+    },
+    type: EVENTTYPES.WHITESCREEN
+  })
+  addReplaceHandler({
+    callback: (data) => {
       handleConsole(data)
     },
     type: EVENTTYPES.CONSOLE

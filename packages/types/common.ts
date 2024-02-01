@@ -37,3 +37,7 @@ export interface ResourceErrorTarget {
   href?: string
   localName?: string
 }
+
+export interface Callback {
+  (...args: any[]): any;
+}

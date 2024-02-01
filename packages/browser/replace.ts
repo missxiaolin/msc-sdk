@@ -10,6 +10,9 @@ function isFilterHttpUrl(url: string) {
 
 function replace(type: EVENTTYPES) {
   switch (type) {
+    case EVENTTYPES.WHITESCREEN:
+      whiteScreen();
+      break
     case EVENTTYPES.XHR:
       xhrReplace()
       break
@@ -311,15 +314,13 @@ function domReplace(): void {
   // )
 }
 
-// export const afterLoad = callback => {
-//   if (document.readyState === 'complete') {
-//     setTimeout(callback);
-//   } else {
-//     window.addEventListener('pageshow', callback, { once: true, capture: true });
-//   }
-// };
 import { WebVitals } from './web-performance/index'
+import { openWhiteScreen } from './whiteScreen'
 
+/**
+ * 性能
+ * @returns 
+ */
 function listenPerformance(): void {
   if (!('document' in _global) && !('performance' in _global)) return
   new WebVitals({
@@ -327,12 +328,12 @@ function listenPerformance(): void {
       triggerHandlers(EVENTTYPES.PERFORMANCE, data)
     }
   })
-  // afterLoad(() => {
-  //   const entryList = _global.performance.getEntries() || [];
-  //   triggerHandlers(EVENTTYPES.PERFORMANCE, entryList)
-  // })
 }
 
+/**
+ * console.log
+ * @returns 
+ */
 function consoleReplace(): void {
   if (!('console' in _global)) {
     return
@@ -354,14 +355,14 @@ function consoleReplace(): void {
 /**
  * 录屏上报
  */
-function listenRecordScreen() {
+function listenRecordScreen(): void {
   const recordScreen = new RecordScreen({
     recordScreenTypeList: [
       ERRORTYPES_CATEGORY.JS_ERROR,
-      ERRORTYPES_CATEGORY.RESOURCE_ERROR,
-      ERRORTYPES_CATEGORY.PROMISE_ERROR,
+      // ERRORTYPES_CATEGORY.RESOURCE_ERROR,
+      // ERRORTYPES_CATEGORY.PROMISE_ERROR,
       ERRORTYPES_CATEGORY.HTTP_LOG,
-      ERRORTYPES_CATEGORY.UNKNOW_ERROR
+      // ERRORTYPES_CATEGORY.UNKNOW_ERROR
     ], // 录屏事件集合
     recordScreentime: 2000 // 时间
   })
@@ -371,4 +372,13 @@ function listenRecordScreen() {
     },
     options
   })
+}
+
+/**
+ * 白屏检测
+ */
+function whiteScreen(): void {
+  // new openWhiteScreen((data) => {
+
+  // })
 }

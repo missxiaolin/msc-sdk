@@ -6,6 +6,10 @@ import { transportData } from './transportData'
 export class Breadcrumb {
   beforePushBreadcrumb: unknown = null
 
+  /**
+   * @param data 
+   * @returns 
+   */
   push(data: BreadcrumbPushData): void {
     if (typeof this.beforePushBreadcrumb === 'function') {
       let result: BreadcrumbPushData = null

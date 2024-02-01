@@ -240,6 +240,9 @@ const HandleEvents = {
       simpleUrl: formatUrlToStr(pageUrl),
       events: data
     })
+  },
+  handleWhiteScreen(data) {
+    
   }
 }
 

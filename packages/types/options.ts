@@ -63,9 +63,21 @@ export interface InitOptions extends HooksTypes {
   }
   watch?: {
     /**
+     * 白屏监控
+     */
+    whiteScreen?: boolean
+    /**
+     * 白屏检测的项目是否有骨架屏
+     */
+    skeletonProject?: boolean
+    /**
+     * 白屏检测的容器列表
+     */
+    whiteBoxElements?: string[];
+    /**
      * 录屏监控（web独有）
      */
-    recordScreen: boolean
+    recordScreen?: boolean
     /**
      * 录屏时间（web独有）
      */
@@ -122,6 +134,17 @@ export interface InitOptions extends HooksTypes {
    * 按钮点击和微信触摸事件节流时间，默认是0
    */
   throttleDelayTime?: number
+
+  /**
+   * 如果开启了enableTraceId,也需要配置该配置项，includeHttpUrlTraceIdRegExp.test(xhr.url)为true时，才会在该请求头中添加traceId
+   * 由于考虑部分接口如果随便加上多余的请求头会造成跨域，所以这边用的是包含关系的正则
+   */
+  includeHttpUrlTraceIdRegExp?: RegExp
+
+  /**
+   * traceId放入请求头中的key，默认是Trace-Id
+   */
+  traceIdFieldName?: string
 }
 
 export interface HooksTypes {

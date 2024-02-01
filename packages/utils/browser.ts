@@ -1,6 +1,6 @@
 import { AliAppEvents, EVENTTYPES, WxAppEvents, WxPageEvents } from '../shared/index'
 import { InitOptions } from '../types/index'
-import { isAliMiniEnv, isWxMiniEnv, setFlag } from './index'
+import { _support, getFlag, isAliMiniEnv, isWxMiniEnv, setFlag } from './index'
 
 /**
  * 将地址字符串转换成对象
@@ -49,6 +49,7 @@ export function setSilentFlag(paramOptions: InitOptions = {}): void {
   setFlag(EVENTTYPES.PERFORMANCE, !!paramOptions.watch.performance)
   setFlag(EVENTTYPES.VUE, !!paramOptions.watch.vueError)
   setFlag(EVENTTYPES.RECORDSCREEN, !!paramOptions.watch.recordScreen)
+  setFlag(EVENTTYPES.WHITESCREEN, !!paramOptions.watch.whiteScreen)
   // wx App
   if (isWxMiniEnv) {
     setFlag(WxAppEvents.AppOnError, !!paramOptions.watch.jsError)
