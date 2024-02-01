@@ -11,11 +11,12 @@ export interface MitoSupport {
   replaceFlag: { [key in EVENTTYPES]?: boolean }
   record?: any[]
   deviceInfo?: DeviceInfo | any
-  options?: Options
+  options?: any
   aliStore?: Store // 支付宝性能缓存方法
   recordScreenId?: string // 录屏用
   hasError?: boolean // 录屏用
   recordScreenType?: string // 录屏是什么错误导致
+  _loopTimer?: any
 }
 
 

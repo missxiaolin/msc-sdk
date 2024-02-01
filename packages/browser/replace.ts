@@ -378,7 +378,7 @@ function listenRecordScreen(): void {
  * 白屏检测
  */
 function whiteScreen(): void {
-  // new openWhiteScreen((data) => {
-
-  // })
+  new openWhiteScreen((data) => {
+    console.log('whiteScreen', data)
+  }, options)
 }

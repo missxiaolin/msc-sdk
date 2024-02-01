@@ -33,6 +33,9 @@ export class Options {
   recordScreenTypeList: string[] = []
 
   constructor() {
+    this.whiteBoxElements = ['html', 'body', '#app', '#root']
+    this.skeletonProject = false
+
     this.enableTraceId = false
   }
 
