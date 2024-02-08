@@ -1,7 +1,6 @@
 import { Callback } from '../../types'
 import { Options } from '../../core/index'
 import { _global, _support } from '../../utils'
-import { Severity } from '../../shared'
 
 /**
  * 白屏监测
@@ -81,7 +80,7 @@ export function openWhiteScreen(callback: Callback, options: Options) {
         // 比较前后dom是否一致
         if (_skeletonNowList.join() == _skeletonInitList.join())
           return callback({
-            status: Severity.ERROR,
+            status: 1, // error
           });
       }
       if (_support._loopTimer) {
@@ -96,7 +95,7 @@ export function openWhiteScreen(callback: Callback, options: Options) {
     }
     // 17个点都是容器节点算作白屏
     callback({
-      status: emptyPoints == 17 ? Severity.ERROR : Severity.INFO,
+      status: emptyPoints == 17 ? 1 : 0, // 1 error  0  info
     });
   }
   // 开启白屏轮训

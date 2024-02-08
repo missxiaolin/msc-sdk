@@ -379,6 +379,11 @@ function listenRecordScreen(): void {
  */
 function whiteScreen(): void {
   new openWhiteScreen((data) => {
-    console.log('whiteScreen', data)
+    triggerHandlers(EVENTTYPES.WHITESCREEN, {
+      'white-screen': {
+        name: 'white-screen',
+        value: data.status 
+      }
+    })
   }, options)
 }

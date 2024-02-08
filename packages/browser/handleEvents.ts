@@ -241,8 +241,24 @@ const HandleEvents = {
       events: data
     })
   },
-  handleWhiteScreen(data) {
-    
+  /**
+   * 白屏上报
+   * @param objs 
+   */
+  handleWhiteScreen(objs) {
+    const pageUrl = getPageURL()
+    breadcrumb.push({
+      level: Severity.INFO,
+      category: ERRORTYPES_CATEGORY.PERFORMANCE,
+      happenTime: getTimestamp(),
+      happenDate: getNowFormatTime(),
+      pageUrl,
+      simpleUrl: formatUrlToStr(pageUrl),
+      metrics: {
+        sessionId: generateUniqueID(),
+        objs
+      }
+    })
   }
 }
 
