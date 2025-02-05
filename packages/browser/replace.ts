@@ -11,7 +11,7 @@ function isFilterHttpUrl(url: string) {
 function replace(type: EVENTTYPES) {
   switch (type) {
     case EVENTTYPES.WHITESCREEN:
-      whiteScreen();
+      whiteScreen()
       break
     case EVENTTYPES.XHR:
       xhrReplace()
@@ -319,7 +319,7 @@ import { openWhiteScreen } from './whiteScreen'
 
 /**
  * 性能
- * @returns 
+ * @returns
  */
 function listenPerformance(): void {
   if (!('document' in _global) && !('performance' in _global)) return
@@ -332,7 +332,7 @@ function listenPerformance(): void {
 
 /**
  * console.log
- * @returns 
+ * @returns
  */
 function consoleReplace(): void {
   if (!('console' in _global)) {
@@ -361,13 +361,13 @@ function listenRecordScreen(): void {
       ERRORTYPES_CATEGORY.JS_ERROR,
       // ERRORTYPES_CATEGORY.RESOURCE_ERROR,
       // ERRORTYPES_CATEGORY.PROMISE_ERROR,
-      ERRORTYPES_CATEGORY.HTTP_LOG,
+      ERRORTYPES_CATEGORY.HTTP_LOG
       // ERRORTYPES_CATEGORY.UNKNOW_ERROR
     ], // 录屏事件集合
     recordScreentime: 2000 // 时间
   })
   recordScreen.core({
-    reportCallback: (data) => {
+    reportCallback: (data: any) => {
       triggerHandlers(EVENTTYPES.RECORDSCREEN, data)
     },
     options
@@ -382,7 +382,7 @@ function whiteScreen(): void {
     triggerHandlers(EVENTTYPES.WHITESCREEN, {
       'white-screen': {
         name: 'white-screen',
-        value: data.status 
+        value: data.status
       }
     })
   }, options)

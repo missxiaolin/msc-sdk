@@ -1,7 +1,7 @@
 {
   "metadata": {
     "toolPackage": "@microsoft/api-extractor",
-    "toolVersion": "7.39.1",
+    "toolVersion": "7.47.11",
     "schemaVersion": 1011,
     "oldestForwardsCompatibleVersion": 1001,
     "tsdocConfig": {
@@ -173,27 +173,28 @@
       "preserveMemberOrder": false,
       "members": [
         {
-          "kind": "Variable",
-          "canonicalReference": "@xiaolin/monitor-alipay-mini!generateUniqueID:var",
+          "kind": "Function",
+          "canonicalReference": "@xiaolin/monitor-alipay-mini!generateUniqueID:function(1)",
           "docComment": "",
           "excerptTokens": [
             {
               "kind": "Content",
-              "text": "generateUniqueID: "
+              "text": "generateUniqueID: () => "
             },
             {
               "kind": "Content",
-              "text": "() => string"
+              "text": "string"
             }
           ],
           "fileUrlPath": "packages/utils/generateUniqueID.ts",
-          "isReadonly": true,
-          "releaseTag": "Public",
-          "name": "generateUniqueID",
-          "variableTypeTokenRange": {
+          "returnTypeTokenRange": {
             "startIndex": 1,
             "endIndex": 2
-          }
+          },
+          "releaseTag": "Public",
+          "overloadIndex": 1,
+          "parameters": [],
+          "name": "generateUniqueID"
         },
         {
           "kind": "Function",
